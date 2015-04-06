@@ -31,10 +31,10 @@ func main() {
 	}`
 
 	var me Person
-	json.Unmarshal([]byte(jsonMe), &me)
+	json.Unmarshal([]byte(jsonMe), &me) // HL
 
 	fmt.Printf("About me (internal):\n %+v\n", me)
 
-	xmlMe, _ := xml.Marshal(me)
+	xmlMe, _ := xml.Marshal(me) // HL
 	fmt.Printf("About me (xml):\n %s\n", xmlMe)
 }

@@ -5,12 +5,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Doit() {
+func ListenForWebRequests() {
 	engine := gin.Default() // HL
 
 	router.GET("/hello", func(c *gin.Context) {
 		c.String(http.StatusOK, fmt.Sprintf("Message from planet %s", "Mars")) // HL
 	})
 
+	// will block
 	engine.Run(":8080")
 }

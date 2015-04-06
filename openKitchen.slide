@@ -8,26 +8,38 @@ mgrol@xebia.com
 http://www.xebia.com/
 https://github.com/MarcGrol/
 
+#----------------------------------------------
+
 * About me
 
 .image ./marc.jpg
-#.image ./running.png
-#.caption Met Freek
 - Running, cycling
 
 - Telco, Finance, Mobile
 - C, C++, Java, Unix, DSL's, Go
 
+#----------------------------------------------
+
+* Approach
+- Learn by example
+- See code, run code
+- Associate with something you already know
+- Please interrupt for questions
+
+#----------------------------------------------
+
 * Your experience?
-- Installed on laptop?
+- Go installed on laptop?
 - Written any code?
-- Did tutorial? Read a book?
-- Used go tool-chain? go get, go test, go install?
-- Http-client and http-server?
+- Did tour, tutorial? Read a book?
+- Used go tool-chain? go get, go install?
+- Build http-client and http-server?
 - json/xml marshalling?
-- Channels en goroutines?
+- Used channels en goroutines?
 - Unit testing?
 - Own open-source project?
+
+#----------------------------------------------
 
 * Why go was created?
 - Help Google solve problems
@@ -40,6 +52,8 @@ https://github.com/MarcGrol/
 - Simple
 - Optimum between C++ and Python
 # Also works for us
+
+#----------------------------------------------
 
 * Setup environment
 
@@ -57,13 +71,17 @@ https://github.com/MarcGrol/
     # Add go to your PATH (in ~/.bash_profile)
     $ PATH=${PATH}:${GOROOT}/bin
 
+#----------------------------------------------
+
 * Workspace GOPATH
 
 - Directory ${GOPATH} contains all your personal go stuff
+- Convention:
     ${GOPATH}
     ├── src/   # source code
     ├── pkg/   # intermedia libraries objects
     └── bin/   # executables
+- The tooling knows how to build
 
 - Post installation steps
 
@@ -72,18 +90,22 @@ https://github.com/MarcGrol/
     # add GOPATH to your PATH (~/.bash_profile)
     $ export PATH=${PATH}:${GOPATH}/bin
 
+#----------------------------------------------
+
 * First program
 
     $ mkdir -p ${GOPATH}/src/github.com/<your-github-username>/hello
     $ cd ${GOPATH}/src/github.com/MarcGrol/hello
 
 - Source code: first.go
-.play first.go
+.play ../hello/first.go
 
     $ go run first.go or
     $ go install # creates executable "hello" in ${GOPATH}/bin
     $ hello
     Hi everybody!
+
+#----------------------------------------------
 
 * Summary of language
 - Keywords: 
@@ -104,7 +126,7 @@ https://github.com/MarcGrol/
 - Functions:
 	append cap close complex copy delete len make new panic recover
 
-- Walk through language by example
+#----------------------------------------------
 
 * Packages
 
@@ -124,16 +146,20 @@ https://github.com/MarcGrol/
      package main // package that results in executable
      package news // package that results in library
 
+#----------------------------------------------
+
 * Imports
 
-- Fully qualified name
+- Use fully qualified name
 
 .code -edit package.go
 
+#----------------------------------------------
+
 * Variables
-- built-in types: 
-   bool, int*, uint*, float*, complex*, byte, rune, string
 .play vars.go
+
+#----------------------------------------------
 
 * Functions
 - Core building block
@@ -142,23 +168,39 @@ https://github.com/MarcGrol/
     return y, x 
  }
 - Scope: based on case
-  // Visible by other packages
-  func ConvertIt( arg int ) string {
-  	return convertInternal( arg )
+.code func.go
+
+#----------------------------------------------
+
+* More on functions
+- Support variadic ...
+- Module initialisation
+  func init() {
+    // your initialisations here
   }
-  // internal, unexported function
-  func convertInternal() string {
-  	return fmt.Sprintf( "My value as string: %s", arg)
-  }
-- Can be passeed around: closures
-- Support variadic
+
+#----------------------------------------------
+
+* Functions as parameters
+- callback-functions
+- closures
+- Can references variables from outside its function body.
+.play closure.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
 
 * Loops
+- for
 .play for.go /START OMIT/,/END OMIT/
+- while-like
 .play while.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
 
 * If, else
 .play if.go
+
+#----------------------------------------------
 
 * Switch
 - On any type
@@ -166,25 +208,57 @@ https://github.com/MarcGrol/
 - Multiple cases
 .play switch.go /START OMIT/,/END OMIT/
 
+#----------------------------------------------
+
 * Defer
 - Useful for cleanup: file-handles, mutexes
+- Useful for logging enter, leave function
+
 .play defer.go
+
+#----------------------------------------------
 
 * Struct and methods
 - Compare Java class with methods
 - Use pointer * when modifying struct
 .play struct.go /START OMIT/,/END OMIT/
 
-* Construction
+#----------------------------------------------
+
+* Pointers
+- Pass by value is default
+- Use pointers to pass by reference
+- Useful for passing large objects around
+- Slices, maps and channels are already refs
+
+  var personP *Person = new(Person)
+  personP.Name = "Boogerd"
+  storePerson( personP )
+
+  or
+  
+  person := Person(Name:"Boogerd")
+  storePerson( &person )
+- Pass by value has no side effects
+
+#----------------------------------------------
+
+* Object construction
 .play construct.go  /START OMIT/,/END OMIT/
+
+#----------------------------------------------
 
 * Enum
 .play enum.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
 
 * Containers
 - array
 - slice
 - map
+
+#----------------------------------------------
 
 * Array
 - Fixed length immutable
@@ -205,6 +279,8 @@ https://github.com/MarcGrol/
       fmt.Printf("%d:%d\n", index, value)
    }
 
+#----------------------------------------------
+
 * Slice
 - Dynamic array: can grow in size
 
@@ -217,7 +293,6 @@ https://github.com/MarcGrol/
     			slice)
     subslice = slice[2:3]
 
-
 - Iterate over slice
  for index, value := range numbers {
     fmt.Printf("%d:%d\n", index, value)
@@ -226,6 +301,8 @@ https://github.com/MarcGrol/
 - Sorting: use sort package
 
 - Generics: use "gen" code-generator (github.com/clipperhouse/gen)
+
+#----------------------------------------------
 
 * Map
 - Store key-value pairs
@@ -243,6 +320,8 @@ https://github.com/MarcGrol/
 - Random iteration order
 - Not thread safe (combine with Mutex)
 
+#----------------------------------------------
+
 * Error handling
   resp, err := doit(arg1, arg2)
   if err != nil {
@@ -257,6 +336,8 @@ https://github.com/MarcGrol/
 - if error is nil, the call worked
 - You own API's should use this pattern
 
+#----------------------------------------------
+
 * Interfaces
 - UNIX filosophy: small, sharp tool combined to solve larger tasks
 - Instead of large runtimes, framework and hierarchies.
@@ -270,17 +351,30 @@ https://github.com/MarcGrol/
     }
 - Refactor using interfaces when initially done
 
+#----------------------------------------------
+
+* Interface example
+
+.play interfaces.go
+
+#----------------------------------------------
+
 # Whatever mix of packages you use: Consumers just have to understand a single error-handling strategy
 
 * Concurrency 
+- Concurrent-style not forced upon you
+- Share Memory By Communicating
 - built-in "channels" and "goroutines"
 - Goroutines: think very, very lightweight threads
-- Channels: think pipe or queue
+- Channels: think pipe or queue to communicate with coroutine
 - "select"-loop in heart of program
-- Concurrent-style not forced upon you
+
+#----------------------------------------------
 
 * Concurrency example
 - TODO example
+
+#----------------------------------------------
 
 * Unit testing
 - Part of toolchain
@@ -291,6 +385,8 @@ https://github.com/MarcGrol/
     FAIL: TestDoit (0.00s)
     go_test.go:14: ERROR : Expecting[marc] Received[cram]
 
+#----------------------------------------------
+
 * More on testing
 - Benchmarking
 - Code coverage
@@ -298,18 +394,45 @@ https://github.com/MarcGrol/
 - Http integration testing: see "httptest"-package https://github.com/MarcGrol/microgen/blob/master/tool/dsl/service-interface.go.tmpl template
 .link https://www.youtube.com/watch?v=ndmB0bj7eyw see this youtube-link for more on testing
 
+#----------------------------------------------
+
 * Rich standard libraries
+Just a few examples:
+- flags
 - http, http2
-- file I/O network IO
-- encoding (json, xml, mime) and compression
+- file I/O
+- sync
+- networking
+- encoding (json, xml, mime)
+- compression
 - crypto
 - templates
+- ...
+
+#----------------------------------------------
+
+* Flags
+- Read command-line argument
+.play flags.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
 
 * HTTP
 - TODO
 
+#----------------------------------------------
+
+* Synchronisation
+- Alternative to channels
+- Use for small syncs
+.play sync.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
 * Encoding
 .play encoding.go  /^func main/,/^}/
+
+#----------------------------------------------
 
 * Templating
 - web-server: generate html
@@ -317,21 +440,35 @@ https://github.com/MarcGrol/
 .link https://github.com/MarcGrol/microgen/blob/master/application.go model
 .link https://github.com/MarcGrol/microgen/blob/master/tool/dsl/service-interface.go.tmpl template
 
+#----------------------------------------------
+
+* "Kind of" generics
+- go get github.com/clipperhouse/gen
+.code generate.go
+  $ go generate ./...
+  generates cyclist_slice.go
+- Just commit and distribute with your package
+
+#----------------------------------------------
+
 * Complete tool-chain
-- go env
-- go fmt
-# no wars, easy to diff, allow mechanical manipulation, static analysis
-- go get
-# Start within minutes
-- go generate
-- go doc
-- go build, go run
-- go vet
-- go test, coverage, benchmark, race-conditions
-- go list
-- go install
+  $ go list ./...                  # list sub-packages
+  $ go list -f {{.Deps}}           # list external deps
+  
+  # no wars, easy to diff, allow mechanical manipulation, static analysis
+  $ go fmt ./...                   # recursive formatting
+  
+  # Start within minutes
+  $ go get github.com/bitly/go-nsq # fetch and build external package
+  $ godoc -http=:8000              # documentation of ${GOROOT} and ${GOPATH}
+  $ go build, go run
+  $ go vet
+  $ go test ./...                  # coverage, benchmark, race-conditions
+  $ go install
 
 - CLI -> Easy to automate
+
+#----------------------------------------------
 
 * Simple build system
 - Based on filesystem and conventions
@@ -339,17 +476,23 @@ https://github.com/MarcGrol/
 - The tool knows how to build
 - Easy to integrate 3rd packages: only integrate source-code
 
+#----------------------------------------------
+
 * Easy deployment
 - No runtime
 - Single, self contained binary
 - Just scp to target host
 
+#----------------------------------------------
+
 * The not so good
-- Reproducable builds: versioning 3rd party dependencies
+- Reproducable builds: versioning of 3rd party dependencies
 - IDE support: vi, sublime, eclipse, intelliJ
 - No immutability by default
 - Missing generics?
 # Use code generation?
+
+#----------------------------------------------
 
 * So why go?
 - Simple, readable language
@@ -364,6 +507,10 @@ https://github.com/MarcGrol/
 
 .link https://golang.org/
 
-* So
-- Go experiment yourself
+#----------------------------------------------
 
+* Go
+- Experiment and tell it around
+.image gophereartrumpet.jpg
+
+#----------------------------------------------
