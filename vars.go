@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// START OMIT
 const myConstString = "golang"
 
 func main() {
@@ -19,3 +20,5 @@ func main() {
 		"status:%v\nidx:%d\ni=%d\nmy-const-string:%s\nmy-long-string:%s\nmy-list:%+v\n",
 		status, idx, i, myConstString, longString, myList)
 }
+
+// END OMIT

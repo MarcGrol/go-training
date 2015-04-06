@@ -2,16 +2,15 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
-func sqrt(x float64) string {
-	if x < 0 {
-		return sqrt(-x) + "i"
-	}
-	return fmt.Sprint(math.Sqrt(x))
-}
-
 func main() {
-	fmt.Println(sqrt(2), sqrt(-4))
+	num := 9
+	if num < 0 {
+		fmt.Println(num, "is negative")
+	} else if num < 10 {
+		fmt.Println(num, "has 1 digit")
+	} else {
+		fmt.Println(num, "has multiple digits")
+	}
 }

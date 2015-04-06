@@ -157,7 +157,7 @@ https://github.com/MarcGrol/
 #----------------------------------------------
 
 * Variables
-.play vars.go
+.play vars.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -168,12 +168,7 @@ https://github.com/MarcGrol/
     return y, x 
  }
 - Scope: based on case
-.code func.go
-
-#----------------------------------------------
-
-* More on functions
-- Support variadic ...
+.code func.go 
 - Module initialisation
   func init() {
     // your initialisations here
@@ -181,8 +176,12 @@ https://github.com/MarcGrol/
 
 #----------------------------------------------
 
+* Variadic functions
+.play variadic.go
+
+#----------------------------------------------
+
 * Functions as parameters
-- callback-functions
 - closures
 - Can references variables from outside its function body.
 .play closure.go /START OMIT/,/END OMIT/
