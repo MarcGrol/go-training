@@ -470,15 +470,20 @@ Just a few examples:
   $ go list -f {{.Deps}}           # list external deps
   
   # no wars, easy to diff, allow mechanical manipulation, static analysis
-  $ go fmt ./...                   # recursive formatting
+  $ go fmt ./...                   # format recursively
   
-  # Start within minutes
-  $ go get github.com/bitly/go-nsq # fetch and build external package
-  $ godoc -http=:8000              # documentation of ${GOROOT} and ${GOPATH}
-  $ go build, go run
-  $ go vet
-  $ go test ./...                  # coverage, benchmark, race-conditions
+  # Be effective within seconds
+  $ go get github.com/bitly/go-nsq # fetch external package
+
+  # testing: tooliong supports coverage, benchmark, race-conditions
+  $ go test ./...                  # test recursively 
+
+  # compile
+  $ go build or go run             # add hoc
   $ go install
+
+  $ godoc -http=:8000              # documentation of ${GOROOT} and ${GOPATH}
+  $ go vet                         # lint like
 
 - CLI -> Easy to automate
 
@@ -493,8 +498,8 @@ Just a few examples:
 #----------------------------------------------
 
 * Easy deployment
-- No runtime
 - Single, self contained binary
+- No runtime
 - Just scp to target host
 
 #----------------------------------------------
@@ -523,8 +528,11 @@ Just a few examples:
 
 #----------------------------------------------
 
-* Go
-- Experiment and tell it around
+* Go do it
+- Start experimenting
+- Build something
 .image gophereartrumpet.jpg
+.caption Tell it around
+
 
 #----------------------------------------------
