@@ -22,7 +22,7 @@ https://github.com/MarcGrol/
 
 * Approach
 - Learn by example
-- See code, run code
+- See code, run code: executable presentation
 - Associate with something you already know
 - Please interrupt for questions
 
@@ -417,18 +417,20 @@ Concurrent-style not forced upon you, used selectively
 - Benchmarking
 - Code coverage
 - Race condition detection
-- Http integration testing: see "httptest"-package https://github.com/MarcGrol/microgen/blob/master/tool/dsl/service-interface.go.tmpl template
-.link https://www.youtube.com/watch?v=ndmB0bj7eyw see this youtube-link for more on testing
+- Http integration testing: see "httptest"-package
+.link https://www.youtube.com/watch?v=ndmB0bj7eyw More details: google-search "testing techniques golang"
 
 #----------------------------------------------
 
 * Rich standard libraries
 Just a few examples:
 - flags
-- http, http2
 - file I/O
 - sync
+- logging
+- os
 - networking
+- http, http2: client and server
 - encoding (json, xml, mime)
 - compression
 - crypto
@@ -443,7 +445,7 @@ Just a few examples:
 
 #----------------------------------------------
 
-* HTTP
+* HTTP server
 .code webserver.go /START OMIT/,/END OMIT/
 - Fileserver and reverse proxy included
 
@@ -462,8 +464,8 @@ Just a few examples:
 #----------------------------------------------
 
 * Templating
-- web-server: generate html
-- code generation
+- web-server: generate html response using template
+- code generation: generate text-files on file-system
 .link https://github.com/MarcGrol/microgen/blob/master/application.go model
 .link https://github.com/MarcGrol/microgen/blob/master/tool/dsl/service-interface.go.tmpl template
 
@@ -482,23 +484,23 @@ Just a few examples:
   $ go list ./...                  # list sub-packages
   $ go list -f {{.Deps}}           # list external deps
   
-  # no wars, easy to diff, allow mechanical manipulation, static analysis
+  # no flame-wars, easy to diff, allow mechanical manipulation
   $ go fmt ./...                   # format recursively
   
   # Be effective within seconds
   $ go get github.com/bitly/go-nsq # fetch external package
 
-  # testing: tooliong supports coverage, benchmark, race-conditions
+  # testing: tooling supports coverage, benchmark, race-condition-detection
   $ go test ./...                  # test recursively 
 
   # compile
   $ go build or go run             # add hoc
-  $ go install
+  $ go install                     # to ${GOPATH}/bin
 
-  $ godoc -http=:8000              # documentation of ${GOROOT} and ${GOPATH}
+  $ godoc -http=:8000              # documentation sourcs in ${GOROOT} and ${GOPATH}
   $ go vet                         # lint like
 
-- CLI -> Easy to automate
+- All CLI -> Easy to automate
 
 #----------------------------------------------
 
@@ -514,6 +516,7 @@ Just a few examples:
 - Single, self contained binary
 - No runtime
 - Just scp to target host
+- go 1.5 supports cross compilation
 
 #----------------------------------------------
 
@@ -532,7 +535,7 @@ Just a few examples:
 - Complete tool-chain
 - Good at concurrency
 - Fast
-- Easy to deploy: self-contained static binaries
+- Easy to build and deploy
 - Used by many startups
 
 - Language to get things done
@@ -543,9 +546,9 @@ Just a few examples:
 
 * Go do it
 - Start experimenting
-- Build something
+- Let's build something
 .image gophereartrumpet.jpg
-.caption Tell it around
+.caption Go is cool:  Tell it around
 
 
 #----------------------------------------------

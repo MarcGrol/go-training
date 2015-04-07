@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
 )
 
 // START OMIT
 func printUsage() {
 	fmt.Fprintf(os.Stderr, "\nUsage:\n")
-	fmt.Fprintf(os.Stderr, " %s [flags]\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, " %s [flags]\n", path.Base(os.Args[0]))
 	flag.PrintDefaults() // HL
 	fmt.Fprintf(os.Stderr, "\n")
 	os.Exit(1)
