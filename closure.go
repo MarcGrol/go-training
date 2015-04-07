@@ -5,10 +5,10 @@ import "fmt"
 // START OMIT
 func intSeq() func() int {
 	i := 0
-	return func() int {
-		i += 1
-		return i
-	}
+	return func() int { // HL
+		i += 1   // HL
+		return i // HL
+	} // HL
 }
 
 func main() {

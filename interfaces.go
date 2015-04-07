@@ -7,6 +7,9 @@ type Person struct {
 	Age  int
 }
 
+// type Stringer interface {
+//    String() string
+// }
 func (p Person) String() string {
 	return fmt.Sprintf("%v (%v years)", p.Name, p.Age)
 }

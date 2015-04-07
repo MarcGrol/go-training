@@ -10,7 +10,7 @@ const myConstString = "golang"
 func main() {
 	var status bool // uninitialized
 	var idx int64 = 42
-	// := short notation: derives type from right-side // HL
+	// := short notation: derives type from right-hand-side // HL
 	i := 256 // HL
 	longString := `{
 		"why":"Usefull to embed json in source"

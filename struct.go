@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 var me Person = Person{
 	Name:      "Marc Grol",
@@ -25,11 +23,12 @@ type Child struct {
 	Age  int
 }
 
-func (p *Person) AddChild(child Child) {
+func (p *Person) AddChild(child Child) { // HL
 	p.Children = append(p.Children, child)
 }
 
 func main() {
+	// me := Person{...}
 	me.AddChild(Child{Name: "Freek", Age: 5})
 	fmt.Printf("%+v\n", me)
 }

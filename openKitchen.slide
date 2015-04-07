@@ -43,13 +43,10 @@ https://github.com/MarcGrol/
 
 * Why go was created?
 - Help Google solve problems
-- Large scale infrastructure
-- Large teams
-- Massive code bases
-- Run fast
-- Compile fast
-- Reliable
 - Simple
+- Scale: infrastructure, teams, code bases
+- Compile and run fast
+- Safe and reliable
 - Optimum between C++ and Python
 # Also works for us
 
@@ -133,7 +130,7 @@ https://github.com/MarcGrol/
 - Each package in dedicated directory
 
 - Standard packages shipped with go
-    source in ${GOROOT}/src
+    source in ${GOROOT}/src/...
     compiled in ${GOROOT}/pkg/...
     example: log, strings, io, errors, time, fmt, http, ....
 
@@ -151,6 +148,7 @@ https://github.com/MarcGrol/
 * Imports
 
 - Use fully qualified name
+- Last part short and sweet: fmt, http, log, ..
 
 .code -edit package.go
 
@@ -159,32 +157,7 @@ https://github.com/MarcGrol/
 * Variables
 .play vars.go /START OMIT/,/END OMIT/
 
-#----------------------------------------------
 
-* Functions
-- Core building block
-- Can return multiple values
- func swap(x, y string) (string, string) { 
-    return y, x 
- }
-- Scope: based on case
-.code func.go 
-- Module initialisation
-  func init() {
-    // your initialisations here
-  }
-
-#----------------------------------------------
-
-* Variadic functions
-.play variadic.go
-
-#----------------------------------------------
-
-* Functions as parameters
-- closures
-- Can references variables from outside its function body.
-.play closure.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -209,9 +182,39 @@ https://github.com/MarcGrol/
 
 #----------------------------------------------
 
+* Functions
+- Core building block
+
+- Scope: based on case
+.code func.go 
+
+- Can return multiple values
+ func swap(x, y string) (string, string) { 
+    return y, x 
+ }
+
+- Package initialisation
+  func init() {
+    // your initialisations here
+  }
+
+#----------------------------------------------
+
+* Variadic functions
+.play variadic.go
+
+#----------------------------------------------
+
+* Functions as parameters
+- Closures: anonymous functions
+- Can reference variables from outside its function body.
+.play closure.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
 * Defer
 - Useful for cleanup: file-handles, mutexes
-- Useful for logging enter, leave function
+- Useful for debugging: log "enter" and "leave" of function
 
 .play defer.go
 
@@ -225,10 +228,9 @@ https://github.com/MarcGrol/
 #----------------------------------------------
 
 * Pointers
-- Pass by value is default
-- Use pointers to pass by reference
+- Pass "by value" is default
+- Use "pointers" to pass "by reference"
 - Useful for passing large objects around
-- Slices, maps and channels are already refs
 
   var personP *Person = new(Person)
   personP.Name = "Boogerd"
@@ -236,9 +238,11 @@ https://github.com/MarcGrol/
 
   or
   
-  person := Person(Name:"Boogerd")
+  person := Person{Name:"Boogerd"}
   storePerson( &person )
-- Pass by value has no side effects
+
+- Note: Slices, maps and channels are already refs
+- Note: Pass by value has no side effects
 
 #----------------------------------------------
 
@@ -282,15 +286,15 @@ https://github.com/MarcGrol/
 
 * Slice
 - Dynamic array: can grow in size
-
     letters := []string{"a", "b", "c", "d"}
+    subslice = letters[2:3] // c and d
     or
-	slice := make([]string, 0, 5) // type, len, cap
-    slice = append( slice, "first entry")
-    fmt.Printf( "slice-length: %d slice-values:%+v", 
+    slice := make( []string, 0, 5 )
+    slice = append( slice, "first entry" )
+    fmt.Printf( "slice-length: %d slice-capacity: %d slice-values:%+v",  
     			len(slice),
+          cap(slice),
     			slice)
-    subslice = slice[2:3]
 
 - Iterate over slice
  for index, value := range numbers {
@@ -322,37 +326,47 @@ https://github.com/MarcGrol/
 #----------------------------------------------
 
 * Error handling
-  resp, err := doit(arg1, arg2)
+- Multiple return values
+- if error is nil, the call worked
+  resp, err := doSomethingThatCanFail(arg1, arg2)
   if err != nil {
-      return
+      // log?
+      return err
   }
   // continue with success path
 
-  // "blank":" if you don't care
+  // use _ (=blank) if you don't care
   resp, _ := doit(arg1, arg2)
 
-- if method return error, things can go wrong and you need to act on it
-- if error is nil, the call worked
+- Function signature tells that things can go wrong
+
 - You own API's should use this pattern
 
 #----------------------------------------------
 
 * Interfaces
 - UNIX filosophy: small, sharp tool combined to solve larger tasks
-- Instead of large runtimes, framework and hierarchies.
-- go packages interact via interfaces, decribe the "what", not the "how"
-- Just implement the methods and voila
+- go packages interact via small interfaces
+# decribe the "what", not the "how"
 
-- example: fmt.Fprintf to file, buffer, stdout, network, zip-file etc
+- example: IO
+   func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error)
+   
+   type Writer interface {
+       Write(p []byte) (n int, err error)
+   }
+   "Writer" can be file, buffer, stdout, network, http-response, zip-file etc
+
 - example: built-in interface "error"
-    type error interface {
-        Error() string
-    }
-- Refactor using interfaces when initially done
+   type error interface {
+       Error() string
+   }
+# Refactor using interfaces when initially done
 
 #----------------------------------------------
 
 * Interface example
+- Just implement the methods and voila
 
 .play interfaces.go
 
