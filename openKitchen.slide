@@ -292,13 +292,13 @@ https://github.com/MarcGrol/
     slice := make( []string, 0, 5 )
     slice = append( slice, "first entry" )
     fmt.Printf( "slice-length: %d slice-capacity: %d slice-values:%+v",  
-    			len(slice),
-          cap(slice),
-    			slice)
+                    len(slice),
+                    cap(slice),
+                    slice)
 
 - Iterate over slice
- for index, value := range numbers {
-    fmt.Printf("%d:%d\n", index, value)
+ for _, value := range numbers {
+    fmt.Printf("%d\n", value)
  }
 
 - Sorting: use sort package
@@ -545,9 +545,9 @@ Just a few examples:
 
 * Go do it
 - Start experimenting
-- Let's build something
 .image gophereartrumpet.jpg
 .caption Go is cool:  Tell it around
+- Let's build something
 
 
 #----------------------------------------------
