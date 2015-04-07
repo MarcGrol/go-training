@@ -195,7 +195,7 @@ https://github.com/MarcGrol/
 
 - Package initialisation
   func init() {
-    // your initialisations here
+    // your global initialisations here
   }
 
 #----------------------------------------------
@@ -346,10 +346,10 @@ https://github.com/MarcGrol/
 
 * Interfaces
 - UNIX filosophy: small, sharp tool combined to solve larger tasks
-- go packages interact via small interfaces
+- go packages interact via small interfaces, no large hierarchies.
 # decribe the "what", not the "how"
 
-- example: IO
+- example: I/O
    func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error)
    
    type Writer interface {
@@ -396,7 +396,6 @@ Concurrent-style not forced upon you, used selectively
 
 * Select example
 - Waitfor events on multiple channels
-- Do not block the loop!
 
 .play select.go /START OMIT/,/END OMIT/
 
@@ -475,7 +474,7 @@ Just a few examples:
 - go get github.com/clipperhouse/gen
 .code generate.go
   $ go generate ./...
-  generates cyclist_slice.go
+  generates cyclist_slice.go with "SortBy"- and "Where"-methods on CyclistSlice
 - Just commit and distribute with your package
 
 #----------------------------------------------
