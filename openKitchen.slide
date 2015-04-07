@@ -129,19 +129,19 @@ https://github.com/MarcGrol/
 
 - Each package in dedicated directory
 
-- Standard packages shipped with go
+- Standard packages shipped with go in ${GOROOT}
     source in ${GOROOT}/src/...
     compiled in ${GOROOT}/pkg/...
     example: log, strings, io, errors, time, fmt, http, ....
 
-- Your own or third party packages
+- Your own or third-party packages in ${GOPATH}
     source-code in ${GOPATH}/src/...
     compiled in ${GOPATH}/pkg/...
     example: ${GOPATH}/src/github.com/gin-gonic/gin
 
 - Package name first line of source file
      package main // package that results in executable
-     package news // package that results in library
+     package news // package that results in library "news.a"
 
 #----------------------------------------------
 
