@@ -12,7 +12,7 @@ https://github.com/MarcGrol/
 
 * About me
 
-.image ./marc.jpg
+.image images/marc.jpg
 - Running, cycling
 
 - Telecom, Finance, Mobile
@@ -545,7 +545,7 @@ Just a few examples:
 
 * Go do it
 - Start experimenting
-.image gophereartrumpet.jpg
+.image images/gophereartrumpet.jpg
 .caption Go is cool:  Tell it around
 - Let's build something
 
