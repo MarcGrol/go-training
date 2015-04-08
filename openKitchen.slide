@@ -388,7 +388,7 @@ Concurrent-style not forced upon you, used selectively
 #----------------------------------------------
 
 * Concurrency example
-- Share Memory By Communicating
+- Do not communicate by sharing memory. Instead, share memory by communicating.
 
 .play channels/channels.go /START OMIT/,/END OMIT/
 
