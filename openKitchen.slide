@@ -15,14 +15,14 @@ https://github.com/MarcGrol/
 .image ./marc.jpg
 - Running, cycling
 
-- Telco, Finance, Mobile
-- C, C++, Java, Unix, DSL's, Go
+- Telecom, Finance, Mobile
+- C, C++, Java, Unix, DSL's, DDD, Go
 
 #----------------------------------------------
 
 * Approach
 - Learn by example
-- See code, run code: executable presentation
+- See code, run code
 - Associate with something you already know
 - Please interrupt for questions
 
@@ -95,7 +95,7 @@ https://github.com/MarcGrol/
     $ cd ${GOPATH}/src/github.com/MarcGrol/hello
 
 - Source code: first.go
-.play ../hello/first.go
+.play hello/first.go
 
     $ go run first.go or
     $ go install # creates executable "hello" in ${GOPATH}/bin
@@ -150,12 +150,12 @@ https://github.com/MarcGrol/
 - Use fully qualified name
 - Last part short and sweet: fmt, http, log, ..
 
-.code -edit package.go
+.code -edit packaging/packaging.go
 
 #----------------------------------------------
 
 * Variables
-.play vars.go /START OMIT/,/END OMIT/
+.play vars/vars.go /START OMIT/,/END OMIT/
 
 
 
@@ -163,14 +163,14 @@ https://github.com/MarcGrol/
 
 * Loops
 - for
-.play for.go /START OMIT/,/END OMIT/
+.play for/for.go /START OMIT/,/END OMIT/
 - while-like
-.play while.go /START OMIT/,/END OMIT/
+.play while/while.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * If, else
-.play if.go
+.play if/if.go
 
 #----------------------------------------------
 
@@ -178,7 +178,7 @@ https://github.com/MarcGrol/
 - On any type
 - No fallthrough unless explicitly stated
 - Multiple cases
-.play switch.go /START OMIT/,/END OMIT/
+.play switch/switch.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -186,7 +186,7 @@ https://github.com/MarcGrol/
 - Core building block
 
 - Scope: based on case
-.code func.go 
+.code functions/functions.go 
 
 - Can return multiple values
  func swap(x, y string) (string, string) { 
@@ -201,14 +201,14 @@ https://github.com/MarcGrol/
 #----------------------------------------------
 
 * Variadic functions
-.play variadic.go
+.play variadic/variadic.go
 
 #----------------------------------------------
 
 * Functions as parameters
 - Closures: anonymous functions
 - Can reference variables from outside its function body.
-.play closure.go /START OMIT/,/END OMIT/
+.play closure/closure.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -216,14 +216,14 @@ https://github.com/MarcGrol/
 - Useful for cleanup: file-handles, mutexes
 - Useful for debugging: log "enter" and "leave" of function
 
-.play defer.go
+.play defer/defer.go
 
 #----------------------------------------------
 
 * Struct and methods
 - Compare Java class with methods
 - Use pointer * when modifying struct
-.play struct.go /START OMIT/,/END OMIT/
+.play struct/struct.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -247,12 +247,12 @@ https://github.com/MarcGrol/
 #----------------------------------------------
 
 * Object construction
-.play construct.go  /START OMIT/,/END OMIT/
+.play construct/construct.go  /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * Enum
-.play enum.go /START OMIT/,/END OMIT/
+.play enum/enum.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -368,7 +368,7 @@ https://github.com/MarcGrol/
 * Interface example
 - Just implement the methods and voila
 
-.play interfaces.go
+.play interfaces/interfaces.go
 
 #----------------------------------------------
 
@@ -390,14 +390,14 @@ Concurrent-style not forced upon you, used selectively
 * Concurrency example
 - Share Memory By Communicating
 
-.play channels.go /START OMIT/,/END OMIT/
+.play channels/channels.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * Select example
 - Waitfor events on multiple channels
 
-.play select.go /START OMIT/,/END OMIT/
+.play select/select.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -405,7 +405,7 @@ Concurrent-style not forced upon you, used selectively
 - Part of toolchain
 - In same package, dedicated file
 - Filename convention: _test.go
-.code go_test.go /START OMIT/,/END OMIT/
+.code testit/reverse_test.go /START OMIT/,/END OMIT/
     $ go test
     FAIL: TestDoit (0.00s)
     go_test.go:14: ERROR : Expecting[marc] Received[cram]
@@ -440,12 +440,12 @@ Just a few examples:
 
 * Flags
 - Read command-line argument
-.play flags.go /START OMIT/,/END OMIT/
+.play flags/flags.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * HTTP server
-.code webserver.go /START OMIT/,/END OMIT/
+.code webserver/webserver.go /START OMIT/,/END OMIT/
 - Fileserver and reverse proxy included
 
 #----------------------------------------------
@@ -453,12 +453,12 @@ Just a few examples:
 * Synchronisation
 - Alternative to channels
 - Use for small syncs
-.play sync.go /START OMIT/,/END OMIT/
+.play sync/sync.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * Encoding
-.play encoding.go  /^func main/,/^}/
+.play encoding/encoding.go  /^func main/,/^}/
 
 #----------------------------------------------
 
@@ -472,7 +472,7 @@ Just a few examples:
 
 * "Kind of" generics
 - go get github.com/clipperhouse/gen
-.code generate.go
+.code generate/generate.go
   $ go generate ./...
   generates cyclist_slice.go with "SortBy"- and "Where"-methods on CyclistSlice
 - Just commit and distribute with your package
@@ -496,7 +496,7 @@ Just a few examples:
   $ go build or go run             # add hoc
   $ go install                     # to ${GOPATH}/bin
 
-  $ godoc -http=:8000              # documentation sourcs in ${GOROOT} and ${GOPATH}
+  $ godoc -http=:8000              # documentation of sources in ${GOROOT} and ${GOPATH}
   $ go vet                         # lint like
 
 - All CLI -> Easy to automate

@@ -1,14 +1,15 @@
-package mylibrary
+package packaging
 
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+    "net/http"
 )
 
 func ListenForWebRequests() {
 	engine := gin.Default() // HL
 
-	router.GET("/hello", func(c *gin.Context) {
+	engine.GET("/hello", func(c *gin.Context) {
 		c.String(http.StatusOK, fmt.Sprintf("Message from planet %s", "Mars")) // HL
 	})
 

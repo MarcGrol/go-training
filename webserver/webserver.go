@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 )
@@ -14,7 +13,7 @@ type timeHandler struct {
 
 func (th *timeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	tm := time.Now().Format(th.format)
-	fmt.Fprintf(w, "The time is: " + tm))
+	fmt.Fprintf(w, "The time is: " + tm)
 }
 
 func main() {

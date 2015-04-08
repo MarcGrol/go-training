@@ -1,4 +1,4 @@
-package main
+package testit
 
 // START OMIT
 import (
@@ -14,10 +14,3 @@ func TestReverseAscii(t *testing.T) {
 }
 
 // END OMIT
-
-func reverse(in string) string {
-	return in
-}
-
-func main() {
-}
