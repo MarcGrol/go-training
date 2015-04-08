@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -51,7 +52,7 @@
         <h3>About me</h3>
         
 <div class="image">
-  <img src="./marc.jpg">
+  <img src="images/marc.jpg">
 </div>
 
   <ul>
@@ -62,9 +63,9 @@
 
   <ul>
   
-    <li>Telco, Finance, Mobile</li>
+    <li>Telecom, Finance, Mobile</li>
   
-    <li>C, C++, Java, Unix, DSL&#39;s, Go</li>
+    <li>C, C++, Java, Unix, DSL&#39;s, DDD, Go</li>
   
   </ul>
 
@@ -133,19 +134,13 @@
   
     <li>Help Google solve problems</li>
   
-    <li>Large scale infrastructure</li>
-  
-    <li>Large teams</li>
-  
-    <li>Massive code bases</li>
-  
-    <li>Run fast</li>
-  
-    <li>Compile fast</li>
-  
-    <li>Reliable</li>
-  
     <li>Simple</li>
+  
+    <li>Scale: infrastructure, teams, code bases</li>
+  
+    <li>Compile and run fast</li>
+  
+    <li>Safe and reliable</li>
   
     <li>Optimum between C++ and Python</li>
   
@@ -357,19 +352,19 @@ uint uint8 uint16 uint32 uint64 uintptr</pre></div>
 
   <ul>
   
-    <li>Standard packages shipped with go</li>
+    <li>Standard packages shipped with go in ${GOROOT}</li>
   
   </ul>
 
   
-  <div class="code"><pre>source in ${GOROOT}/src
+  <div class="code"><pre>source in ${GOROOT}/src/...
 compiled in ${GOROOT}/pkg/...
 example: log, strings, io, errors, time, fmt, http, ....</pre></div>
   
 
   <ul>
   
-    <li>Your own or third party packages</li>
+    <li>Your own or third-party packages in ${GOPATH}</li>
   
   </ul>
 
@@ -387,7 +382,7 @@ example: ${GOPATH}/src/github.com/gin-gonic/gin</pre></div>
 
   
   <div class="code"><pre>package main // package that results in executable
-package news // package that results in library</pre></div>
+package news // package that results in library &#34;news.a&#34;</pre></div>
   
 
       
@@ -403,28 +398,31 @@ package news // package that results in library</pre></div>
   
     <li>Use fully qualified name</li>
   
+    <li>Last part short and sweet: fmt, http, log, ..</li>
+  
   </ul>
 
   <div class="code" contenteditable="true" spellcheck="false">
 
 
-<pre contenteditable="true" spellcheck="false"><span num="1">package mylibrary</span>
+<pre contenteditable="true" spellcheck="false"><span num="1">package packaging</span>
 <span num="2"></span>
 <span num="3">import (</span>
 <span num="4">    &#34;fmt&#34;</span>
 <span num="5">    &#34;github.com/gin-gonic/gin&#34;</span>
-<span num="6">)</span>
-<span num="7"></span>
-<span num="8">func ListenForWebRequests() {</span>
-<span num="9">    <b>engine := gin.Default()</b></span>
-<span num="10"></span>
-<span num="11">    router.GET(&#34;/hello&#34;, func(c *gin.Context) {</span>
-<span num="12">        <b>c.String(http.StatusOK, fmt.Sprintf(&#34;Message from planet %s&#34;, &#34;Mars&#34;))</b></span>
-<span num="13">    })</span>
-<span num="14"></span>
-<span num="15">    // will block</span>
-<span num="16">    engine.Run(&#34;:8080&#34;)</span>
-<span num="17">}</span>
+<span num="6">    &#34;net/http&#34;</span>
+<span num="7">)</span>
+<span num="8"></span>
+<span num="9">func ListenForWebRequests() {</span>
+<span num="10">    <b>engine := gin.Default()</b></span>
+<span num="11"></span>
+<span num="12">    engine.GET(&#34;/hello&#34;, func(c *gin.Context) {</span>
+<span num="13">        <b>c.String(http.StatusOK, fmt.Sprintf(&#34;Message from planet %s&#34;, &#34;Mars&#34;))</b></span>
+<span num="14">    })</span>
+<span num="15"></span>
+<span num="16">    // will block</span>
+<span num="17">    engine.Run(&#34;:8080&#34;)</span>
+<span num="18">}</span>
 </pre>
 
 
@@ -440,147 +438,29 @@ package news // package that results in library</pre></div>
         <h3>Variables</h3>
         
   <div class="code playground" contenteditable="true" spellcheck="false">
-
-
-<pre><span num="1">package main</span>
-<span num="2"></span>
-<span num="3">import (</span>
-<span num="4">    &#34;fmt&#34;</span>
-<span num="5">)</span>
-<span num="6"></span>
-<span num="7">const myConstString = &#34;golang&#34;</span>
-<span num="8"></span>
-<span num="9">func main() {</span>
-<span num="10">    var status bool // uninitialized</span>
-<span num="11">    var idx int64 = 42</span>
-<span num="12">    <b>// := short notation: derives type from right-side</b></span>
-<span num="13">    <b>i := 256</b></span>
-<span num="14">    longString := `{</span>
-<span num="15">        &#34;why&#34;:&#34;Usefull to embed json in source&#34;</span>
-<span num="16">    }`</span>
-<span num="17">    myList := []int{1, 3, 5, 7}</span>
-<span num="18">    fmt.Printf(</span>
-<span num="19">        &#34;status:%v\nidx:%d\ni=%d\nmy-const-string:%s\nmy-long-string:%s\nmy-list:%&#43;v\n&#34;,</span>
-<span num="20">        status, idx, i, myConstString, longString, myList)</span>
-<span num="21">}</span>
-</pre>
-
-
-</div>
-
-      
-      </article>
-  
-  
-  
-      <article>
-      
-        <h3>Functions</h3>
-        
-  <ul>
-  
-    <li>Core building block</li>
-  
-    <li>Can return multiple values</li>
-  
-  </ul>
-
-  
-  <div class="code"><pre>func swap(x, y string) (string, string) { 
-   return y, x 
-}</pre></div>
-  
-
-  <ul>
-  
-    <li>Scope: based on case</li>
-  
-  </ul>
-
-  <div class="code" contenteditable="true" spellcheck="false">
-
-
-<pre><span num="1">// Visible by other packages</span>
-<span num="2"><b>func ConvertIt( arg int ) string {</b></span>
-<span num="3">    return convertInternal( arg )</span>
-<span num="4">}</span>
-<span num="5">func convertInternal( arg int ) string { // internal, unexported function</span>
-<span num="6">    return fmt.Sprintf( &#34;My integer value as string: %d&#34;, arg)</span>
-<span num="7">}</span>
-</pre>
-
-
-</div>
-
-      
-      </article>
-  
-  
-  
-      <article>
-      
-        <h3>More on functions</h3>
-        
-  <ul>
-  
-    <li>Support variadic ...</li>
-  
-    <li>Module initialisation</li>
-  
-  </ul>
-
-  
-  <div class="code"><pre>func init() {
-  // your initialisations here
-}</pre></div>
-  
-
-      
-      </article>
-  
-  
-  
-      <article>
-      
-        <h3>Functions as parameters</h3>
-        
-  <ul>
-  
-    <li>callback-functions</li>
-  
-    <li>closures</li>
-  
-    <li>Can references variables from outside its function body.</li>
-  
-  </ul>
-
-  <div class="code playground" contenteditable="true" spellcheck="false">
 <pre style="display: none"><span>package main
 
-import &#34;fmt&#34;
+import (
+  &#34;fmt&#34;
+)
 
 </span></pre>
 
-<pre><span num="6">func intSeq() func() int {</span>
-<span num="7">    i := 0</span>
-<span num="8">    return func() int {</span>
-<span num="9">        i &#43;= 1</span>
-<span num="10">        return i</span>
-<span num="11">    }</span>
-<span num="12">}</span>
-<span num="13"></span>
-<span num="14">func main() {</span>
-<span num="15">    nextInt := intSeq()</span>
-<span num="16"></span>
-<span num="17">    // See the effect of the closure by calling nextInt a few times.</span>
-<span num="18">    fmt.Println(nextInt())</span>
-<span num="19">    fmt.Println(nextInt())</span>
-<span num="20">    fmt.Println(nextInt())</span>
-<span num="21"></span>
-<span num="22">    // To confirm that the state is unique to that particular function</span>
-<span num="23">    newInts := intSeq()</span>
-<span num="24">    fmt.Println(newInts())</span>
-<span num="25">}</span>
+<pre><span num="8">const myConstString = &#34;golang&#34;</span>
+<span num="9"></span>
+<span num="10">func main() {</span>
+<span num="11">    var status bool // uninitialized</span>
+<span num="12">    var idx int64 = 42</span>
+<span num="13">    <b>// := short notation: derives type from right-hand-side</b></span>
+<span num="14">    <b>i := 256</b></span>
+<span num="15">    longString := `{</span>
+<span num="16">        &#34;why&#34;:&#34;Usefull to embed json in source&#34;</span>
+<span num="17">    }`</span>
+<span num="18">    myList := []int{1, 3, 5, 7}</span>
+<span num="19">    fmt.Printf(</span>
+<span num="20">        &#34;status:%v\nidx:%d\ni=%d\nmy-const-string:%s\nmy-long-string:%s\nmy-list:%&#43;v\n&#34;,</span>
+<span num="21">        status, idx, i, myConstString, longString, myList)</span>
+<span num="22">}</span>
 </pre>
 
 
@@ -662,19 +542,18 @@ import &#34;fmt&#34;
 <span num="2"></span>
 <span num="3">import (</span>
 <span num="4">    &#34;fmt&#34;</span>
-<span num="5">    &#34;math&#34;</span>
-<span num="6">)</span>
-<span num="7"></span>
-<span num="8">func sqrt(x float64) string {</span>
-<span num="9">    if x &lt; 0 {</span>
-<span num="10">        return sqrt(-x) &#43; &#34;i&#34;</span>
-<span num="11">    }</span>
-<span num="12">    return fmt.Sprint(math.Sqrt(x))</span>
-<span num="13">}</span>
-<span num="14"></span>
-<span num="15">func main() {</span>
-<span num="16">    fmt.Println(sqrt(2), sqrt(-4))</span>
-<span num="17">}</span>
+<span num="5">)</span>
+<span num="6"></span>
+<span num="7">func main() {</span>
+<span num="8">    num := 9</span>
+<span num="9">    if num &lt; 0 {</span>
+<span num="10">        fmt.Println(num, &#34;is negative&#34;)</span>
+<span num="11">    } else if num &lt; 10 {</span>
+<span num="12">        fmt.Println(num, &#34;has 1 digit&#34;)</span>
+<span num="13">    } else {</span>
+<span num="14">        fmt.Println(num, &#34;has multiple digits&#34;)</span>
+<span num="15">    }</span>
+<span num="16">}</span>
 </pre>
 
 
@@ -736,13 +615,164 @@ import &#34;fmt&#34;
   
       <article>
       
+        <h3>Functions</h3>
+        
+  <ul>
+  
+    <li>Core building block</li>
+  
+  </ul>
+
+  <ul>
+  
+    <li>Scope: based on case</li>
+  
+  </ul>
+
+  <div class="code" contenteditable="true" spellcheck="false">
+
+
+<pre><span num="1">package functions</span>
+<span num="2"></span>
+<span num="3">import &#34;fmt&#34;</span>
+<span num="4"></span>
+<span num="5">// START OMIT </span>
+<span num="6"><b>func ConvertIt( arg int ) string {</b></span>
+<span num="7">    return convertInternal( arg )</span>
+<span num="8">}</span>
+<span num="9">func convertInternal( arg int ) string { // internal, unexported function</span>
+<span num="10">    return fmt.Sprintf( &#34;My integer value as string: %d&#34;, arg)</span>
+<span num="11">}</span>
+</pre>
+
+
+</div>
+
+  <ul>
+  
+    <li>Can return multiple values</li>
+  
+  </ul>
+
+  
+  <div class="code"><pre>func swap(x, y string) (string, string) { 
+   return y, x 
+}</pre></div>
+  
+
+  <ul>
+  
+    <li>Package initialisation</li>
+  
+  </ul>
+
+  
+  <div class="code"><pre>func init() {
+  // your global initialisations here
+}</pre></div>
+  
+
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Variadic functions</h3>
+        
+  <div class="code playground" contenteditable="true" spellcheck="false">
+
+
+<pre><span num="1">package main</span>
+<span num="2"></span>
+<span num="3">import &#34;fmt&#34;</span>
+<span num="4"></span>
+<span num="6">func sum(nums ...int) {</span>
+<span num="7">    fmt.Print(nums, &#34; &#34;)</span>
+<span num="8">    total := 0</span>
+<span num="9">    for _, num := range nums {</span>
+<span num="10">        total &#43;= num</span>
+<span num="11">    }</span>
+<span num="12">    fmt.Println(total)</span>
+<span num="13">}</span>
+<span num="14"></span>
+<span num="15">func main() {</span>
+<span num="16"></span>
+<span num="17">    sum(1, 2)</span>
+<span num="18">    sum(1, 2, 3)</span>
+<span num="19"></span>
+<span num="20">    nums := []int{1, 2, 3, 4}</span>
+<span num="21">    sum(nums...)</span>
+<span num="22">}</span>
+</pre>
+
+
+</div>
+
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Functions as parameters</h3>
+        
+  <ul>
+  
+    <li>Closures: anonymous functions</li>
+  
+    <li>Can reference variables from outside its function body.</li>
+  
+  </ul>
+
+  <div class="code playground" contenteditable="true" spellcheck="false">
+<pre style="display: none"><span>package main
+
+import &#34;fmt&#34;
+
+</span></pre>
+
+<pre><span num="6">func intSeq() func() int {</span>
+<span num="7">    i := 0</span>
+<span num="8">    <b>return func() int {</b></span>
+<span num="9">        <b>i &#43;= 1</b></span>
+<span num="10">        <b>return i</b></span>
+<span num="11">    <b>}</b></span>
+<span num="12">}</span>
+<span num="13"></span>
+<span num="14">func main() {</span>
+<span num="15">    nextInt := intSeq()</span>
+<span num="16"></span>
+<span num="17">    // See the effect of the closure by calling nextInt a few times.</span>
+<span num="18">    fmt.Println(nextInt())</span>
+<span num="19">    fmt.Println(nextInt())</span>
+<span num="20">    fmt.Println(nextInt())</span>
+<span num="21"></span>
+<span num="22">    // To confirm that the state is unique to that particular function</span>
+<span num="23">    newInts := intSeq()</span>
+<span num="24">    fmt.Println(newInts())</span>
+<span num="25">}</span>
+</pre>
+
+
+</div>
+
+      
+      </article>
+  
+  
+  
+      <article>
+      
         <h3>Defer</h3>
         
   <ul>
   
     <li>Useful for cleanup: file-handles, mutexes</li>
   
-    <li>Useful for logging enter, leave function</li>
+    <li>Useful for debugging: log &#34;enter&#34; and &#34;leave&#34; of function</li>
   
   </ul>
 
@@ -783,40 +813,39 @@ import &#34;fmt&#34;
   <div class="code playground" contenteditable="true" spellcheck="false">
 <pre style="display: none"><span>package main
 
-import (
-	&#34;fmt&#34;
-)
+import &#34;fmt&#34;
 
 var me Person = Person{
-	Name:      &#34;Marc Grol&#34;,
-	Interests: []string{&#34;Running&#34;, &#34;Golang&#34;},
-	Children: []Child{
-		{Name: &#34;Pien&#34;, Age: 12},
-		{Name: &#34;Tijl&#34;, Age: 9},
-	},
+  Name:      &#34;Marc Grol&#34;,
+  Interests: []string{&#34;Running&#34;, &#34;Golang&#34;},
+  Children: []Child{
+    {Name: &#34;Pien&#34;, Age: 12},
+    {Name: &#34;Tijl&#34;, Age: 9},
+  },
 }
 
 </span></pre>
 
-<pre><span num="17">type Person struct {</span>
-<span num="18">    Name      string</span>
-<span num="19">    Interests []string</span>
-<span num="20">    Children  []Child</span>
-<span num="21">}</span>
-<span num="22"></span>
-<span num="23">type Child struct {</span>
-<span num="24">    Name string</span>
-<span num="25">    Age  int</span>
-<span num="26">}</span>
-<span num="27"></span>
-<span num="28">func (p *Person) AddChild(child Child) {</span>
-<span num="29">    p.Children = append(p.Children, child)</span>
-<span num="30">}</span>
-<span num="31"></span>
-<span num="32">func main() {</span>
-<span num="33">    me.AddChild(Child{Name: &#34;Freek&#34;, Age: 5})</span>
-<span num="34">    fmt.Printf(&#34;%&#43;v\n&#34;, me)</span>
-<span num="35">}</span>
+<pre><span num="15">type Person struct {</span>
+<span num="16">    Name      string</span>
+<span num="17">    Interests []string</span>
+<span num="18">    Children  []Child</span>
+<span num="19">}</span>
+<span num="20"></span>
+<span num="21">type Child struct {</span>
+<span num="22">    Name string</span>
+<span num="23">    Age  int</span>
+<span num="24">}</span>
+<span num="25"></span>
+<span num="26"><b>func (p *Person) AddChild(child Child) {</b></span>
+<span num="27">    p.Children = append(p.Children, child)</span>
+<span num="28">}</span>
+<span num="29"></span>
+<span num="30">func main() {</span>
+<span num="31">    // me := Person{...}</span>
+<span num="32">    me.AddChild(Child{Name: &#34;Freek&#34;, Age: 5})</span>
+<span num="33">    fmt.Printf(&#34;%&#43;v\n&#34;, me)</span>
+<span num="34">}</span>
 </pre>
 
 
@@ -833,13 +862,11 @@ var me Person = Person{
         
   <ul>
   
-    <li>Pass by value is default</li>
+    <li>Pass &#34;by value&#34; is default</li>
   
-    <li>Use pointers to pass by reference</li>
+    <li>Use &#34;pointers&#34; to pass &#34;by reference&#34;</li>
   
     <li>Useful for passing large objects around</li>
-  
-    <li>Slices, maps and channels are already refs</li>
   
   </ul>
 
@@ -850,13 +877,15 @@ storePerson( personP )
 
 or
 
-person := Person(Name:&#34;Boogerd&#34;)
+person := Person{Name:&#34;Boogerd&#34;}
 storePerson( &amp;person )</pre></div>
   
 
   <ul>
   
-    <li>Pass by value has no side effects</li>
+    <li>Note: Slices, maps and channels are already refs</li>
+  
+    <li>Note: Pass by value has no side effects</li>
   
   </ul>
 
@@ -874,30 +903,30 @@ storePerson( &amp;person )</pre></div>
 package main
 
 import (
-	&#34;fmt&#34;
+  &#34;fmt&#34;
 )
 
 type Person struct {
-	Name      string
-	Interests []string
-	Children  []Child
+  Name      string
+  Interests []string
+  Children  []Child
 }
 
 type Child struct {
-	Name string
-	Age  int
+  Name string
+  Age  int
 }
 
 </span></pre>
 
 <pre><span num="20">func NewPerson(name string, interests ...string) *Person {</span>
-<span num="21">    person := new(Person)</span>
+<span num="21">    <b>person := new(Person)</b></span>
 <span num="22">    person.Name = name</span>
-<span num="23">    person.Interests = make([]string, 0, len(interests))</span>
+<span num="23">    <b>person.Interests = make([]string, 0, len(interests))</b></span>
 <span num="24">    for _, interest := range interests {</span>
 <span num="25">        person.Interests = append(person.Interests, interest)</span>
 <span num="26">    }</span>
-<span num="27">    person.Children = make([]Child, 0, 10)</span>
+<span num="27">    <b>person.Children = make([]Child, 0, 10)</b></span>
 <span num="28">    return person</span>
 <span num="29">}</span>
 <span num="30"></span>
@@ -911,7 +940,7 @@ type Child struct {
 <span num="38">            {Name: &#34;Freek&#34;, Age: 5},</span>
 <span num="39">        },</span>
 <span num="40">    }</span>
-<span num="41">    you := NewPerson(&#34;Eva Berkhout&#34;, &#34;Running&#34;, &#34;Golang&#34;)</span>
+<span num="41">    you := NewPerson(&#34;Eva Berkhout&#34;, &#34;Running&#34;, &#34;Reading&#34;)</span>
 <span num="42">    fmt.Printf(&#34;me:%&#43;v\nyou:%&#43;v&#34;, me, you)</span>
 <span num="43">}</span>
 </pre>
@@ -932,7 +961,7 @@ type Child struct {
 <pre style="display: none"><span>package main
 
 import (
-	&#34;fmt&#34;
+  &#34;fmt&#34;
 )
 
 </span></pre>
@@ -1050,19 +1079,14 @@ s := [...]string{&#34;Penn&#34;, &#34;Teller&#34;}</pre></div>
 
   
   <div class="code"><pre>letters := []string{&#34;a&#34;, &#34;b&#34;, &#34;c&#34;, &#34;d&#34;}
-or</pre></div>
-  
-
-  
-  <div class="code"><pre>slice := make([]string, 0, 5) // type, len, cap</pre></div>
-  
-
-  
-  <div class="code"><pre>slice = append( slice, &#34;first entry&#34;)
-fmt.Printf( &#34;slice-length: %d slice-values:%&#43;v&#34;, 
-            len(slice),
-            slice)
-subslice = slice[2:3]</pre></div>
+subslice = letters[2:3] // c and d
+or
+slice := make( []string, 0, 5 )
+slice = append( slice, &#34;first entry&#34; )
+fmt.Printf( &#34;slice-length: %d slice-capacity: %d slice-values:%&#43;v&#34;,  
+                len(slice),
+                cap(slice),
+                slice)</pre></div>
   
 
   <ul>
@@ -1072,8 +1096,8 @@ subslice = slice[2:3]</pre></div>
   </ul>
 
   
-  <div class="code"><pre>for index, value := range numbers {
-   fmt.Printf(&#34;%d:%d\n&#34;, index, value)
+  <div class="code"><pre>for _, value := range numbers {
+   fmt.Printf(&#34;%d\n&#34;, value)
 }</pre></div>
   
 
@@ -1140,22 +1164,33 @@ i, ok := m[&#34;route&#34;]</pre></div>
       
         <h3>Error handling</h3>
         
+  <ul>
   
-  <div class="code"><pre>resp, err := doit(arg1, arg2)
+    <li>Multiple return values</li>
+  
+    <li>if error is nil, the call worked</li>
+  
+  </ul>
+
+  
+  <div class="code"><pre>resp, err := doSomethingThatCanFail(arg1, arg2)
 if err != nil {
-    return
+    // log?
+    return err
 }
 // continue with success path
 
-// &#34;blank&#34;:&#34; if you don&#39;t care
+// use _ (=blank) if you don&#39;t care
 resp, _ := doit(arg1, arg2)</pre></div>
   
 
   <ul>
   
-    <li>if method return error, things can go wrong and you need to act on it</li>
+    <li>Function signature tells that things can go wrong</li>
   
-    <li>if error is nil, the call worked</li>
+  </ul>
+
+  <ul>
   
     <li>You own API&#39;s should use this pattern</li>
   
@@ -1174,17 +1209,26 @@ resp, _ := doit(arg1, arg2)</pre></div>
   
     <li>UNIX filosophy: small, sharp tool combined to solve larger tasks</li>
   
-    <li>Instead of large runtimes, framework and hierarchies.</li>
-  
-    <li>go packages interact via interfaces, decribe the &#34;what&#34;, not the &#34;how&#34;</li>
-  
-    <li>Just implement the methods and voila</li>
+    <li>go packages interact via small interfaces, no large hierarchies.</li>
   
   </ul>
 
   <ul>
   
-    <li>example: fmt.Fprintf to file, buffer, stdout, network, zip-file etc</li>
+    <li>example: I/O</li>
+  
+  </ul>
+
+  
+  <div class="code"><pre>func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error)
+
+type Writer interface {
+    Write(p []byte) (n int, err error)
+}
+&#34;Writer&#34; can be file, buffer, stdout, network, http-response, zip-file etc</pre></div>
+  
+
+  <ul>
   
     <li>example: built-in interface &#34;error&#34;</li>
   
@@ -1196,12 +1240,6 @@ resp, _ := doit(arg1, arg2)</pre></div>
 }</pre></div>
   
 
-  <ul>
-  
-    <li>Refactor using interfaces when initially done</li>
-  
-  </ul>
-
       
       </article>
   
@@ -1211,6 +1249,12 @@ resp, _ := doit(arg1, arg2)</pre></div>
       
         <h3>Interface example</h3>
         
+  <ul>
+  
+    <li>Just implement the methods and voila</li>
+  
+  </ul>
+
   <div class="code playground" contenteditable="true" spellcheck="false">
 
 
@@ -1223,15 +1267,18 @@ resp, _ := doit(arg1, arg2)</pre></div>
 <span num="7">    Age  int</span>
 <span num="8">}</span>
 <span num="9"></span>
-<span num="10">func (p Person) String() string {</span>
-<span num="11">    return fmt.Sprintf(&#34;%v (%v years)&#34;, p.Name, p.Age)</span>
-<span num="12">}</span>
-<span num="13"></span>
-<span num="14">func main() {</span>
-<span num="15">    a := Person{&#34;Arthur Dent&#34;, 42}</span>
-<span num="16">    z := Person{&#34;Zaphod Beeblebrox&#34;, 9001}</span>
-<span num="17">    fmt.Println(a, z)</span>
-<span num="18">}</span>
+<span num="10">// type Stringer interface {</span>
+<span num="11">//    String() string</span>
+<span num="12">// }</span>
+<span num="13">func (p Person) String() string {</span>
+<span num="14">    return fmt.Sprintf(&#34;%v (%v years)&#34;, p.Name, p.Age)</span>
+<span num="15">}</span>
+<span num="16"></span>
+<span num="17">func main() {</span>
+<span num="18">    a := Person{&#34;Arthur Dent&#34;, 42}</span>
+<span num="19">    z := Person{&#34;Zaphod Beeblebrox&#34;, 9001}</span>
+<span num="20">    fmt.Println(a, z)</span>
+<span num="21">}</span>
 </pre>
 
 
@@ -1276,6 +1323,12 @@ resp, _ := doit(arg1, arg2)</pre></div>
       
         <h3>Concurrency example</h3>
         
+  <ul>
+  
+    <li>Share Memory By Communicating</li>
+  
+  </ul>
+
   <div class="code playground" contenteditable="true" spellcheck="false">
 <pre style="display: none"><span>package main
 
@@ -1306,12 +1359,6 @@ import &#34;fmt&#34;
 
 </div>
 
-  <ul>
-  
-    <li>Share Memory By Communicating</li>
-  
-  </ul>
-
       
       </article>
   
@@ -1331,28 +1378,34 @@ import &#34;fmt&#34;
 <pre style="display: none"><span>package main
 
 import (
-	&#34;fmt&#34;
-	&#34;time&#34;
+  &#34;fmt&#34;
+  &#34;time&#34;
 )
 
 </span></pre>
 
-<pre><span num="9">func main() {</span>
-<span num="10">    tick := time.Tick(100 * time.Millisecond)</span>
-<span num="11">    boom := time.After(500 * time.Millisecond)</span>
-<span num="12">    for {</span>
-<span num="13">        select {</span>
-<span num="14">        case &lt;-tick:</span>
-<span num="15">            fmt.Println(&#34;tick.&#34;)</span>
-<span num="16">        case &lt;-boom:</span>
-<span num="17">            fmt.Println(&#34;BOOM!&#34;)</span>
-<span num="18">            return</span>
-<span num="19">        default:</span>
-<span num="20">            fmt.Println(&#34;    .&#34;)</span>
-<span num="21">            time.Sleep(50 * time.Millisecond)</span>
-<span num="22">        }</span>
-<span num="23">    }</span>
-<span num="24">}</span>
+<pre><span num="9"><b>func sendMsg(c chan string) {</b></span>
+<span num="10">    <b>time.Sleep(50 * time.Millisecond)</b></span>
+<span num="11">    <b>c &lt;- &#34;hi there&#34;</b></span>
+<span num="12"><b>}</b></span>
+<span num="13"></span>
+<span num="14">func main() {</span>
+<span num="15">    tick := time.Tick(100 * time.Millisecond)</span>
+<span num="16">    boom := time.After(300 * time.Millisecond)</span>
+<span num="17">    <b>msgChannel := make(chan string)</b></span>
+<span num="18">    <b>go sendMsg(msgChannel)</b></span>
+<span num="19">    for {</span>
+<span num="20">        select {</span>
+<span num="21">        case msg := &lt;-msgChannel:</span>
+<span num="22">            fmt.Printf(&#34;msg: %s\n&#34;, msg)</span>
+<span num="23">        case &lt;-tick:</span>
+<span num="24">            fmt.Println(&#34;tick.&#34;)</span>
+<span num="25">        case &lt;-boom:</span>
+<span num="26">            fmt.Println(&#34;BOOM!&#34;)</span>
+<span num="27">            return</span>
+<span num="28">        }</span>
+<span num="29">    }</span>
+<span num="30">}</span>
 </pre>
 
 
@@ -1419,10 +1472,10 @@ go_test.go:14: ERROR : Expecting[marc] Received[cram]</pre></div>
   
     <li>Race condition detection</li>
   
-    <li>Http integration testing: see &#34;httptest&#34;-package https://github.com/MarcGrol/microgen/blob/master/tool/dsl/service-interface.go.tmpl template</li>
+    <li>Http integration testing: see &#34;httptest&#34;-package</li>
   
   </ul>
-<p class="link"><a href="https://www.youtube.com/watch?v=ndmB0bj7eyw" target="_blank">see this youtube-link for more on testing</a></p>
+<p class="link"><a href="https://www.youtube.com/watch?v=ndmB0bj7eyw" target="_blank">More details: google-search &#34;testing techniques golang&#34;</a></p>
       
       </article>
   
@@ -1440,16 +1493,22 @@ go_test.go:14: ERROR : Expecting[marc] Received[cram]</pre></div>
     - flags
 <br>
 
-    - http, http2
-<br>
-
     - file I/O
 <br>
 
     - sync
 <br>
 
+    - logging
+<br>
+
+    - os
+<br>
+
     - networking
+<br>
+
+    - http, http2: client and server
 <br>
 
     - encoding (json, xml, mime)
@@ -1487,33 +1546,34 @@ go_test.go:14: ERROR : Expecting[marc] Received[cram]</pre></div>
 <pre style="display: none"><span>package main
 
 import (
-	&#34;flag&#34;
-	&#34;fmt&#34;
-	&#34;log&#34;
-	&#34;os&#34;
+  &#34;flag&#34;
+  &#34;fmt&#34;
+  &#34;log&#34;
+  &#34;os&#34;
+  &#34;path&#34;
 )
 
 </span></pre>
 
-<pre><span num="11">func printUsage() {</span>
-<span num="12">    fmt.Fprintf(os.Stderr, &#34;\nUsage:\n&#34;)</span>
-<span num="13">    fmt.Fprintf(os.Stderr, &#34; %s [flags]\n&#34;, os.Args[0])</span>
-<span num="14">    <b>flag.PrintDefaults()</b></span>
-<span num="15">    fmt.Fprintf(os.Stderr, &#34;\n&#34;)</span>
-<span num="16">    os.Exit(1)</span>
-<span num="17">}</span>
-<span num="18"></span>
-<span num="19">func main() {</span>
-<span num="20">    <b>login := flag.String(&#34;login&#34;, &#34;&#34;, &#34;GitHub login of user&#34;)</b></span>
-<span num="21">    <b>once := flag.Bool(&#34;once&#34;, false, &#34;Perform action once&#34;)</b></span>
-<span num="22">    flag.Parse()</span>
-<span num="23"></span>
-<span num="24">    if *login == &#34;&#34; {</span>
-<span num="25">        printUsage()</span>
-<span num="26">    }</span>
-<span num="27"></span>
-<span num="28">    log.Printf(&#34;Looking up GitHub user: %s (once:%v)&#34;, login, once)</span>
-<span num="29">}</span>
+<pre><span num="12">func printUsage() {</span>
+<span num="13">    fmt.Fprintf(os.Stderr, &#34;\nUsage:\n&#34;)</span>
+<span num="14">    fmt.Fprintf(os.Stderr, &#34; %s [flags]\n&#34;, path.Base(os.Args[0]))</span>
+<span num="15">    <b>flag.PrintDefaults()</b></span>
+<span num="16">    fmt.Fprintf(os.Stderr, &#34;\n&#34;)</span>
+<span num="17">    os.Exit(1)</span>
+<span num="18">}</span>
+<span num="19"></span>
+<span num="20">func main() {</span>
+<span num="21">    <b>login := flag.String(&#34;login&#34;, &#34;&#34;, &#34;GitHub login of user&#34;)</b></span>
+<span num="22">    <b>once := flag.Bool(&#34;once&#34;, false, &#34;Perform action once&#34;)</b></span>
+<span num="23">    flag.Parse()</span>
+<span num="24"></span>
+<span num="25">    if *login == &#34;&#34; {</span>
+<span num="26">        printUsage()</span>
+<span num="27">    }</span>
+<span num="28"></span>
+<span num="29">    log.Printf(&#34;Looking up GitHub user: %s (once:%v)&#34;, login, once)</span>
+<span num="30">}</span>
 </pre>
 
 
@@ -1526,31 +1586,31 @@ import (
   
       <article>
       
-        <h3>HTTP</h3>
+        <h3>HTTP server</h3>
         
   <div class="code" contenteditable="true" spellcheck="false">
 
 
-<pre><span num="11">type timeHandler struct {</span>
-<span num="12">    format string</span>
-<span num="13">}</span>
-<span num="14"></span>
-<span num="15">func (th *timeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {</span>
-<span num="16">    tm := time.Now().Format(th.format)</span>
-<span num="17">    fmt.Fprintf(w, &#34;The time is: &#34; &#43; tm))</span>
-<span num="18">}</span>
-<span num="19"></span>
-<span num="20">func main() {</span>
-<span num="21">    mux := http.NewServeMux()</span>
-<span num="22"></span>
-<span num="23">    th1123 := &amp;timeHandler{format: time.RFC1123}</span>
-<span num="24">    mux.Handle(&#34;/time/rfc1123&#34;, th1123)</span>
-<span num="25"></span>
-<span num="26">    th3339 := &amp;timeHandler{format: time.RFC3339}</span>
-<span num="27">    mux.Handle(&#34;/time/rfc3339&#34;, th3339)</span>
-<span num="28"></span>
-<span num="29">    http.ListenAndServe(&#34;:3000&#34;, mux)</span>
-<span num="30">}</span>
+<pre><span num="10">type timeHandler struct {</span>
+<span num="11">    format string</span>
+<span num="12">}</span>
+<span num="13"></span>
+<span num="14">func (th *timeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {</span>
+<span num="15">    tm := time.Now().Format(th.format)</span>
+<span num="16">    fmt.Fprintf(w, &#34;The time is: &#34; &#43; tm)</span>
+<span num="17">}</span>
+<span num="18"></span>
+<span num="19">func main() {</span>
+<span num="20">    mux := http.NewServeMux()</span>
+<span num="21"></span>
+<span num="22">    th1123 := &amp;timeHandler{format: time.RFC1123}</span>
+<span num="23">    mux.Handle(&#34;/time/rfc1123&#34;, th1123)</span>
+<span num="24"></span>
+<span num="25">    th3339 := &amp;timeHandler{format: time.RFC3339}</span>
+<span num="26">    mux.Handle(&#34;/time/rfc3339&#34;, th3339)</span>
+<span num="27"></span>
+<span num="28">    http.ListenAndServe(&#34;:3000&#34;, mux)</span>
+<span num="29">}</span>
 </pre>
 
 
@@ -1583,9 +1643,9 @@ import (
 <pre style="display: none"><span>package main
 
 import (
-	&#34;fmt&#34;
-	&#34;strconv&#34;
-	&#34;sync&#34;
+  &#34;fmt&#34;
+  &#34;strconv&#34;
+  &#34;sync&#34;
 )
 
 </span></pre>
@@ -1611,10 +1671,10 @@ import (
 
 <pre style="display: none"><span>
 func main() {
-	c := Currency{amount: 10, code: &#34;EU&#34;}
-	fmt.Printf(&#34;initial amount:%s\n&#34;, c.Display())
-	c.Add(-7.54)
-	fmt.Printf(&#34;amount after payment:%s\n&#34;, c.Display())
+  c := Currency{amount: 10, code: &#34;EU&#34;}
+  fmt.Printf(&#34;initial amount:%s\n&#34;, c.Display())
+  c.Add(-7.54)
+  fmt.Printf(&#34;amount after payment:%s\n&#34;, c.Display())
 }
 </span></pre>
 </div>
@@ -1633,20 +1693,20 @@ func main() {
 package main
 
 import (
-	&#34;encoding/json&#34;
-	&#34;encoding/xml&#34;
-	&#34;fmt&#34;
+  &#34;encoding/json&#34;
+  &#34;encoding/xml&#34;
+  &#34;fmt&#34;
 )
 
 type Person struct {
-	Name      string
-	Interests []string
-	Children  []Child
+  Name      string
+  Interests []string
+  Children  []Child
 }
 
 type Child struct {
-	Name string
-	Age  int
+  Name string
+  Age  int
 }
 
 </span></pre>
@@ -1687,9 +1747,9 @@ type Child struct {
         
   <ul>
   
-    <li>web-server: generate html</li>
+    <li>web-server: generate html response using template</li>
   
-    <li>code generation</li>
+    <li>code generation: generate text-files on file-system</li>
   
   </ul>
 <p class="link"><a href="https://github.com/MarcGrol/microgen/blob/master/application.go" target="_blank">model</a></p><p class="link"><a href="https://github.com/MarcGrol/microgen/blob/master/tool/dsl/service-interface.go.tmpl" target="_blank">template</a></p>
@@ -1728,7 +1788,7 @@ type Child struct {
 
   
   <div class="code"><pre>$ go generate ./...
-generates cyclist_slice.go</pre></div>
+generates cyclist_slice.go with &#34;SortBy&#34;- and &#34;Where&#34;-methods on CyclistSlice</pre></div>
   
 
   <ul>
@@ -1750,21 +1810,26 @@ generates cyclist_slice.go</pre></div>
   <div class="code"><pre>$ go list ./...                  # list sub-packages
 $ go list -f {{.Deps}}           # list external deps
 
-# no wars, easy to diff, allow mechanical manipulation, static analysis
-$ go fmt ./...                   # recursive formatting
+# no flame-wars, easy to diff, allow mechanical manipulation
+$ go fmt ./...                   # format recursively
 
-# Start within minutes
-$ go get github.com/bitly/go-nsq # fetch and build external package
-$ godoc -http=:8000              # documentation of ${GOROOT} and ${GOPATH}
-$ go build, go run
-$ go vet
-$ go test ./...                  # coverage, benchmark, race-conditions
-$ go install</pre></div>
+# Be effective within seconds
+$ go get github.com/bitly/go-nsq # fetch external package
+
+# testing: tooling supports coverage, benchmark, race-condition-detection
+$ go test ./...                  # test recursively 
+
+# compile
+$ go build or go run             # add hoc
+$ go install                     # to ${GOPATH}/bin
+
+$ godoc -http=:8000              # documentation of sources in ${GOROOT} and ${GOPATH}
+$ go vet                         # lint like</pre></div>
   
 
   <ul>
   
-    <li>CLI -&gt; Easy to automate</li>
+    <li>All CLI -&gt; Easy to automate</li>
   
   </ul>
 
@@ -1800,11 +1865,13 @@ $ go install</pre></div>
         
   <ul>
   
-    <li>No runtime</li>
-  
     <li>Single, self contained binary</li>
   
+    <li>No runtime</li>
+  
     <li>Just scp to target host</li>
+  
+    <li>go 1.5 supports cross compilation</li>
   
   </ul>
 
@@ -1850,7 +1917,7 @@ $ go install</pre></div>
   
     <li>Fast</li>
   
-    <li>Easy to deploy: self-contained static binaries</li>
+    <li>Easy to build and deploy</li>
   
     <li>Used by many startups</li>
   
@@ -1869,17 +1936,23 @@ $ go install</pre></div>
   
       <article>
       
-        <h3>Go</h3>
+        <h3>Go do it</h3>
         
   <ul>
   
-    <li>Experiment and tell it around</li>
+    <li>Start experimenting</li>
   
   </ul>
 
 <div class="image">
-  <img src="gophereartrumpet.jpg">
+  <img src="images/gophereartrumpet.jpg">
 </div>
+<figcaption>Go is cool:  Tell it around</figcaption>
+  <ul>
+  
+    <li>Let&#39;s build something</li>
+  
+  </ul>
 
       
       </article>
