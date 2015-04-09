@@ -8,20 +8,24 @@ The interactive presentation is available via the following link:
 http://go-talks.appspot.com/github.com/MarcGrol/goopenkitchen/openKitchen.slide#1
 
 You can also run it locally on your own device:
-Use the "present"-tool to view and "execute" the presentation.
+Use the "present"-tool to "run" the presentation.
 
-Get the present application:
+Step 1 - Get the present application:
 
     go get golang.org/x/tools/present
     # present binary should now be in ${GOPATH}/bin 
 
-Start presentation within the goopenkitchen directory:
+
+Step 2 - Fetch the presentation from github
 
     go get github.com/MarcGrol/goopenkitchen
+
+Step 3 - Start presentation within the goopenkitchen directory:
+
     cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
     # run present tool in background
     present -http=127.0.0.1:3999 &
 
-Point your browser at: http://127.0.0.1:3999
+Step 4 - Point your browser at: http://127.0.0.1:3999
 
 
