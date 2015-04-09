@@ -2,7 +2,7 @@
 
 **Summary**
 
-This training on the go language describes the language fron ground up using examples.
+This training on the go language describes the language from ground up using examples.
 Most examples can be run and edited from within the presentation.
 
 ---
