@@ -1,9 +1,10 @@
 package main
 
 import (
-    "fmt"
+	"fmt"
 )
 
 func main() {
-    fmt.Printf("Hi %s\n", "everybody")
+	fmt.Printf("Hi %s\n", "everybody")
+	log.Printf("Hi %s\n", "everybody")
 }
