@@ -1,12 +1,14 @@
 # goopenkitchen
 
 **Summary**
+
 This training on the go language describes the language fron ground up using examples.
 Most examples can be run and edited from within the presentation.
 
 ---
 
 **Viewing a hosted version in your browser (=preferred)**
+
 The interactive presentation is available via the following link:
 
 http://go-talks.appspot.com/github.com/MarcGrol/goopenkitchen/openKitchen.slide#1
@@ -14,6 +16,7 @@ http://go-talks.appspot.com/github.com/MarcGrol/goopenkitchen/openKitchen.slide#
 ---
 
 **Viewing it locally using the "present"-tool**
+
 You can also run it locally on your own device:
 Use the "present"-tool to "run" the presentation.
 
