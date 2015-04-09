@@ -23,9 +23,7 @@ Use the "present"-tool to "run" the presentation.
 *Step 1 - Get the present tool*
 
     go get golang.org/x/tools/present
-    go install golang.org/x/tools/present
     # present binary should now be in ${GOPATH}/bin 
-
 
 *Step 2 - Fetch the presentation from github*
 
@@ -36,12 +34,14 @@ Use the "present"-tool to "run" the presentation.
     git clone https://github.com/MarcGrol/goopenkitchen.git
     cd goopenkitchen
     go install
+    # present binary should now be in ${GOPATH}/bin 
+
 
 *Step 3 - Start presentation within the goopenkitchen directory*
 
     cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
     # run present tool in background
-    present -http=127.0.0.1:3999 &
+    ${GOPATH}/bin/present -http=127.0.0.1:3999 &
 
 *Step 4 - Point your browser at:*
 http://127.0.0.1:3999
