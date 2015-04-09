@@ -3,6 +3,7 @@
 Training on the go language
 
 The interactive presentation is available via the following link:
+
 http://go-talks.appspot.com/github.com/MarcGrol/goopenkitchen/openKitchen.slide#1
 
 You can also run it locally on your own device:
