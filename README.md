@@ -23,6 +23,7 @@ Use the "present"-tool to "run" the presentation.
 *Step 1 - Get the present tool*
 
     go get golang.org/x/tools/present
+    go install golang.org/x/tools/present
     # present binary should now be in ${GOPATH}/bin 
 
 
