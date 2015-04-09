@@ -1,6 +1,7 @@
 # goopenkitchen
 
-Training on the go language
+This training on the go language describes the language fron ground up using examples.
+Most examples can be run and edited from the presentation.
 
 The interactive presentation is available via the following link:
 
