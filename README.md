@@ -7,7 +7,7 @@ Most examples can be run and edited from within the presentation.
 
 ---
 
-**Viewing a hosted version in your browser (=preferred)**
+**Viewing a hosted version of the presentation in your browser** (=preferred approach)
 
 The interactive presentation is available via the following link:
 
