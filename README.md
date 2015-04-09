@@ -32,10 +32,7 @@ Use the "present"-tool to "run" the presentation.
     mkdir -p ${GOPATH}/src/github.com/MarcGrol
     cd ${GOPATH}/src/github.com/MarcGrol
     git clone https://github.com/MarcGrol/goopenkitchen.git
-    cd goopenkitchen
-    go install
-    # present binary should now be in ${GOPATH}/bin 
-
+    # presention is located in ${GOPATH}/github.com/MarcGrol/goopenkitchen
 
 *Step 3 - Start presentation within the goopenkitchen directory*
 
