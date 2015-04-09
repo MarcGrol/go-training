@@ -34,6 +34,8 @@ Use the "present"-tool to "run" the presentation.
     mkdir -p ${GOPATH}/src/github.com/MarcGrol
     cd ${GOPATH}/src/github.com/MarcGrol
     git clone https://github.com/MarcGrol/goopenkitchen.git
+    cd goopenkitchen
+    go install
 
 *Step 3 - Start presentation within the goopenkitchen directory*
 
