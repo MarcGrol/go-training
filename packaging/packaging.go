@@ -13,9 +13,6 @@ func timeHandler(w http.ResponseWriter, r *http.Request) {
 
 func serveTimeRequests() {
 	mux := http.NewServeMux()
-
-	th := http.HandlerFunc(timeHandler)
-	mux.Handle("/time", th)
-
+	mux.Handle("/time", http.HandlerFunc(timeHandler))
 	http.ListenAndServe(":3000", mux)
 }
