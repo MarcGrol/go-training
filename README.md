@@ -33,10 +33,7 @@ Use the "present"-tool to "run" the presentation.
     cd ${GOPATH}/src/github.com/MarcGrol
     git clone https://github.com/MarcGrol/goopenkitchen.git
     # presention is located in ${GOPATH}/github.com/MarcGrol/goopenkitchen
-    cd goopenkitchen
-    go install
-    # All example programs are now build in ${GOPAH}/bin
-
+    
 *Step 3 - Start presentation within the goopenkitchen directory*
 
     cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
@@ -46,4 +43,8 @@ Use the "present"-tool to "run" the presentation.
 *Step 4 - Point your browser at:*
 http://127.0.0.1:3999
 
+*Step 6 - Build example in your local environemnt*
+
+    cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
+    go install ./...
 
