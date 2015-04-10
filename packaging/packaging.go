@@ -2,17 +2,20 @@ package packaging
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-    "net/http"
+	"net/http"
+	"time"
 )
 
-func ListenForWebRequests() {
-	engine := gin.Default() // HL
+func timeHandler(w http.ResponseWriter, r *http.Request) {
+	tm := time.Now().Format(time.RFC1123)
+	fmt.Fprintf(w, "The time is: "+tm)
+}
 
-	engine.GET("/hello", func(c *gin.Context) {
-		c.String(http.StatusOK, fmt.Sprintf("Message from planet %s", "Mars")) // HL
-	})
+func serveTimeRequests() {
+	mux := http.NewServeMux()
 
-	// will block
-	engine.Run(":8080")
+	th := http.HandlerFunc(timeHandler)
+	mux.Handle("/time", th)
+
+	http.ListenAndServe(":3000", mux)
 }
