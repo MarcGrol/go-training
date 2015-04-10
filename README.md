@@ -27,10 +27,15 @@ Use the "present"-tool to "run" the presentation.
 
 *Step 2 - Fetch the presentation from github*
 
+    go get github.com/MarcGrol/goopenkitchen
+    or
     mkdir -p ${GOPATH}/src/github.com/MarcGrol
     cd ${GOPATH}/src/github.com/MarcGrol
     git clone https://github.com/MarcGrol/goopenkitchen.git
     # presention is located in ${GOPATH}/github.com/MarcGrol/goopenkitchen
+    cd goopenkitchen
+    go install
+    # All example programs are now build in ${GOPAH}/bin
 
 *Step 3 - Start presentation within the goopenkitchen directory*
 
