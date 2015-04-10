@@ -484,7 +484,8 @@ Just a few examples:
   $ go list -f {{.Deps}}           # list external deps
   
   # no flame-wars, easy to diff, allow mechanical manipulation
-  $ go fmt ./...                   # format recursively
+  $ go fmt ./...                   # format recursively or
+  $ goimports . -w=true            # even better                
   
   # Be effective within seconds
   $ go get github.com/bitly/go-nsq # fetch external package
