@@ -43,7 +43,7 @@ Use the "present"-tool to "run" the presentation.
 *Step 4 - Point your browser at:*
 http://127.0.0.1:3999
 
-*Step 5 - Build example in your local environemnt*
+*Step 5 - Build all examples in your local environemnt*
 
     cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
     go install ./...
