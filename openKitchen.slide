@@ -439,6 +439,7 @@ Just a few examples:
 - compression
 - crypto
 - templates
+- sql
 - ...
 
 #----------------------------------------------
