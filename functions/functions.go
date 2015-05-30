@@ -2,7 +2,7 @@ package functions
 
 import "fmt"
 
-// START OMIT 
+// START OMIT
 func ConvertIt( arg int ) string { // HL
     return convertInternal( arg )
 }
