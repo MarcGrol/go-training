@@ -186,7 +186,12 @@ https://github.com/MarcGrol/
 - Core building block
 
 - Scope: based on case
-.code functions/functions.go 
+ func ConvertIt( arg int ) string {
+     return convertInternal( arg )
+ }
+ func convertInternal( arg int ) string { // internal, unexported function
+     return fmt.Sprintf( "My integer value as string: %d", arg)
+ }
 
 - Can return multiple values
  func swap(x, y string) (string, string) { 
