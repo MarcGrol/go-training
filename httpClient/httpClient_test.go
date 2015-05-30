@@ -16,6 +16,9 @@ func TestGetItSuccess(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		fmt.Fprint(w, `
 {
+   "origin": "145.53.70.8",
+   "method":"GET",
+   "url":"/getIt",
    "args": {
       "arg1": "1",
       "arg2": "2"
@@ -23,24 +26,23 @@ func TestGetItSuccess(t *testing.T) {
    "headers": {
       "Accept": "application/json",
       "Accept-Encoding": "gzip"
-    },
-    "origin": "145.53.70.8",
-    "url": "http://httpbin.org/get?arg1=1&arg2=2"
+    }
 }`)
 
 	}))
 	defer server.Close()
 
 	// Perform the action against the fake server
-	actualResponse, err := getIt(fmt.Sprintf("%s/get", server.URL))
+	actualResponse, err := getIt(fmt.Sprintf("%s/getIt?arg1=1&arg2=2", server.URL))
 
 	// Verify the response
 	assert.NoError(t, err)
+	assert.Equal(t, "GET", actualResponse.Method)
+	assert.Equal(t, "/getIt", actualResponse.Url)
 	assert.Equal(t, "1", actualResponse.Args.Arg1)
 	assert.Equal(t, "2", actualResponse.Args.Arg2)
 	assert.Equal(t, "application/json", actualResponse.Headers.Accept)
 	assert.Equal(t, "gzip", actualResponse.Headers.AcceptEncoding)
-	assert.Equal(t, "http://httpbin.org/get?arg1=1&arg2=2", actualResponse.Url)
 }
 
 func TestGetItFailure(t *testing.T) {

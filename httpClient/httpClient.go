@@ -7,10 +7,12 @@ import (
 )
 
 type Response struct {
+	Origin  string    `json:"origin"`
+    Method  string    `json:"method"`
+	Url     string    `json:"url"`
 	Args    Arguments `json:"args"`
 	Headers Headers   `json:"headers"`
-	Origin  string    `json:"origin"`
-	Url     string    `json:"url"`
+    Body    []byte    `json:"body"`
 }
 
 type Arguments struct {
