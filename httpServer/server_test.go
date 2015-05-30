@@ -10,6 +10,7 @@ import (
 )
 
 func TestServer(t *testing.T) {
+    // mock response
 	recorder := httptest.NewRecorder()
 
 	// simulate request
@@ -18,6 +19,7 @@ func TestServer(t *testing.T) {
 	req.RequestURI = "/doit?arg1=1&arg2=two"
 	req.Header.Set("Accept", "application/json")
 
+    // call subject of test
 	eh := echoHandler{true}
 	eh.ServeHTTP(recorder, req)
 

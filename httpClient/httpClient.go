@@ -12,7 +12,7 @@ type Response struct {
 	Url     string    `json:"url"`
 	Args    Arguments `json:"args"`
 	Headers Headers   `json:"headers"`
-    Body    []byte    `json:"body"`
+    Body    string    `json:"body"`
 }
 
 type Arguments struct {
@@ -38,11 +38,11 @@ func getIt(url string) (*Response, error) {
 	}
 
 	// Decode json
+
 	dec := json.NewDecoder(httpResponse.Body)
 	var resp Response
 	err = dec.Decode(&resp)
 	if err != nil {
-		log.Printf("Error decoding response: %s", err)
 		return nil, err
 	}
 

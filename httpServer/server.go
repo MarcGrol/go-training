@@ -52,11 +52,12 @@ func (eh *echoHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
 	// write headers
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 
-	// write formatted
+	// write formatted json body
 	var formattedResp bytes.Buffer
 	json.Indent(&formattedResp, jsonResp, "", "\t")
 	w.Write(formattedResp.Bytes())
