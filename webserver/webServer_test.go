@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -15,7 +14,7 @@ func mockNow() time.Time {
 	return t
 }
 
-func TestServer(t *testing.T) {
+func TestServerRFC3339(t *testing.T) {
 	// mock response
 	recorder := httptest.NewRecorder()
 
@@ -29,6 +28,20 @@ func TestServer(t *testing.T) {
 	//  verify response
 	assert.Equal(t, http.StatusOK, recorder.Code)
 	assert.Equal(t, "The time is: 1971-02-27T14:31:59Z", string(recorder.Body.Bytes()))
-	t.Log(fmt.Sprintf("%+v", recorder))
+}
 
+func TestServerRFC1123(t *testing.T) {
+	// mock response
+	recorder := httptest.NewRecorder()
+
+	// create a http request that trigger your server
+	req, _ := http.NewRequest("GET", "", nil)
+
+	// call subject of test
+	th := timeHandler{format: time.RFC1123, nowFunc: mockNow}
+	th.ServeHTTP(recorder, req)
+
+	//  verify response
+	assert.Equal(t, http.StatusOK, recorder.Code)
+	assert.Equal(t, "The time is: Sat, 27 Feb 1971 14:31:59 UTC", string(recorder.Body.Bytes()))
 }
