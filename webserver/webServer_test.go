@@ -22,7 +22,8 @@ func TestServerRFC3339(t *testing.T) {
 	req, _ := http.NewRequest("GET", "", nil)
 
 	// call subject of test
-	th := timeHandler{format: time.RFC3339, nowFunc: mockNow}
+	nowFunc = mockNow
+	th := timeHandler{format: time.RFC3339}
 	th.ServeHTTP(recorder, req)
 
 	//  verify response
@@ -38,7 +39,8 @@ func TestServerRFC1123(t *testing.T) {
 	req, _ := http.NewRequest("GET", "", nil)
 
 	// call subject of test
-	th := timeHandler{format: time.RFC1123, nowFunc: mockNow}
+	nowFunc = mockNow
+	th := timeHandler{format: time.RFC1123}
 	th.ServeHTTP(recorder, req)
 
 	//  verify response
