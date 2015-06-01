@@ -8,11 +8,11 @@ import (
 
 type Response struct {
 	Origin  string    `json:"origin"`
-    Method  string    `json:"method"`
+	Method  string    `json:"method"`
 	Url     string    `json:"url"`
 	Args    Arguments `json:"args"`
 	Headers Headers   `json:"headers"`
-    Body    string    `json:"body"`
+	Body    string    `json:"body"`
 }
 
 type Arguments struct {
