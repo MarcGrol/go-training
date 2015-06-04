@@ -92,7 +92,7 @@ https://github.com/MarcGrol/
 * First program
 
     $ mkdir -p ${GOPATH}/src/github.com/<your-github-username>/hello
-    $ cd ${GOPATH}/src/github.com/MarcGrol/hello
+    $ cd ${GOPATH}/src/github.com/<your-github-username>/hello
 
 - Source code: first.go
 .play hello/first.go
