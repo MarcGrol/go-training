@@ -246,6 +246,8 @@ https://github.com/MarcGrol/
 
 - Note: Slices, maps and channels are already refs
 - Note: Pass by value has no side effects
+.link https://github.com/MarcGrol/goopenkitchen/blob/master/pointers/pointers.go example
+
 
 #----------------------------------------------
 
