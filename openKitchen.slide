@@ -2,21 +2,21 @@ The power of Go
 June 2015
 Tags: go golang xebia
 
-Marc Grol en Timon Snetselaar
-Software engineers, Xebia
-mgrol@xebia.com and tsnetselaar@xebia.com
+Marc Grol
+Software engineer, Xebia
+mgrol@xebia.com
 http://www.xebia.com/
 https://github.com/MarcGrol/
 
-#----------------------------------------------
-#
-#* About me
-#
-#.image images/marc.jpg
-#- Running, cycling
-#
-#- Telecom, Finance, Mobile
-#- C, C++, Java, Unix, DSL's, DDD, Go, Javascript
+----------------------------------------------
+
+* About me
+
+.image images/marc.jpg
+- Running, cycling
+
+- Telecom, Finance, Mobile
+- Unix, C, C++, Java, DSL's, DDD, Go, Javascript
 
 #----------------------------------------------
 
