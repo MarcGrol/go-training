@@ -1,9 +1,21 @@
 package main
 
-import "fmt"
+import "log"
+
+// START OMIT
+
+func enter(name string) string {
+	log.Printf("enter %s", name)
+	return name
+}
+
+func leave(name string) {
+	log.Printf("leave %s", name)
+}
 
 func main() {
-	defer fmt.Println("world")
-
-	fmt.Println("hello")
+	defer leave(enter("main"))
+	log.Printf("in main")
 }
+
+// END OMIT

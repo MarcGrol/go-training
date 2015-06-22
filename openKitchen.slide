@@ -218,8 +218,9 @@ https://github.com/MarcGrol/
 * Defer
 - Useful for cleanup: file-handles, mutexes
 - Useful for debugging: log "enter" and "leave" of function
+- Useful for unit-testing: log "setup" and "teardown"
 
-.play defer/defer.go
+.play defer/defer.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
