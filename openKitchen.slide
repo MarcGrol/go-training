@@ -441,6 +441,7 @@ Just a few examples:
 - crypto
 - templates
 - sql
+- integrating C-code
 - ...
 
 #----------------------------------------------
