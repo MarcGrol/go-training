@@ -233,7 +233,7 @@ https://github.com/MarcGrol/
 
 * Pointers
 - Pass "by value" is default
-- Use "pointers" to pass "by reference"
+- For actions that mutate data: to pass "by reference"
 - Useful for passing large objects around
 
   var personP *Person = new(Person)
