@@ -27,7 +27,7 @@ func (c Color) String() string {
 }
 func main() {
 	myColor := Green
-	fmt.Printf("my-color: %d - %s\n", myColor, myColor.String())
+	fmt.Printf("my-color: %d - %s\n", myColor, myColor)
 }
 
 // END OMIT
