@@ -388,7 +388,7 @@ Concurrent-style not forced upon you, used selectively
 
 - built-in "channels" and "goroutines"
 - Goroutines: think very, very lightweight threads
-- Channels: think pipe or queue to communicate with coroutine
+- Channels: think pipe or queue to communicate with goroutine
 - "select"-loop in heart of program
 
 #----------------------------------------------
