@@ -76,7 +76,7 @@ https://github.com/MarcGrol/
 - Convention:
     ${GOPATH}
     ├── src/   # source code
-    ├── pkg/   # intermedia libraries objects
+    ├── pkg/   # libraries
     └── bin/   # executables
 - The tooling knows how to build
 
