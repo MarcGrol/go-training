@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 // START OMIT
-func sum(nums ...int) {
+func sum(nums ...int) { // HL
 	fmt.Print(nums, " ")
 	total := 0
 	for _, num := range nums {
@@ -14,8 +14,8 @@ func sum(nums ...int) {
 
 func main() {
 
-	sum(1, 2)
-	sum(1, 2, 3)
+	sum(1, 2)    // HL
+	sum(1, 2, 3) // HL
 
 	nums := []int{1, 2, 3, 4}
 	sum(nums...)

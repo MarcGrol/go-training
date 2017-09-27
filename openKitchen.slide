@@ -15,8 +15,9 @@ https://github.com/MarcGrol/
 .image images/marc.jpg
 - Running, cycling
 
-- Telecom, Finance, Mobile
+- Telecom, Finance, Mobile, Healthcare, Startups
 - Unix, C, C++, Java, DSL's, DDD, Mobile, Go, Javascript, Cloud
+- Running golang in production
 
 #----------------------------------------------
 
@@ -44,14 +45,15 @@ https://github.com/MarcGrol/
 
 * Why go was created?
 - Help Google solve problems
-- Simple
+- Handle web requests
+- Simple: limited -> easy to read
 - Scale: infrastructure, teams, code bases
 - Compile, startup and run fast
 - Safe and reliable
 - Optimum between C++ and Python
-- Handle web requests
 
-- Also works for us
+
+Also works for us
 
 #----------------------------------------------
 
@@ -74,7 +76,7 @@ https://github.com/MarcGrol/
 
 #----------------------------------------------
 
-* Workspace GOPATH
+* Workspace: GOPATH
 
 - Directory ${GOPATH} contains all your personal go stuff
 - Convention:
@@ -90,6 +92,16 @@ https://github.com/MarcGrol/
     $ export GOPATH=~/src/go
     # add GOPATH to your PATH (~/.bash_profile)
     $ export PATH=${PATH}:${GOPATH}/bin
+
+#----------------------------------------------
+* Tooling
+
+- unix cli <--
+- vi
+- IntelliJ
+- Gogland <--
+- Sublime
+- git
 
 #----------------------------------------------
 
@@ -217,7 +229,7 @@ https://github.com/MarcGrol/
 #----------------------------------------------
 
 * Functions as parameters
-- Closures: anonymous functions
+- Function-pointers, closures, anonymous functions
 - Can reference variables from outside its function body.
 .play closure/closure.go /START OMIT/,/END OMIT/
 
@@ -247,6 +259,7 @@ https://github.com/MarcGrol/
 
   var personP *Person = new(Person)
   personP.Name = "Boogerd"
+  storePerson( personP )
 
   or
   
@@ -292,7 +305,7 @@ https://github.com/MarcGrol/
    }
 
 - Typical:   
-   for index, value := range numbers {
+   for _, value := range numbers {
       fmt.Printf("%d:%d\n", index, value)
    }
 
@@ -349,7 +362,7 @@ https://github.com/MarcGrol/
 - if error is nil, the call worked
   resp, err := doSomethingThatCanFail(arg1, arg2)
   if err != nil {
-      // log?
+      log.Printf("Error doing something that can fail: %s", err)
       return err
   }
   // continue with success path
@@ -498,6 +511,7 @@ Just a few examples:
   $ go generate ./...
   generates cyclist_slice.go with "SortBy"- and "Where"-methods on CyclistSlice
 - Just commit and distribute with your package
+.link https://github.com/MarcGrol/goopenkitchen/blob/master/generate/cyclist_slice.go cyclist_slice.go
 
 #----------------------------------------------
 
@@ -507,10 +521,10 @@ Just a few examples:
   
   # no flame-wars, easy to diff, allow mechanical manipulation
   $ go fmt ./...                   # format recursively or
-  $ goimports . -w=true            # even better                
+  $ goimports -w .                # even better: adds/removes imports
   
-  # Be effective within seconds
-  $ go get github.com/bitly/go-nsq # fetch external package
+  # fetch external packages
+  $ go get golang.org/x/tools/cmd/goimports # Be effective within seconds
 
   # testing: tooling supports coverage, benchmark, race-condition-detection
   $ go test ./...                  # test recursively 
@@ -520,7 +534,7 @@ Just a few examples:
   $ go install                     # to ${GOPATH}/bin
 
   $ godoc -http=:8000              # documentation of sources in ${GOROOT} and ${GOPATH}
-  $ go vet                         # lint like
+  $ go vet                         # lint like static analysis
 
 - All CLI -> Easy to automate
 
@@ -538,16 +552,15 @@ Just a few examples:
 - Single, self contained binary
 - No runtime
 - Just scp to target host
-- go 1.5 supports cross compilation
+- Supports cross compilation
+- Easy to host in the cloud
 
 #----------------------------------------------
 
 * The not so good
-- Reproducable builds: versioning of 3rd party dependencies
-- IDE support: vi, sublime, eclipse, intelliJ
+- Reproducable builds: versioning of 3rd party dependencies -> Vendoring
 - No immutability by default
-- Missing generics?
-# Use code generation?
+- Missing generics? -> Use code generation
 
 #----------------------------------------------
 
@@ -559,6 +572,7 @@ Just a few examples:
 - Fast
 - Easy to build and deploy
 - Used by many startups
+- Boring: is good
 
 - Language to get things done
 

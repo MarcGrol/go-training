@@ -14,7 +14,7 @@ func leave(name string) {
 }
 
 func main() {
-	defer leave(enter("main"))
+	defer leave(enter("main")) // HL
 	log.Printf("in main")
 }
 

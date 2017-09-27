@@ -4,12 +4,12 @@ import "fmt"
 
 // START OMIT
 func unhex(c byte) byte {
-	switch {
-	case '0' <= c && c <= '9':
+	switch { // HL
+	case '0' <= c && c <= '9': // HL
 		return c - '0'
-	case 'a' <= c && c <= 'f':
+	case 'a' <= c && c <= 'f': // HL
 		return c - 'a' + 10
-	case 'A' <= c && c <= 'F':
+	case 'A' <= c && c <= 'F': // HL
 		return c - 'A' + 10
 	}
 	return 0

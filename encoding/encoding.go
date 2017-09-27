@@ -31,7 +31,7 @@ func main() {
 	}`
 
 	var me Person
-	json.Unmarshal([]byte(jsonMe), &me) // HL
+	_ = json.Unmarshal([]byte(jsonMe), &me) // HL
 
 	fmt.Printf("About me (internal):\n %+v\n", me)
 

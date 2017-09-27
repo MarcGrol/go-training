@@ -6,7 +6,7 @@ import "fmt"
 func main() {
 	sum := 1
 	// while like
-	for sum < 1000 {
+	for sum < 1000 { // HL
 		sum += sum
 	}
 	fmt.Println(sum)

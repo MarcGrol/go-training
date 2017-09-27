@@ -5,13 +5,13 @@ import (
 )
 
 // START OMIT
-type Color int
+type Color int // HL
 
-const (
-	Red   Color = iota // 0 (=default)
-	Green              // 1
-	Blue               // 2
-)
+const ( // HL
+	Red   Color = iota // 0 (=default) // HL
+	Green              // 1 // HL
+	Blue               // 2 // HL
+) // HL
 
 func (c Color) String() string {
 	switch c {
