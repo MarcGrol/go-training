@@ -48,4 +48,6 @@ http://127.0.0.1:3999
     cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
     go install ./...
     # all examples should now be in ${GOPATH}/bin as executables
+    ls -ltr ${GOPATH}/bin
+    
 
