@@ -553,7 +553,7 @@ Just a few examples:
 - No runtime
 - Just scp to target host
 - Supports cross compilation
-- Easy to host in the cloud
+- Well suited to host in the cloud (Google Appengine)
 
 #----------------------------------------------
 
@@ -572,7 +572,7 @@ Just a few examples:
 - Fast
 - Easy to build and deploy
 - Used by many startups
-- Boring: is good
+- Boring language -> is good
 
 - Language to get things done
 
@@ -585,6 +585,5 @@ Just a few examples:
 .image images/gophereartrumpet.jpg
 .caption Go is cool:  Tell it around
 - Let's build something
-
 
 #----------------------------------------------
