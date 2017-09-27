@@ -44,8 +44,7 @@ https://github.com/MarcGrol/
 #----------------------------------------------
 
 * Why go was created?
-- Help Google solve problems
-- Handle web requests
+- Help Google solve problems: handle web requests
 - Simple: limited -> easy to read
 - Scale: infrastructure, teams, code bases
 - Compile, startup and run fast
