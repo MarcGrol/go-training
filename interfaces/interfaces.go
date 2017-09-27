@@ -2,20 +2,20 @@ package main
 
 import "fmt"
 
-type Person struct {
-	Name string
-	Age  int
+type Person struct { // implements Stringer interface
+	Name        string
+	ShirtNumber int
 }
 
 // type Stringer interface {
 //    String() string
 // }
 func (p Person) String() string {
-	return fmt.Sprintf("%v (%v years)", p.Name, p.Age)
+	return fmt.Sprintf("%s (number %d)", p.Name, p.ShirtNumber)
 }
 
 func main() {
-	a := Person{"Arthur Dent", 42}
-	z := Person{"Zaphod Beeblebrox", 9001}
-	fmt.Println(a, z)
+	a := Person{Name: "Michael Jordan", ShirtNumber: 23}
+	z := Person{Name: "Johan Cruyff", ShirtNumber: 14}
+	fmt.Printf("%+v - %s", a, z)
 }

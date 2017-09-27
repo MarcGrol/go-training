@@ -24,9 +24,9 @@ func main() {
 		"Name":"Marc Grol",
 	    "Interests":["Running","Golang"],
 	    "Children":[
-	    	{"Name":"Pien","Age":12},
-	    	{"Name":"Tijl","Age":9},
-	    	{"Name":"Freek","Age":5}
+	    	{"Name":"Pien","ShirtNumber":12},
+	    	{"Name":"Tijl","ShirtNumber":9},
+	    	{"Name":"Freek","ShirtNumber":5}
 	    ]
 	}`
 

@@ -15,11 +15,11 @@ func main() {
 	a := []int{7, 2, 8, -9, 4, 0}
 
 	c := make(chan int)
-	go sum(a[:len(a)/2], c)
-	go sum(a[len(a)/2:], c)
-	x, y := <-c, <-c // receive from c
+	go sum(a[:len(a)/2], c) // []int{7,2,8} -> 17
+	go sum(a[len(a)/2:], c) // []int{-9,4,0} -> -5
+	x, y := <-c, <-c        // receive from c
 
-	fmt.Println(x, y, x+y)
+	fmt.Printf("one=%d\nanother=%d", x, y) // order undefined
 }
 
 // END OMIT

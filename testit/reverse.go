@@ -1,10 +1,9 @@
 package testit
 
 func reverse(in string) string {
-    return in
+	return in
 }
 
 func main() {
-    reverse("marc")
+	reverse("marc")
 }
-

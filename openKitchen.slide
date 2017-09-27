@@ -101,8 +101,12 @@ https://github.com/MarcGrol/
 - Source code: first.go
 .play hello/first.go
 
-    $ go run first.go or
-    $ go install # creates executable "hello" in ${GOPATH}/bin
+    $ go fmt             # standard formatter
+
+    $ go run first.go    # compiles and runs right away
+    $ go build first.go  # creates executable "hello" in .
+    $ go install         # creates executable "hello" in ${GOPATH}/bin
+
     $ hello
     Hi everybody!
 
@@ -239,10 +243,10 @@ https://github.com/MarcGrol/
 - Pass "by value" is default
 - For actions that mutate data: to pass "by reference"
 - Useful for passing large objects around
+- Beware of side effects
 
   var personP *Person = new(Person)
   personP.Name = "Boogerd"
-  storePerson( personP )
 
   or
   
@@ -298,17 +302,18 @@ https://github.com/MarcGrol/
 - Dynamic array: can grow in size
     letters := []string{"a", "b", "c", "d"}
     subslice = letters[2:3] // c and d
-    or
-    slice := make( []string, 0, 5 )
+
+    slice := []string{} // or
+    slice := make( []string, 0, 5 ) or
     slice = append( slice, "first entry" )
     fmt.Printf( "slice-length: %d slice-capacity: %d slice-values:%+v",  
                     len(slice),
                     cap(slice),
                     slice)
 
-- Iterate over slice
- for _, value := range numbers {
-    fmt.Printf("%d\n", value)
+- Iterate over slice (index optional -> use _)
+ for idx, value := range values {
+    fmt.Printf("values[%d] = %s\n", idx, value)
  }
 
 - Sorting: use sort package
@@ -320,8 +325,12 @@ https://github.com/MarcGrol/
 * Map
 - Store key-value pairs
 
-    m = make(map[string]int)
+    m := make(map[string]int)
     m["route"] = 66
+    // or preferred
+    m := map[string]int {
+        "route": 66,
+    }
     delete(m, "route")
     i, ok := m["route"]
 
@@ -350,7 +359,7 @@ https://github.com/MarcGrol/
 
 - Function signature tells that things can go wrong
 
-- You own API's should use this pattern
+- !!!!! All your own API's should use this pattern
 
 #----------------------------------------------
 
@@ -386,7 +395,8 @@ https://github.com/MarcGrol/
 
 * Concurrency
 
-Most code is synchronous
+Overemphasized
+Most of your code is synchronous
 Concurrent-style not forced upon you, used selectively
 
 

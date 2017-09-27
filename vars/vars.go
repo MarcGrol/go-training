@@ -8,7 +8,7 @@ import (
 const myConstString = "golang"
 
 func main() {
-	var status bool // uninitialized
+	var status bool // uninitialized -> default (=false)
 	var idx int64 = 42
 	// := short notation: derives type from right-hand-side // HL
 	i := 256 // HL

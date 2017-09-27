@@ -26,7 +26,7 @@ func main() {
 		printUsage()
 	}
 
-	log.Printf("Looking up GitHub user: %s (once:%v)", login, once)
+	log.Printf("Looking up GitHub user: %s (once:%v)", *login, once)
 }
 
 // END OMIT
