@@ -49,24 +49,27 @@ https://github.com/MarcGrol/
 - Compile, startup and run fast
 - Safe and reliable
 - Optimum between C++ and Python
-# Also works for us
+- Handle web requests
+
+- Also works for us
 
 #----------------------------------------------
 
 * Setup environment
 
-- Install
-.link https://golang.org/doc/install#download
-or
-    $ brew install go
+- Install go:
+
+Using .link https://golang.org/doc/install#download or
+    $ brew install go              # on mac
+    $ sudo apt-get install golang  # on linux
 
 - Verify installation
-    $ which go # typically located in /usr/local/go/bin/go
+    $ which go     # typically located in /usr/local/bin/
     $ go env
 
-- Post installation steps
-    # Add go to your PATH (in ~/.bash_profile)
-    $ PATH=${PATH}:${GOROOT}/bin
+- Optional ost installation steps
+    # Add installation dir to your PATH (in ~/.bash_profile)
+    $ PATH=${PATH}:/usr/local/bin
 
 #----------------------------------------------
 
