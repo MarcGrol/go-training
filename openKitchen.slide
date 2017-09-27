@@ -59,7 +59,8 @@ https://github.com/MarcGrol/
 
 - Install go:
 
-Using .link https://golang.org/doc/install#download or
+.link https://golang.org/doc/install#download
+
     $ brew install go              # on mac
     $ sudo apt-get install golang  # on linux
 
@@ -67,7 +68,7 @@ Using .link https://golang.org/doc/install#download or
     $ which go     # typically located in /usr/local/bin/
     $ go env
 
-- Optional ost installation steps
+- Optional post installation steps
     # Add installation dir to your PATH (in ~/.bash_profile)
     $ PATH=${PATH}:/usr/local/bin
 
