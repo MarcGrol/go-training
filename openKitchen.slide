@@ -1,5 +1,5 @@
 The power of Go
-June 2015
+September 2017
 Tags: go golang xebia
 
 Marc Grol
@@ -16,7 +16,7 @@ https://github.com/MarcGrol/
 - Running, cycling
 
 - Telecom, Finance, Mobile
-- Unix, C, C++, Java, DSL's, DDD, Mobile, Go, Javascript
+- Unix, C, C++, Java, DSL's, DDD, Mobile, Go, Javascript, Cloud
 
 #----------------------------------------------
 
@@ -45,7 +45,7 @@ https://github.com/MarcGrol/
 - Help Google solve problems
 - Simple
 - Scale: infrastructure, teams, code bases
-- Compile and run fast
+- Compile, startup and run fast
 - Safe and reliable
 - Optimum between C++ and Python
 # Also works for us
@@ -56,15 +56,14 @@ https://github.com/MarcGrol/
 
 - Install
 .link https://golang.org/doc/install#download
+or
+    $ brew install go
 
 - Verify installation
     $ which go # typically located in /usr/local/go/bin/go
     $ go env
 
 - Post installation steps
-    # Set GOROOT in your shell startup (~/.bash_profile)
-    $ export GOROOT=/usr/local/go
-
     # Add go to your PATH (in ~/.bash_profile)
     $ PATH=${PATH}:${GOROOT}/bin
 
