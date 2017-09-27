@@ -123,7 +123,7 @@ Also works for us
 
 #----------------------------------------------
 
-* Summary of language
+* Summary of language (fits on one sheet)
 - Keywords: 
     break case continue default defer else fallthrough for goto if return switch
     package import func const interface map range struct type chan go select var
