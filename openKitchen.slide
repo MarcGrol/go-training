@@ -37,7 +37,7 @@ https://github.com/MarcGrol/
 - Used go tool-chain? go get, go install?
 - Build http-client and http-server?
 - json/xml marshalling?
-- Used channels en goroutines?
+- Used channels and goroutines?
 - Unit testing?
 - Own open-source project? Production code?
 
@@ -98,7 +98,7 @@ Also works for us
 - unix cli <--
 - vi
 - IntelliJ
-- Gogland <--
+- Goland <--
 - Sublime
 - git
 
