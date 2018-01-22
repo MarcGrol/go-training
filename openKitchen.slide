@@ -162,6 +162,8 @@ Also works for us
      package main // package that results in executable
      package news // package that results in library "news.a"
 
+- Packages are more coarse-grained than Java
+
 #----------------------------------------------
 
 * Imports
@@ -498,9 +500,10 @@ Just a few examples:
 
 * Templating
 - web-server: generate html response using template
-- code generation: generate text-files on file-system
-.link https://github.com/MarcGrol/microgen/blob/master/application.go model
-.link https://github.com/MarcGrol/microgen/blob/master/tool/dsl/service-interface.go.tmpl template
+- Keep your template logic minimal, move to structs or template.FuncMap
+- Unit test your templates, they are not type strong!
+
+.play template/template.go  /^func main/,/^}/
 
 #----------------------------------------------
 
