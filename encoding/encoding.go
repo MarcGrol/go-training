@@ -8,25 +8,25 @@ import (
 )
 
 type Person struct {
-	Name      string
-	Interests []string
-	Children  []Child
+	Name      string   `json:"name"      xml:"PersonName"`
+	Interests []string `json:"interests" xml:"PersonInterests"`
+	Children  []Child  `json:"children"  xml:"Person_Children"`
 }
 
 type Child struct {
-	Name string
-	Age  int
+	Name string `json:"name"          xml:"ChildName"`
+	Age  int    `json:"age,omitempty" xml:"Child_Age,omitempty"`
 }
 
 func main() {
 	var jsonMe string = `
 	{
-		"Name":"Marc Grol",
-	    "Interests":["Running","Golang"],
-	    "Children":[
-	    	{"Name":"Pien","ShirtNumber":12},
-	    	{"Name":"Tijl","ShirtNumber":9},
-	    	{"Name":"Freek","ShirtNumber":5}
+		"name":"Marc Grol",
+	    "interests":["Running","Golang"],
+	    "children":[
+	    	{"name":"Pien","shirtNumber":12,"age":5},
+	    	{"name":"Tijl","shirtNumber":9},
+	    	{"name":"Freek"}
 	    ]
 	}`
 
@@ -35,6 +35,6 @@ func main() {
 
 	fmt.Printf("About me (internal):\n %+v\n", me)
 
-	xmlMe, _ := xml.Marshal(me) // HL
+	xmlMe, _ := xml.MarshalIndent(me, "", "\t") // HL
 	fmt.Printf("About me (xml):\n %s\n", xmlMe)
 }
