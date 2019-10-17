@@ -17,7 +17,7 @@ func New() (*DB, func(), error) {
 	}
 	cleanupFunc := func() { // HL
 		log.Printf("Perform cleanup") // HL
-		close(db.mychannel)           // HL
+		close(db.mychannel)           // uses variable outside its own body // HL
 	} // HL
 	return db, cleanupFunc, nil
 }
@@ -27,7 +27,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer cleanup() // HL
+	defer cleanup() // can still reference db.mychannel // HL
 
 	dowork(db)
 }

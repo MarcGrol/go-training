@@ -16,7 +16,7 @@ https://github.com/MarcGrol/
 - Running, cycling
 
 - Telecom, Finance, Mobile, Healthcare, Startups
-- Allround, cost-benefit, agile, devops
+- Allround, cost-benefit, get things done
 - Running golang in production
 
 #----------------------------------------------
@@ -231,9 +231,9 @@ Also works for us
 #----------------------------------------------
 
 * Defer
-- Useful for cleanup: file-handles, mutexes, channels and connections
-- Useful for debugging: log "enter" and "leave" of function
-- Useful for unit-testing: log "setup" and "teardown"
+- Cleanup of file-handles, mutexes, channels and connections
+- Debugging: log "enter" and "leave" of function
+- Unit-testing: "setup" and "teardown"
 
 .play defer/defer.go /START OMIT/,/END OMIT/
 
@@ -318,8 +318,8 @@ Also works for us
     letters := []string{"a", "b", "c", "d"}
     subslice = letters[2:3] // c and d
 
-    slice := []string{} // or
-    slice := make( []string, 0, 5 ) or
+    slice := []string{} // very readable
+    slice := make( []string, 0, 5 ) // when you want to be more in charge of allocation
     slice = append( slice, "first entry" )
     fmt.Printf( "slice-length: %d slice-capacity: %d slice-values:%+v",  
                     len(slice),
@@ -394,7 +394,7 @@ Also works for us
         ErrorMessage string
    }
    func (e HttpError)Error() string {
-      ...
+      return e.ErrorMessage
    }
 
 # Refactor using interfaces when initially done
@@ -402,7 +402,8 @@ Also works for us
 #----------------------------------------------
 
 * Interface example
-- Just implement the methods and voila
+- Just implement the methods.
+- Type it implements is not required!
 
 .play -edit interfaces/interfaces.go /START OMIT/,/END OMIT/
 
@@ -419,8 +420,8 @@ Concurrent-style not forced upon you, used selectively
 
 - built-in "channels" and "goroutines"
 - Goroutines: think very, very lightweight threads
-- Channels: think pipe or queue to communicate with goroutine
-- "select"-loop in heart of program
+- Channels: think pipe or queue to communicate with goroutine(s)
+- "select"-loop: UNIX-like: wait for events from multiple channels
 
 #----------------------------------------------
 
@@ -522,6 +523,7 @@ example:
 
 * Templating
 - web-server: generate html response using template
+- code-generator: generate source-code from dsl
 - Minimize logic in your template (move common concerns to template.FuncMap)
 
 .play -edit template/template.go  /START OMIT/,/END OMIT/
@@ -572,20 +574,19 @@ example:
 #----------------------------------------------
 
 * The goods
-- Easy deployment
-- Single, self contained binary
-- No separate runtime or jvm
-- Just scp to target host
+- Simple -> Easy to learn
+- Source-code is easy to read and understand
+- Easy deployment: self contained binary (no separate runtime)
 - Supports cross compilation
-- Well suited to host in the cloud (Google Appengine)
-- Very fast startup: Fast cold-starts on spiky peak loads
+- Well suited to host in the cloud: Very fast startup -> fast automatic scale-up while handling traffic spikes
 
 #----------------------------------------------
 
 * The not so good
-- Reproducable builds: versioning of 3rd party dependencies -> Vendoring
+# - Reproducable builds: versioning of 3rd party dependencies -> Vendoring
 - No immutability by default
 - Missing generics? -> Use code generation
+- Go 2.0 will have generics
 
 #----------------------------------------------
 

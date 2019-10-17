@@ -34,9 +34,7 @@ var p = Person{
 
 func main() {
 	// START OMIT
-	const tpl = `
-<html>
-	<body>
+	const tpl = `<html><body>
 		<p>Hi, I'm {{.Name}}.
 		I like {{range $i, $el := .Interests}}{{if $i}} and {{end}}{{$el}}{{end}}</p>
 		<ul>
@@ -44,8 +42,7 @@ func main() {
 			<li>{{.NameAndAge}}</li>
 		{{end -}}
 		</ul>
-	</body>
-</html>`
+	</body></html>`
 
 	t, err := template.New("person").Parse(tpl)
 	if err != nil { // Templates are not type strong! Need unit tests to prove ...
