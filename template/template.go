@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"os"
 )
 
@@ -32,17 +33,28 @@ var p = Person{
 }
 
 func main() {
+	// START OMIT
 	const tpl = `
 <html>
 	<body>
 		<p>Hi, I'm {{.Name}}.
-		<p>I like {{range .Interests}}{{.}}, {{end}}
+		I like {{range $i, $el := .Interests}}{{if $i}} and {{end}}{{$el}}{{end}}</p>
 		<ul>
-		{{range .Children}}<li>{{.NameAndAge}}</li>{{end}}
+		{{range .Children -}}
+			<li>{{.NameAndAge}}</li>
+		{{end -}}
 		</ul>
 	</body>
 </html>`
 
-	t, _ := template.New("person").Parse(tpl)
-	_ = t.Execute(os.Stdout, p)
+	t, err := template.New("person").Parse(tpl)
+	if err != nil { // Templates are not type strong! Need unit tests to prove ...
+		log.Fatal(err)
+	}
+	err = t.Execute(os.Stdout, p)
+	if err != nil { // Needs verification!!!
+		// END OMIT
+		log.Fatal(err)
+	}
+
 }

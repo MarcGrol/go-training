@@ -3,23 +3,27 @@ package main
 import "fmt"
 
 // START OMIT
-func sum(a []int, c chan int) {
+func sum(a []int, resultChannel chan int) {
 	sum := 0
 	for _, v := range a {
 		sum += v
 	}
-	c <- sum // send sum to c
+	resultChannel <- sum // send result back over channel // HL
 }
 
-func main() {
-	a := []int{7, 2, 8, -9, 4, 0}
+func doit() {
+	responseChannel := make(chan int)
+	defer close(responseChannel) // prevent resource leak
 
-	c := make(chan int)     // HL
-	go sum(a[:len(a)/2], c) // []int{7,2,8} -> 17 // HL
-	go sum(a[len(a)/2:], c) // []int{-9,4,0} -> -5 // HL
-	x, y := <-c, <-c        // receive from c // HL
+	go sum([]int{1, 2, 3}, responseChannel)      // 1 + 2 + 3 = 6 // HL
+	go sum([]int{4, 5, 6}, responseChannel)      // 4 + 5 + 6 = 15 // HL
+	x, y := <-responseChannel, <-responseChannel // receive from channel // HL
 
 	fmt.Printf("one=%d\nanother=%d", x, y) // order undefined
 }
 
 // END OMIT
+
+func main() {
+	doit()
+}

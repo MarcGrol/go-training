@@ -28,7 +28,7 @@ func (p *Person) AddChild(child Child) { // HL
 }
 
 func main() {
-	// me := Person{...}
+	// me := Person{...} // fully initialized
 	me.AddChild(Child{Name: "Freek", Age: 5})
 	fmt.Printf("%+v\n", me) // Note: debug struct with %+v
 }

@@ -2,14 +2,12 @@ package main
 
 import "fmt"
 
-// START OMIT
 func main() {
+	// START OMIT
 	sum := 1
-	// while like
 	for sum < 1000 { // HL
 		sum += sum
 	}
 	fmt.Println(sum)
+	// END OMIT
 }
-
-// END OMIT

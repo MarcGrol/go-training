@@ -1,27 +1,35 @@
 package main
 
-import "fmt"
+import "log"
+
+type DB struct {
+	mychannel chan string
+}
+
+func dowork(db *DB) {
+	log.Printf("Perform work")
+}
 
 // START OMIT
-func intSeq() func() int {
-	i := 0
-	return func() int { // HL
-		i += 1   // HL
-		return i // HL
+func New() (*DB, func(), error) {
+	db := &DB{
+		mychannel: make(chan string),
+	}
+	cleanupFunc := func() { // HL
+		log.Printf("Perform cleanup") // HL
+		close(db.mychannel)           // HL
 	} // HL
+	return db, cleanupFunc, nil
 }
 
 func main() {
-	nextInt := intSeq()
+	db, cleanup, err := New()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer cleanup() // HL
 
-	// See the effect of the closure by calling nextInt a few times.
-	fmt.Println(nextInt())
-	fmt.Println(nextInt())
-	fmt.Println(nextInt())
-
-	// To confirm that the state is unique to that particular function
-	newInts := intSeq()
-	fmt.Println(newInts())
+	dowork(db)
 }
 
 // END OMIT

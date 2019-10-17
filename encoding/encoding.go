@@ -1,10 +1,10 @@
-// hello.go
 package main
 
 import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"log"
 )
 
 type Person struct {
@@ -31,10 +31,14 @@ func main() {
 	}`
 
 	var me Person
-	_ = json.Unmarshal([]byte(jsonMe), &me) // HL
+	err := json.Unmarshal([]byte(jsonMe), &me) // HL
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	fmt.Printf("About me (internal):\n %+v\n", me)
-
-	xmlMe, _ := xml.MarshalIndent(me, "", "\t") // HL
+	xmlMe, err := xml.MarshalIndent(me, "", "\t") // HL
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Printf("About me (xml):\n %s\n", xmlMe)
 }

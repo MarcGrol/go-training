@@ -26,7 +26,7 @@ func (c Color) String() string {
 	}
 }
 func main() {
-	myColor := Green
+	myColor := Blue
 	fmt.Printf("my-color: %d - %s\n", myColor, myColor)
 }
 

@@ -2,7 +2,8 @@ package main
 
 import "fmt"
 
-type Person struct { // implements Stringer interface
+// START OMIT
+type Person struct {
 	Name        string
 	ShirtNumber int
 }
@@ -10,12 +11,14 @@ type Person struct { // implements Stringer interface
 // type Stringer interface {
 //    String() string
 // }
-func (p Person) String() string {
-	return fmt.Sprintf("%s (number %d)", p.Name, p.ShirtNumber)
-}
+func (p Person) String() string { // HL
+	return fmt.Sprintf("%s (number %d)", p.Name, p.ShirtNumber) // HL
+} // HL
 
 func main() {
-	a := Person{Name: "Michael Jordan", ShirtNumber: 23}
-	z := Person{Name: "Johan Cruyff", ShirtNumber: 14}
-	fmt.Printf("%+v - %s", a, z)
+	mj := Person{Name: "Michael Jordan", ShirtNumber: 23}
+	jc := Person{Name: "Johan Cruyff", ShirtNumber: 14}
+	fmt.Printf("%+v\n%s", mj, jc)
 }
+
+// END OMIT

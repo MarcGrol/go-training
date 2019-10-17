@@ -1,5 +1,5 @@
 Learning go
-September 2017
+Oktober 2019
 Tags: go golang xebia
 
 Marc Grol
@@ -129,9 +129,8 @@ Also works for us
     package import func const interface map range struct type chan go select var
 
 - Types:
-	bool byte complex64 complex128 error float32 float64
-	int int8 int16 int32 int64 rune string
-	uint uint8 uint16 uint32 uint64 uintptr
+	error string rune bool byte int int8 int16 int32 int64 float32 float64
+	uint uint8 uint16 uint32 uint64 uintptr complex64 complex128
 
 - Constants:
 	true false iota
@@ -185,6 +184,8 @@ Also works for us
 .play for/for.go /START OMIT/,/END OMIT/
 - while-like
 .play while/while.go /START OMIT/,/END OMIT/
+- iterate
+.play iterate/iterate.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -229,19 +230,20 @@ Also works for us
 
 #----------------------------------------------
 
+* Defer
+- Useful for cleanup: file-handles, mutexes, channels and connections
+- Useful for debugging: log "enter" and "leave" of function
+- Useful for unit-testing: log "setup" and "teardown"
+
+.play defer/defer.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
 * Functions as parameters
 - Function-pointers, closures, anonymous functions
 - Can reference variables from outside its function body.
 .play closure/closure.go /START OMIT/,/END OMIT/
 
-#----------------------------------------------
-
-* Defer
-- Useful for cleanup: file-handles, mutexes
-- Useful for debugging: log "enter" and "leave" of function
-- Useful for unit-testing: log "setup" and "teardown"
-
-.play defer/defer.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -271,7 +273,6 @@ Also works for us
 - Note: Pass by value has no side effects
 .link https://github.com/MarcGrol/goopenkitchen/blob/master/pointers/pointers.go example
 
-
 #----------------------------------------------
 
 * Object construction
@@ -280,7 +281,7 @@ Also works for us
 #----------------------------------------------
 
 * Enum
-.play enum/enum.go /START OMIT/,/END OMIT/
+.play -edit enum/enum.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -300,14 +301,14 @@ Also works for us
      // idiomatic: let compiler count
      s := [...]string{"Penn", "Teller"}
 
-- Iterate over array
-   for idx := 0 ; idx<4; idx++ {
-      fmt.Printf("%d:%d\n", idx, numbers[idx])
+- Iterate: not idiomatic
+   for idx := 0 ; idx<len(s); idx++ {
+      fmt.Printf("%d\n", numbers[idx])
    }
 
-- Typical:   
+- Idiomatic:
    for _, value := range numbers {
-      fmt.Printf("%d:%d\n", index, value)
+      fmt.Printf("value: %d\n", value)
    }
 
 #----------------------------------------------
@@ -364,7 +365,7 @@ Also works for us
   resp, err := doSomethingThatCanFail(arg1, arg2)
   if err != nil {
       log.Printf("Error doing something that can fail: %s", err)
-      return err
+      return err // early return to minimize indentation
   }
   // continue with success path
 
@@ -372,28 +373,30 @@ Also works for us
   resp, _ := doit(arg1, arg2)
 
 - Function signature tells that things can go wrong
-
 - !!!!! All your own API's should use this pattern
 
 #----------------------------------------------
 
 * Interfaces
 - UNIX filosophy: small, sharp tool combined to solve larger tasks
-- go packages interact via small interfaces, no large hierarchies.
+- Good for testability
 # decribe the "what", not the "how"
 
-- example: I/O
-   func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error)
-   
-   type Writer interface {
-       Write(p []byte) (n int, err error)
-   }
-   "Writer" can be file, buffer, stdout, network, http-response, zip-file etc
+- The function below accepts anything that implements the "Writer"-interface: This can be a file, buffer, stdout, network, http-response, zip-file etc
 
-- example: built-in interface "error"
-   type error interface {
-       Error() string
+   package fmt;
+   ...
+   func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) { ... }
+
+- Implement your own error in order to be able to return meaningful "restful" error-codes
+   type HttpError struct {
+        HttpResponseCode int
+        ErrorMessage string
    }
+   func (e HttpError)Error() string {
+      ...
+   }
+
 # Refactor using interfaces when initially done
 
 #----------------------------------------------
@@ -401,7 +404,7 @@ Also works for us
 * Interface example
 - Just implement the methods and voila
 
-.play interfaces/interfaces.go
+.play -edit interfaces/interfaces.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -424,14 +427,14 @@ Concurrent-style not forced upon you, used selectively
 * Concurrency example
 - Do not communicate by sharing memory. Instead, share memory by communicating.
 
-.play channels/channels.go /START OMIT/,/END OMIT/
+.play -edit channels/channels.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * Select example
 - Waitfor events on multiple channels
 
-.play select/select.go /START OMIT/,/END OMIT/
+.play -edit select/select.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -476,7 +479,7 @@ Just a few examples:
 
 * Flags
 - Read command-line argument
-.play flags/flags.go /START OMIT/,/END OMIT/
+.play -edit flags/flags.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -489,21 +492,39 @@ Just a few examples:
 * Synchronisation
 - Alternative to channels
 - Use for small syncs
-.play sync/sync.go /START OMIT/,/END OMIT/
+.play -edit sync/sync.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
-* Encoding
-.play encoding/encoding.go  /^func main/,/^}/
+* Serialisation
+
+- Based on annotations
+- xml, json etc in stdlib
+
+example:
+
+   type Person struct {
+      Name      string   `json:"name"      xml:"PersonName"`
+      Interests []string `json:"interests" xml:"PersonInterests"`
+      Children  []Child  `json:"children"  xml:"Person_Children"`
+   }
+
+   type Child struct {
+      Name string `json:"name"          xml:"ChildName"`
+      Age  int    `json:"age,omitempty" xml:"Child_Age,omitempty"`
+   }
+
+
+* Serialisation example
+.play -edit encoding/encoding.go  /^func main/,/^}/
 
 #----------------------------------------------
 
 * Templating
 - web-server: generate html response using template
-- Keep your template logic minimal, move to structs or template.FuncMap
-- Unit test your templates, they are not type strong!
+- Minimize logic in your template (move common concerns to template.FuncMap)
 
-.play template/template.go  /^func main/,/^}/
+.play -edit template/template.go  /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -550,12 +571,14 @@ Just a few examples:
 
 #----------------------------------------------
 
-* Easy deployment
+* The goods
+- Easy deployment
 - Single, self contained binary
-- No runtime
+- No separate runtime or jvm
 - Just scp to target host
 - Supports cross compilation
 - Well suited to host in the cloud (Google Appengine)
+- Very fast startup: Fast cold-starts on spiky peak loads
 
 #----------------------------------------------
 
