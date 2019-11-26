@@ -15,9 +15,9 @@ https://github.com/MarcGrol/
 .image images/marc2.jpg
 - Running, cycling
 
-- Telecom, Finance, Mobile, Healthcare, Startups
+- Telecom, Finance, Mobile, Healthcare, Transport, Startups
 - Allround, cost-benefit, get things done
-- Running golang in production
+- Running golang in production @Duxxie
 
 #----------------------------------------------
 
@@ -34,7 +34,7 @@ https://github.com/MarcGrol/
 - Go installed on laptop?
 - Written any code?
 - Did tour, tutorial? Read a book?
-- Used go tool-chain? go get, go install?
+- Used go tool-chain? go get, go build, go install?
 - Build http-client and http-server?
 - json/xml marshalling?
 - Used channels and goroutines?
@@ -51,7 +51,6 @@ https://github.com/MarcGrol/
 - Safe and reliable
 - Optimum between C++ and Python
 
-
 Also works for us
 
 #----------------------------------------------
@@ -64,6 +63,7 @@ Also works for us
 
     $ brew install go              # on mac
     $ sudo apt-get install golang  # on linux
+    $ from msi file to c:\Go       # on windows
 
 - Verify installation
     $ which go     # typically located in /usr/local/bin/
@@ -75,7 +75,9 @@ Also works for us
 
 #----------------------------------------------
 
-* Workspace: GOPATH
+* Workspace:
+
+default location is ${HOME}/go otherwise set GOPATH env-var
 
 - Directory ${GOPATH} contains all your personal go stuff
 - Convention:
@@ -98,9 +100,13 @@ Also works for us
 - unix cli <--
 - vi
 - IntelliJ
-- Goland <--
+- Goland   <--
 - Sublime
-- git
+- git      <--
+
+TIP:
+
+- Format-on-save: Use "filewatcher"-plugin with "goimports"
 
 #----------------------------------------------
 
@@ -110,9 +116,9 @@ Also works for us
     $ cd ${GOPATH}/src/github.com/<your-github-username>/hello
 
 - Source code: first.go
-.play hello/first.go
+.play -edit examples/hello/first.go
 
-    $ go fmt             # standard formatter
+    $ go fmt             # standard formatter (goimports is even better)
 
     $ go run first.go    # compiles and runs right away
     $ go build first.go  # creates executable "hello" in .
@@ -123,7 +129,7 @@ Also works for us
 
 #----------------------------------------------
 
-* Summary of language (fits on one sheet)
+* Summary of language (fits on one sheet!!!!)
 - Keywords: 
     break case continue default defer else fallthrough for goto if return switch
     package import func const interface map range struct type chan go select var
@@ -158,10 +164,10 @@ Also works for us
     example: ${GOPATH}/src/github.com/gin-gonic/gin
 
 - Package name first line of source file
-     package main // package that results in executable
+     package main // package that results in executable with same name as package
      package news // package that results in library "news.a"
 
-- Packages are more coarse-grained than Java
+- Packages are more coarse-grained than Java: can contain  multiple files
 
 #----------------------------------------------
 
@@ -170,27 +176,27 @@ Also works for us
 - Use fully qualified name
 - Last part short and sweet: fmt, http, log, ..
 
-.code -edit packaging/packaging.go
+.code -edit examples/packaging/packaging.go
 
 #----------------------------------------------
 
 * Variables
-.play vars/vars.go /START OMIT/,/END OMIT/
+.play -edit examples/vars/vars.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * Loops
 - for
-.play for/for.go /START OMIT/,/END OMIT/
+.play -edit examples/for/for.go /START OMIT/,/END OMIT/
 - while-like
-.play while/while.go /START OMIT/,/END OMIT/
+.play -edit examples/while/while.go /START OMIT/,/END OMIT/
 - iterate
-.play iterate/iterate.go /START OMIT/,/END OMIT/
+.play -edit examples/iterate/iterate.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * If, else
-.play if/if.go
+.play -edit examples/if/if.go
 
 #----------------------------------------------
 
@@ -198,7 +204,7 @@ Also works for us
 - On any type
 - No fallthrough unless explicitly stated
 - Multiple cases
-.play switch/switch.go /START OMIT/,/END OMIT/
+.play -edit examples/switch/switch.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -226,7 +232,7 @@ Also works for us
 #----------------------------------------------
 
 * Variadic functions
-.play variadic/variadic.go
+.play -edit examples/variadic/variadic.go
 
 #----------------------------------------------
 
@@ -235,14 +241,14 @@ Also works for us
 - Debugging: log "enter" and "leave" of function
 - Unit-testing: "setup" and "teardown"
 
-.play defer/defer.go /START OMIT/,/END OMIT/
+.play -edit examples/defer/defer.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * Functions as parameters
 - Function-pointers, closures, anonymous functions
 - Can reference variables from outside its function body.
-.play closure/closure.go /START OMIT/,/END OMIT/
+.play -edit examples/closure/closure.go /START OMIT/,/END OMIT/
 
 
 #----------------------------------------------
@@ -250,7 +256,7 @@ Also works for us
 * Struct and methods
 - Compare Java class with methods
 - Use pointer * when modifying struct
-.play struct/struct.go /START OMIT/,/END OMIT/
+.play -edit examples/struct/struct.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -266,8 +272,7 @@ Also works for us
 
   or
   
-  person := Person{Name:"Boogerd"}
-  storePerson( &person )
+  storePerson( &Person{Name:"Boogerd"} )
 
 - Note: Slices, maps and channels are already refs
 - Note: Pass by value has no side effects
@@ -276,12 +281,12 @@ Also works for us
 #----------------------------------------------
 
 * Object construction
-.play construct/construct.go  /START OMIT/,/END OMIT/
+.play -edit examples/construct/construct.go  /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * Enum
-.play -edit enum/enum.go /START OMIT/,/END OMIT/
+.play -edit examples/enum/enum.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -405,7 +410,7 @@ Also works for us
 - Just implement the methods.
 - Type it implements is not required!
 
-.play -edit interfaces/interfaces.go /START OMIT/,/END OMIT/
+.play -edit examples/interfaces/interfaces.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -428,14 +433,14 @@ Concurrent-style not forced upon you, used selectively
 * Concurrency example
 - Do not communicate by sharing memory. Instead, share memory by communicating.
 
-.play -edit channels/channels.go /START OMIT/,/END OMIT/
+.play -edit examples/channels/channels.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * Select example
 - Waitfor events on multiple channels
 
-.play -edit select/select.go /START OMIT/,/END OMIT/
+.play -edit examples/select/select.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -443,7 +448,7 @@ Concurrent-style not forced upon you, used selectively
 - Part of toolchain
 - In same package, dedicated file
 - Filename convention: _test.go
-.code testit/reverse_test.go /START OMIT/,/END OMIT/
+.code examples/testit/reverse_test.go /START OMIT/,/END OMIT/
     $ go test
     FAIL: TestDoit (0.00s)
     go_test.go:14: ERROR : Expecting[marc] Received[cram]
@@ -480,12 +485,12 @@ Just a few examples:
 
 * Flags
 - Read command-line argument
-.play -edit flags/flags.go /START OMIT/,/END OMIT/
+.play -edit examples/flags/flags.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * HTTP server
-.code webserver/webserver.go /START OMIT/,/END OMIT/
+.code examples/webserver/webserver.go /START OMIT/,/END OMIT/
 - Fileserver and reverse proxy included
 
 #----------------------------------------------
@@ -493,7 +498,7 @@ Just a few examples:
 * Synchronisation
 - Alternative to channels
 - Use for small syncs
-.play -edit sync/sync.go /START OMIT/,/END OMIT/
+.play -edit examples/sync/sync.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -517,7 +522,7 @@ example:
 
 
 * Serialisation example
-.play -edit encoding/encoding.go  /^func main/,/^}/
+.play -edit examples/encoding/encoding.go  /^func main/,/^}/
 
 #----------------------------------------------
 
@@ -526,13 +531,13 @@ example:
 - code-generator: generate source-code from dsl
 - Minimize logic in your template (move common concerns to template.FuncMap)
 
-.play -edit template/template.go  /START OMIT/,/END OMIT/
+.play -edit examples/template/template.go  /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * "Kind of" generics
 - go get github.com/clipperhouse/gen
-.code generate/generate.go
+.code examples/generate/generate.go
   $ go generate ./...
   generates cyclist_slice.go with "SortBy"- and "Where"-methods on CyclistSlice
 - Just commit and distribute with your package
