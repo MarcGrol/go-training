@@ -12,7 +12,7 @@ https://github.com/MarcGrol/
 
 * About me
 
-.image images/marc2.jpg
+.image examples/images/ideal.jpg
 - Running, cycling
 
 - Telecom, Finance, Mobile, Healthcare, Transport, Startups
@@ -55,6 +55,18 @@ Also works for us
 
 #----------------------------------------------
 
+* Optimal
+
+.image examples/images/sweet.png
+
+#----------------------------------------------
+
+* Approach
+
+.image examples/images/minimum.png
+
+#----------------------------------------------
+
 * Similarities with Java
 
 - General purpose
@@ -63,17 +75,26 @@ Also works for us
 - Compiled
 - Garbage collected
 - Object oriented
+- Performant
 
 #----------------------------------------------
 
 * Differences with Java
 
-- No generics
-- No constructors
-- No inheritance
-- No exceptions
+Missing in go:
 
+- Generics (but has slice and map)
+- Constructors
+- Inheritance
+- Exceptions
+- Annotations
 
+Missing in java:
+
+- Rich standard library and toolchain
+- Built-in concurrency
+
+Do you miss it?
 
 #----------------------------------------------
 
@@ -539,7 +560,7 @@ Just a few examples:
 
 * Synchronisation
 - Alternative to channels
-- Use for small syncs
+- Use for small syncs or lazy initialisation
 .play -edit examples/sync/sync.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
@@ -558,8 +579,8 @@ example:
    }
 
    type Child struct {
-      Name string `json:"name"          xml:"ChildName"`
-      Age  int    `json:"age,omitempty" xml:"Child_Age,omitempty"`
+      Name string `json:"name"          xml:"name"`
+      Age  int    `json:"age,omitempty" xml:"age,omitempty"`
    }
 
 
@@ -593,7 +614,6 @@ example:
 
 - go vet, golint, gocyclo, varcheck, errcheck, ...
 => goreporter
-
 
 
 #----------------------------------------------
