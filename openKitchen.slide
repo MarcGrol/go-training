@@ -459,9 +459,6 @@ Note: Slices, maps and channels are already refs by default
 
 * Exercise: slices and maps
 
-#----------------------------------------------
-
-* Error handling
 
 #----------------------------------------------
 * Interfaces
@@ -496,6 +493,10 @@ Note: Slices, maps and channels are already refs by default
 - Type it implements is not required!
 
 .play -edit examples/interfaces/interfaces.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Excercise: interfaces
 
 #----------------------------------------------
 * Testing
@@ -609,9 +610,17 @@ example:
 
 #----------------------------------------------
 
+* Excercise: json, xml and protocol buffers
+
+#----------------------------------------------
+
 * Flags
 - Read command-line argument
 .play -edit examples/flags/flags.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Excercise: flags
 
 #----------------------------------------------
 
@@ -619,6 +628,9 @@ example:
 
 -TODO
 
+#----------------------------------------------
+
+* Excercise: http client
 
 #----------------------------------------------
 
@@ -626,6 +638,21 @@ example:
 .code examples/webserver/webserver.go /START OMIT/,/END OMIT/
 - Fileserver and reverse proxy included
 
+#----------------------------------------------
+
+* Excercise: http server
+
+#----------------------------------------------
+
+#----------------------------------------------
+
+* Debugging
+
+- TODO
+
+#----------------------------------------------
+
+* Excercise: fix using debugger
 
 #----------------------------------------------
 
@@ -635,6 +662,10 @@ example:
 - Minimize logic in your template (move common concerns to template.FuncMap)
 
 .play -edit examples/template/template.go  /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Excercise: templating
 
 #----------------------------------------------
 
@@ -662,6 +693,10 @@ example:
 - go vet, golint, gocyclo, varcheck, errcheck, ...
 => goreporter
 
+
+#----------------------------------------------
+
+* Excercise: detect problems with static analysis tools
 
 #----------------------------------------------
 
