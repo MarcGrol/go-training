@@ -97,11 +97,11 @@ Missing in java:
 
 #----------------------------------------------
 
-* Setup
+* Setup environment
 
 #----------------------------------------------
 
-* Setup environment
+* Installation
 
 - Install git:
 
@@ -147,9 +147,9 @@ Missing in java:
 * Workspace:
 - Contains all go stuff
 
-    ${HOME}/go or c:\Go
+    ${HOME}/go or c:\Go           # default
 
-    # otherwise set GOPATH env-var: export GOPATH=${HOME}/src/go
+    # otherwise set the "GOPATH" environmental variable: export GOPATH=${HOME}/src/go
 
 - Convention:
     ${GOPATH}
@@ -162,6 +162,7 @@ Missing in java:
 #----------------------------------------------
 
 * Training material
+
 #----------------------------------------------
 
 * Get the training material
@@ -176,7 +177,7 @@ Everything will end up in:
     ├── examples/
     └── exercises/
 
-Swich to this dir:
+Switch to this dir:
 
     $ cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
 
@@ -186,10 +187,10 @@ Swich to this dir:
 
 #----------------------------------------------
 
-* Third party tools
+* Dev tools
 
+- IntelliJ IDEA or Goland
 - unix terminal or windows command
-- IntelliJ or Goland
 - git
 
 TIP:
@@ -270,14 +271,7 @@ NB:
 * If, else
 .play -edit examples/if/if.go
 
-#----------------------------------------------
-
-* Switch
-- On any type
-- No fallthrough unless explicitly stated
-- Multiple cases
-.play -edit examples/switch/switch.go /START OMIT/,/END OMIT/
-
+(switch-case will be demonstrated later)
 #----------------------------------------------
 
 * Functions
@@ -296,33 +290,7 @@ NB:
     return y, x 
  }
 
-- Package initialisation
-  func init() {
-    // your global initialisations here
-  }
-
-#----------------------------------------------
-
-* Variadic functions
-.play -edit examples/variadic/variadic.go
-
-#----------------------------------------------
-
-* Defer
-- Cleanup of file-handles, mutexes, channels and connections
-- Debugging: log "enter" and "leave" of function
-- Unit-testing: "setup" and "teardown"
-
-.play -edit examples/defer/defer.go /START OMIT/,/END OMIT/
-
-#----------------------------------------------
-
-* Functions as parameters
-- Single method interfaces, closures, anonymous functions
-- Can reference variables from outside its function body.
-.play -edit examples/closure/closure.go /START OMIT/,/END OMIT/
-
-https://www.calhoun.io/5-useful-ways-to-use-closures-in-go/
+(More on functions will be demonstrated later)
 
 #----------------------------------------------
 
@@ -375,6 +343,7 @@ Note: Slices, maps and channels are already refs by default
 #----------------------------------------------
 
 * Containers
+
 - array
 - slice
 - map
@@ -447,6 +416,8 @@ Note: Slices, maps and channels are already refs by default
 - Not thread safe (combine with Mutex)
 
 #----------------------------------------------
+* Error handling
+#----------------------------------------------
 
 * Error handling
 - Multiple return values
@@ -464,6 +435,9 @@ Note: Slices, maps and channels are already refs by default
 - Function signature tells that things can go wrong
 - !!!!! All your own API's should use this pattern
 
+
+#----------------------------------------------
+* Interfaces
 #----------------------------------------------
 
 * Interfaces
@@ -496,6 +470,8 @@ Note: Slices, maps and channels are already refs by default
 
 .play -edit examples/interfaces/interfaces.go /START OMIT/,/END OMIT/
 
+#----------------------------------------------
+* Concurrency
 #----------------------------------------------
 
 # Whatever mix of packages you use: Consumers just have to understand a single error-handling strategy
@@ -732,3 +708,43 @@ example:
 - Let's build something
 
 #----------------------------------------------
+
+#----------------------------------------------
+
+* Switch
+- On any type
+- No fallthrough unless explicitly stated
+- Multiple cases
+.play -edit examples/switch/switch.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+* More on functions
+#----------------------------------------------
+
+
+* Package initialisation
+  func init() {
+    // your global initialisations here
+  }
+
+* Variadic functions
+.play -edit examples/variadic/variadic.go
+
+#----------------------------------------------
+
+* Defer
+- Cleanup of file-handles, mutexes, channels and connections
+- Debugging: log "enter" and "leave" of function
+- Unit-testing: "setup" and "teardown"
+
+.play -edit examples/defer/defer.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Functions as parameters
+- Single method interfaces, closures, anonymous functions
+- Can reference variables from outside its function body.
+.play -edit examples/closure/closure.go /START OMIT/,/END OMIT/
+
+https://www.calhoun.io/5-useful-ways-to-use-closures-in-go/
+
