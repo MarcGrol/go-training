@@ -256,6 +256,11 @@ NB:
 
 #----------------------------------------------
 
+* Exercise: using packages
+
+
+#----------------------------------------------
+
 * Variables
 
 - Name and type swapped (from Java perspective)
@@ -301,6 +306,10 @@ NB:
 
 #----------------------------------------------
 
+* Excercise: functions, loops, if
+
+#----------------------------------------------
+
 * Struct
 - No constructor
 - Case of variable determines accessibility (private, public)
@@ -313,10 +322,6 @@ NB:
 * Struct methods
 
 .play -edit examples/methods/methods.go /START OMIT/,/END OMIT/
-
-#----------------------------------------------
-
-* Exercise: struct 1
 
 #----------------------------------------------
 
@@ -353,6 +358,10 @@ Note: Slices, maps and channels are already refs by default
 
 #----------------------------------------------
 
+* Exercise: structs, enums and pointers
+
+#----------------------------------------------
+
 * Containers
 
 - array
@@ -362,6 +371,7 @@ Note: Slices, maps and channels are already refs by default
 #----------------------------------------------
 
 * Array
+
 - Fixed length immutable
      numbers := [4]int{10, 20, 30, 40}
      
@@ -428,9 +438,10 @@ Note: Slices, maps and channels are already refs by default
 
 #----------------------------------------------
 
-* Exercise: struct 2
+* Exercise: slices and maps
 
 #----------------------------------------------
+
 * Error handling
 #----------------------------------------------
 
@@ -490,7 +501,7 @@ Note: Slices, maps and channels are already refs by default
 #----------------------------------------------
 * Why?
 
-TODO 
+TODO
 #----------------------------------------------
 
 * Unit testing
@@ -510,6 +521,8 @@ TODO
 - Race condition detection
 - Http integration testing: see "httptest"-package
 .link https://www.youtube.com/watch?v=ndmB0bj7eyw More details: google-search "testing techniques golang"
+
+#----------------------------------------------
 
 * Exercise: test
 
@@ -547,6 +560,10 @@ Concurrent-style not forced upon you, used selectively
 
 #----------------------------------------------
 
+* Exercise: concurrency
+
+#----------------------------------------------
+
 * Rich standard libraries
 Just a few examples:
 - flags
@@ -564,24 +581,6 @@ Just a few examples:
 - integrating C-code
 - ...
 
-#----------------------------------------------
-
-* Flags
-- Read command-line argument
-.play -edit examples/flags/flags.go /START OMIT/,/END OMIT/
-
-#----------------------------------------------
-
-* HTTP server
-.code examples/webserver/webserver.go /START OMIT/,/END OMIT/
-- Fileserver and reverse proxy included
-
-#----------------------------------------------
-
-* Synchronisation
-- Alternative to channels
-- Use for small syncs or lazy initialisation
-.play -edit examples/sync/sync.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -609,12 +608,39 @@ example:
 
 #----------------------------------------------
 
+* Flags
+- Read command-line argument
+.play -edit examples/flags/flags.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* HTTP client
+
+-TODO
+
+
+#----------------------------------------------
+
+* HTTP server
+.code examples/webserver/webserver.go /START OMIT/,/END OMIT/
+- Fileserver and reverse proxy included
+
+
+#----------------------------------------------
+
 * Templating
 - web-server: generate html response using template
 - code-generator: generate source-code from dsl
 - Minimize logic in your template (move common concerns to template.FuncMap)
 
 .play -edit examples/template/template.go  /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Synchronisation
+- Alternative to channels
+- Use for small syncs or lazy initialisation
+.play -edit examples/sync/sync.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -727,12 +753,13 @@ example:
 
 * Go do it
 - Start experimenting
-.image images/gophereartrumpet.jpg
+.image examples/images/gophereartrumpet.jpg
 .caption Go is cool:  Tell it around
 - Let's build something
 
-#----------------------------------------------
 
+#----------------------------------------------
+* Extra's
 #----------------------------------------------
 
 * Switch
