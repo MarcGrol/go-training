@@ -306,6 +306,25 @@ NB:
 
 #----------------------------------------------
 
+* Error handling
+- Multiple return values
+- if error is nil, the call worked
+  resp, err := doSomethingThatCanFail(arg1, arg2)
+  if err != nil {
+      log.Printf("Error doing something that can fail: %s", err)
+      return err // early return to minimize indentation
+  }
+  // continue with success path
+
+  // use _ (=blank) if you don't care
+  resp, _ := doit(arg1, arg2)
+
+- Function signature tells that things can go wrong
+- !!!!! All your own API's should use this pattern
+
+
+#----------------------------------------------
+
 * Excercise: functions, loops, if
 
 #----------------------------------------------
@@ -443,24 +462,6 @@ Note: Slices, maps and channels are already refs by default
 #----------------------------------------------
 
 * Error handling
-#----------------------------------------------
-
-* Error handling
-- Multiple return values
-- if error is nil, the call worked
-  resp, err := doSomethingThatCanFail(arg1, arg2)
-  if err != nil {
-      log.Printf("Error doing something that can fail: %s", err)
-      return err // early return to minimize indentation
-  }
-  // continue with success path
-
-  // use _ (=blank) if you don't care
-  resp, _ := doit(arg1, arg2)
-
-- Function signature tells that things can go wrong
-- !!!!! All your own API's should use this pattern
-
 
 #----------------------------------------------
 * Interfaces
