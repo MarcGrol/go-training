@@ -15,19 +15,19 @@ const ( // HL
 
 func (c Color) String() string {
 	switch c {
-	case Red:
-		return "red"
 	case Green:
 		return "green"
 	case Blue:
 		return "blue"
 	default:
-		return "unknown"
+		return "red"
 	}
 }
 func main() {
-	myColor := Blue
-	fmt.Printf("my-color: %d - %s\n", myColor, myColor)
+	var myColor Color // uses default
+	otherColor := Green
+	fmt.Printf("my-color: %v (%d), other-color: %v (%d)\n",
+		myColor, myColor, otherColor, otherColor)
 }
 
 // END OMIT

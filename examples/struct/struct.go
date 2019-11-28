@@ -1,36 +1,26 @@
 package main
 
-import "fmt"
-
-var me Person = Person{
-	Name:      "Marc Grol",
-	Interests: []string{"Running", "Golang"},
-	Children: []Child{
-		{Name: "Pien", Age: 12},
-		{Name: "Tijl", Age: 9},
-	},
-}
+import "log"
 
 // START OMIT
-type Person struct {
-	Name      string
-	Interests []string
-	Children  []Child
+type Person struct { // public
+	Name     string  // public
+	children []child // private
 }
 
-type Child struct {
-	Name string
-	Age  int
-}
-
-func (p *Person) AddChild(child Child) { // HL
-	p.Children = append(p.Children, child)
+type child struct { // private
+	Name string // public
 }
 
 func main() {
-	// me := Person{...} // fully initialized
-	me.AddChild(Child{Name: "Freek", Age: 5})
-	fmt.Printf("%+v\n", me) // Note: debug struct with %+v
+	me := Person{
+		Name: "Marc Grol",
+		children: []child{
+			{Name: "Pien"},
+			{Name: "Tijl"},
+		},
+	}
+	log.Printf("me:%+v", me)
 }
 
 // END OMIT

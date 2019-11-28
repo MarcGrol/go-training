@@ -8,17 +8,19 @@ import (
 const myConstString = "golang"
 
 func main() {
+	fmt.Printf("my-const-string: %s\n", myConstString)
+
 	var status bool // uninitialized -> default (=false)
-	var idx int64 = 42
+	fmt.Printf("status: %v\n", status)
+
 	// := short notation: derives type from right-hand-side // HL
-	i := 256 // HL
+	idx := 256 // HL
+	fmt.Printf("idx: %d\n", idx)
+
 	longString := `{
 		"why":"Usefull to embed json in source"
 	}`
-	myList := []int{1, 3, 5, 7}
-	fmt.Printf(
-		"status:%v\nidx:%d\ni=%d\nmy-const-string:%s\nmy-long-string:%s\nmy-list:%+v\n",
-		status, idx, i, myConstString, longString, myList)
+	fmt.Printf("my-long-string: %s\n", longString)
 }
 
 // END OMIT

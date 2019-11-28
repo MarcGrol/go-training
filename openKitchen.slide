@@ -61,7 +61,7 @@ Also works for us
 
 #----------------------------------------------
 
-* Approach
+* Don't be afraid
 
 .image examples/images/minimum.png
 
@@ -94,11 +94,21 @@ Missing in java:
 - Rich standard library and toolchain
 - Built-in concurrency
 
-Do you miss it?
+
+#----------------------------------------------
+
+* Setup
 
 #----------------------------------------------
 
 * Setup environment
+
+- Install git:
+
+.link https://git-scm.com/download
+
+    $ brew install git               # on mac
+    $ from download                  # on windows
 
 - Install go:
 
@@ -112,52 +122,52 @@ Do you miss it?
     $ which go     # typically located in /usr/local/bin/
     $ go env
 
-- Optional post installation steps
-    # Add installation dir to your PATH (in ~/.bash_profile)
-    $ PATH=${PATH}:/usr/local/bin
+#----------------------------------------------
+
+* More setup (macos, unix)
+
+- Make sure the directory of the "go"-executable is in the PATH env-var
+
+    $ echo $PATH
+
+    $ PATH=${PATH}:/usr/local/bin         # in ~/.bash_profile
+
+- Set GOPATH
+
+    $ echo $GOPATH
+
+    $ export GOPATH=~/go                  # in ~/.bash_profile
+
+- Make the directory of your self-made executbles is in the PATH env-var
+
+    $ export PATH=${PATH}:${GOPATH}/bin   # in ~/.bash_profile
 
 #----------------------------------------------
 
 * Workspace:
+- Contains all go stuff
 
-default location is ${HOME}/go otherwise set GOPATH env-var
+    ${HOME}/go or c:\Go
 
-- Directory ${GOPATH} contains all your personal go stuff
+    # otherwise set GOPATH env-var: export GOPATH=${HOME}/src/go
+
 - Convention:
     ${GOPATH}
     ├── src/   # source code
     ├── pkg/   # libraries
     └── bin/   # executables
-- The tooling knows how to build
 
-- Post installation steps
-
-    # Set ${GOPATH}/bin in your shell startup (~/.bash_profile)
-    $ export GOPATH=~/src/go
-    # add GOPATH to your PATH (~/.bash_profile)
-    $ export PATH=${PATH}:${GOPATH}/bin
-
-#----------------------------------------------
-* Tooling
-
-- unix cli <--
-- vi
-- IntelliJ
-- Goland   <--
-- Sublime
-- git      <--
-
-TIP:
-
-- Format-on-save: Use "filewatcher"-plugin with "goimports"
+- The toolchain uses these conventions
 
 #----------------------------------------------
 
 * Training material
+#----------------------------------------------
 
-Get it:
+* Get the training material
 
-    go get github.com/MarcGrol/goopenkitchen
+
+    $ go get github.com/MarcGrol/goopenkitchen
 
 Everything will end up in:
 
@@ -166,7 +176,25 @@ Everything will end up in:
     ├── examples/
     └── exercises/
 
+Swich to this dir:
+
+    $ cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
+
 #----------------------------------------------
+
+* First program
+
+#----------------------------------------------
+
+* Third party tools
+
+- unix terminal or windows command
+- IntelliJ or Goland
+- git
+
+TIP:
+
+- Format-on-save: Use "filewatcher"-plugin with "goimports"
 
 #----------------------------------------------
 
@@ -189,61 +217,42 @@ Everything will end up in:
     $ hello
     Hi everybody!
 
-#----------------------------------------------
-
-* Summary of language (fits on one sheet!!!!)
-- Keywords: 
-    break case continue default defer else fallthrough for goto if return switch
-    package import func const interface map range struct type chan go select var
-
-- Types:
-	error string rune bool byte int int8 int16 int32 int64 float32 float64
-	uint uint8 uint16 uint32 uint64 uintptr complex64 complex128
-
-- Constants:
-	true false iota
-
-- Zero value:
-	nil
-
-- Functions:
-	append cap close complex copy delete len make new panic recover
 
 #----------------------------------------------
 
-* Packages
-
+* Creating packages
+- Group related stuff
 - Each package in dedicated directory
-
-- Standard packages shipped with go in ${GOROOT}
-    source in ${GOROOT}/src/...
-    compiled in ${GOROOT}/pkg/...
-    example: log, strings, io, errors, time, fmt, http, ....
-
-- Your own or third-party packages in ${GOPATH}
-    source-code in ${GOPATH}/src/...
-    compiled in ${GOPATH}/pkg/...
-    example: ${GOPATH}/src/github.com/gin-gonic/gin
+- More coarse-grained than Java: can contain  multiple files
 
 - Package name first line of source file
      package main // package that results in executable with same name as package
-     package news // package that results in library "news.a"
 
-- Packages are more coarse-grained than Java: can contain  multiple files
+or
 
+     package news // package that results in library that is accessible via 'news'
+
+NB:
+
+- Minimize exported surface
+- Make it short and sweet: fmt, http, log, ..
 
 #----------------------------------------------
 
-* Imports
+* Using other packages
 
-- Use fully qualified name
-- Last part short and sweet: fmt, http, log, ..
+- Import
+- Use package-name as prefix
 
-.code -edit examples/packaging/packaging.go
+.play -edit examples/packageusage/main.go
 
 #----------------------------------------------
 
 * Variables
+
+- Name and type swapped (from Java perspective)
+- Have reasonable defaults
+
 .play -edit examples/vars/vars.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
@@ -309,46 +318,58 @@ Everything will end up in:
 #----------------------------------------------
 
 * Functions as parameters
-- Function-pointers, closures, anonymous functions
+- Single method interfaces, closures, anonymous functions
 - Can reference variables from outside its function body.
 .play -edit examples/closure/closure.go /START OMIT/,/END OMIT/
+
+https://www.calhoun.io/5-useful-ways-to-use-closures-in-go/
+
+#----------------------------------------------
+
+* Struct
+- No constructor
+- Case of variable determines accessibility (private, public)
+
+.play -edit examples/struct/struct.go /START OMIT/,/END OMIT/
 
 
 #----------------------------------------------
 
-* Struct and methods
-- Compare Java class with methods
-- Use pointer * when modifying struct
-.play -edit examples/struct/struct.go /START OMIT/,/END OMIT/
+* Struct methods
+
+.play -edit examples/methods/methods.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * Pointers
-- Pass "by value" is default
-- For actions that mutate data: to pass "by reference"
-- Useful for passing large objects around
-- Beware of side effects
 
-  var personP *Person = new(Person)
-  personP.Name = "Boogerd"
-  storePerson( personP )
+- For passing large objects around (prevent copy overhead)
 
-  or
-  
-  storePerson( &Person{Name:"Boogerd"} )
+  ho := &HugeObject{} // or var ho *HugeObject = &HugeObject{}  or ho := new(HugeObject)
+  insuranceService.CalculateRisk( hu )
 
-- Note: Slices, maps and channels are already refs
-- Note: Pass by value has no side effects
-.link https://github.com/MarcGrol/goopenkitchen/blob/master/pointers/pointers.go example
+- For methods that mutate data:
+
+  func (p Patient)MarkDeceased() { // won't adjust patient
+    p.Deceased = true
+  }
+  func (p *Patient)MarkDeceased() { // will work
+    p.Deceased = true
+  }
+
+- Indicate Optional (poor mans)
+
+  type Person struct {
+    Name string
+    Child *Person // optional
+  }
+Note: Slices, maps and channels are already refs by default
+.link https://github.com/MarcGrol/goopenkitchen/blob/master/examples/pointers/pointers.go example
 
 #----------------------------------------------
 
-* Object construction
-.play -edit examples/construct/construct.go  /START OMIT/,/END OMIT/
+* Enumerations
 
-#----------------------------------------------
-
-* Enum
 .play -edit examples/enum/enum.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
@@ -484,7 +505,6 @@ Everything will end up in:
 Overemphasized
 Most of your code is synchronous
 Concurrent-style not forced upon you, used selectively
-
 
 - built-in "channels" and "goroutines"
 - Goroutines: think very, very lightweight threads
@@ -640,6 +660,27 @@ example:
   $ go vet                         # lint like static analysis
 
 - All CLI -> Easy to automate
+
+#----------------------------------------------
+
+* Summary of language (fits on one sheet!!!!)
+- Keywords:
+    break case continue default defer else fallthrough for goto if return switch
+    package import func const interface map range struct type chan go select var
+
+- Types:
+	error string rune bool byte int int8 int16 int32 int64 float32 float64
+	uint uint8 uint16 uint32 uint64 uintptr complex64 complex128
+
+- Constants:
+	true false iota
+
+- Zero value:
+	nil
+
+- Functions:
+	append cap close complex copy delete len make new panic recover
+
 
 #----------------------------------------------
 
