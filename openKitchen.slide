@@ -1,5 +1,5 @@
 Learning go
-Oktober 2019
+December 2019
 Tags: go golang xebia
 
 Marc Grol
@@ -28,6 +28,8 @@ https://github.com/MarcGrol/
 - Please interrupt for questions
 
 #----------------------------------------------
+* Language
+#----------------------------------------------
 
 * Your experience?
 - Other languages?
@@ -53,17 +55,6 @@ https://github.com/MarcGrol/
 
 Also works for us
 
-#----------------------------------------------
-
-* Optimal
-
-.image examples/images/sweet.png
-
-#----------------------------------------------
-
-* Don't be afraid
-
-.image examples/images/minimum.png
 
 #----------------------------------------------
 
@@ -93,6 +84,18 @@ Missing in java:
 
 - Rich standard library and toolchain
 - Built-in concurrency
+
+#----------------------------------------------
+
+* Optimal
+
+.image examples/images/sweet.png
+
+#----------------------------------------------
+
+* Don't be afraid
+
+.image examples/images/minimum.png
 
 
 #----------------------------------------------
@@ -183,7 +186,7 @@ Switch to this dir:
 
 #----------------------------------------------
 
-* First program
+* Exercise: first program
 
 #----------------------------------------------
 
@@ -218,6 +221,10 @@ TIP:
     $ hello
     Hi everybody!
 
+
+#----------------------------------------------
+
+* Basics
 
 #----------------------------------------------
 
@@ -306,6 +313,10 @@ NB:
 * Struct methods
 
 .play -edit examples/methods/methods.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Exercise: struct 1
 
 #----------------------------------------------
 
@@ -416,6 +427,10 @@ Note: Slices, maps and channels are already refs by default
 - Not thread safe (combine with Mutex)
 
 #----------------------------------------------
+
+* Exercise: struct 2
+
+#----------------------------------------------
 * Error handling
 #----------------------------------------------
 
@@ -471,6 +486,34 @@ Note: Slices, maps and channels are already refs by default
 .play -edit examples/interfaces/interfaces.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
+* Testing
+#----------------------------------------------
+* Why?
+
+TODO 
+#----------------------------------------------
+
+* Unit testing
+- Part of toolchain
+- In same package, dedicated file
+- Filename convention: _test.go
+.code examples/testit/reverse_test.go /START OMIT/,/END OMIT/
+    $ go test
+    FAIL: TestDoit (0.00s)
+    go_test.go:14: ERROR : Expecting[marc] Received[cram]
+
+#----------------------------------------------
+
+* More on testing
+- Benchmarking
+- Code coverage
+- Race condition detection
+- Http integration testing: see "httptest"-package
+.link https://www.youtube.com/watch?v=ndmB0bj7eyw More details: google-search "testing techniques golang"
+
+* Exercise: test
+
+#----------------------------------------------
 * Concurrency
 #----------------------------------------------
 
@@ -501,25 +544,6 @@ Concurrent-style not forced upon you, used selectively
 
 .play -edit examples/select/select.go /START OMIT/,/END OMIT/
 
-#----------------------------------------------
-
-* Unit testing
-- Part of toolchain
-- In same package, dedicated file
-- Filename convention: _test.go
-.code examples/testit/reverse_test.go /START OMIT/,/END OMIT/
-    $ go test
-    FAIL: TestDoit (0.00s)
-    go_test.go:14: ERROR : Expecting[marc] Received[cram]
-
-#----------------------------------------------
-
-* More on testing
-- Benchmarking
-- Code coverage
-- Race condition detection
-- Http integration testing: see "httptest"-package
-.link https://www.youtube.com/watch?v=ndmB0bj7eyw More details: google-search "testing techniques golang"
 
 #----------------------------------------------
 
