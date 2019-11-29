@@ -311,8 +311,7 @@ NB:
 - if error is nil, the call worked
   resp, err := doSomethingThatCanFail(arg1, arg2)
   if err != nil {
-      log.Printf("Error doing something that can fail: %s", err)
-      return err // early return to minimize indentation
+      return fmt.Errorf("Error doing something that can fail: %s", err) // early return to minimize indentation
   }
   // continue with success path
 
@@ -321,7 +320,6 @@ NB:
 
 - Function signature tells that things can go wrong
 - !!!!! All your own API's should use this pattern
-
 
 #----------------------------------------------
 
@@ -451,37 +449,46 @@ initialization:
 #----------------------------------------------
 
 * Interfaces
-- UNIX filosophy: small, sharp tool combined to solve larger tasks
 - Duck-typing: no explicit "implements"
 - Good to improve testability
 
 example from stdlib
 
    package fmt;
-   //  accepts anything that implements the "Writer"-interface: file, buffer, stdout, network, http-response, zip-file etc
+   // Accepts anything that implements the "Writer"-interface:
+   // Examples of Writers: file, buffer, stdout, network, http-response, zip-file etc
    func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) { ... }
 
 other example
 
-   // Let businesslogic indicate kind of error, so we can return an appropriate http-response
-   type HttpError struct {
-        HttpResponseCode int
-        ErrorMessage string
+   // The business logic layer can return this EnrichedError as regular 'error' .
+   // The http layer convert this error into an appropriate http-response (200, 400, 403, 500 etc)
+   type EnrichedError struct {
+        Kind ErrorKind // invalid-input, not-authorized, internal-error etc
+        Message string
    }
-   func (e HttpError)Error() string { // imolement Error-interface
-      return e.ErrorMessage
+   func (e HttpError)Error() string { // implement Error-interface
+      return e.Message
    }
 
 # Refactor using interfaces when initially done
 
 #----------------------------------------------
 
-* Interface example
-- Use dependency injection
-- Testability
-- The business logic of PatientService is testable without a "real"-database
+* Interface
+- Naming convention: ends with "er"
+- Keep them small. Why?
+- Composeable
 
-.play -edit examples/interfaces/interfaces.go /START OMIT/,/END OMIT/
+
+.code -edit examples/interfaces/storeApi.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+* Example usage of interface
+- For dependency injection
+- The business logic of PatientService is testable without a "real"-datastore
+
+.play -edit examples/interfaces/main.go  /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -612,6 +619,8 @@ example:
 
 * Excercise: flags
 
+#----------------------------------------------
+* HTTP
 #----------------------------------------------
 
 * HTTP client
@@ -795,9 +804,11 @@ example:
 .play -edit examples/switch/switch.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
+* Wrapping errors
+TODO
+#----------------------------------------------
 * More on functions
 #----------------------------------------------
-
 
 * Package initialisation
   func init() {

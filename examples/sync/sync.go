@@ -9,15 +9,15 @@ import (
 // START OMIT
 
 type Currency struct {
-	sync.Mutex // HL
+	sync.Mutex // Embed notation // HL
 	amount     float64
 	code       string
 }
 
 func (c *Currency) Add(i float64) {
-	c.Lock() // HL
+	c.Lock()         // HL
+	defer c.Unlock() // HL
 	c.amount += i
-	c.Unlock() // HL
 }
 
 func (c *Currency) Display() string {
