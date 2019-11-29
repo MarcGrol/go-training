@@ -264,7 +264,7 @@ NB:
 * Variables
 
 - Name and type swapped (from Java perspective)
-- Have reasonable defaults
+- Have reasonable defaults (not nil)
 
 .play -edit examples/vars/vars.go /START OMIT/,/END OMIT/
 
@@ -345,10 +345,11 @@ NB:
 #----------------------------------------------
 
 * Pointers
-
+- Default value: nil
 - For passing large objects around (prevent copy overhead)
 
-  ho := &HugeObject{} // or var ho *HugeObject = &HugeObject{}  or ho := new(HugeObject)
+  var ho *HugeObject = &HugeObject{} // ho := &HugeObject{}
+  ho := new(HugeObject)
   insuranceService.CalculateRisk( hu )
 
 - For methods that mutate data:
@@ -366,12 +367,10 @@ NB:
     Name string
     Child *Person // optional
   }
-Note: Slices, maps and channels are already refs by default
-.link https://github.com/MarcGrol/goopenkitchen/blob/master/examples/pointers/pointers.go example
 
 #----------------------------------------------
 
-* Enumerations
+* Enumerations in action
 
 .play -edit examples/enum/enum.go /START OMIT/,/END OMIT/
 
@@ -383,77 +382,65 @@ Note: Slices, maps and channels are already refs by default
 
 * Containers
 
-- array
-- slice
+- array and slice
 - map
 
 #----------------------------------------------
 
-* Array
+* Slices
+- Can contain everything: primitives, structs, slices, maps etc
+- Like Java ArrayList
+- Sortable
+- Supported operations:
 
-- Fixed length immutable
-     numbers := [4]int{10, 20, 30, 40}
-     
-     fmt.Printf( "second value: %d", numbers[1] ) 
+    append, replace, get-on-idx, get-on-range, iterate
 
-     // idiomatic: let compiler count
-     s := [...]string{"Penn", "Teller"}
+Fixed length immutable
 
-- Iterate: not idiomatic
-   for idx := 0 ; idx<len(s); idx++ {
-      fmt.Printf("%d\n", numbers[idx])
-   }
+    numbers := [4]int{10, 20, 30, 40}
+    s := [...]string{"Voetbal", "Hockey"} // idiomatic: let compiler count
 
-- Idiomatic:
-   for _, value := range numbers {
-      fmt.Printf("value: %d\n", value)
-   }
+Dynamic size
+
+    var slice0 []string = []string{}   // empty
+    slice1 := []string{}               // empty
+    slice2 := []string{"a", "b", "c"}  // initialize with data
+    slice3 := make( []string, 0, 5 )   // optimization: empty with reserved capacity
+
+- You will use them a lot
 
 #----------------------------------------------
 
-* Slice
-- Dynamic array: can grow in size
-    letters := []string{"a", "b", "c", "d"}
-    subslice = letters[2:3] // c and d
+* Slices in action
 
-    slice := []string{} // very readable
-    slice := make( []string, 0, 5 ) // when you want to be more in charge of allocation
-    slice = append( slice, "first entry" )
-    fmt.Printf( "slice-length: %d slice-capacity: %d slice-values:%+v",  
-                    len(slice),
-                    cap(slice),
-                    slice)
-
-- Iterate over slice (index optional -> use _)
- for idx, value := range values {
-    fmt.Printf("values[%d] = %s\n", idx, value)
- }
-
-- Sorting: use sort package
-
-- Generics: use "gen" code-generator (github.com/clipperhouse/gen)
+.play -edit examples/slice/slice.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
 * Map
-- Store key-value pairs
+- Store key-value pairs (like Java HashMap)
+- Typically key is primitive, value can be everything: primitives, structs, slices, maps etc
+- Supported operations:
 
-    m := make(map[string]int)
-    m["route"] = 66
-    // or preferred
-    m := map[string]int {
-        "route": 66,
+    get-on-key, put-on-key, replace-on-key, delete-on-key, iterate
+
+initialization:
+
+    var m1 map[string]int = make(map[string]int)
+    m2 := make(map[string]int)
+    m3 := map[string]int{}
+    m4 := map[string]int{
+         "route": 66,
     }
-    delete(m, "route")
-    i, ok := m["route"]
-
-- Iterate over map
- for key, value := range numbers {
-    fmt.Printf("%s - %d",key, value)
- }
 
 - Random iteration order
 - Not thread safe (combine with Mutex)
+
+#----------------------------------------------
+* Maps in action
+
+.play -edit examples/maps/maps.go /START OMIT/,/END OMIT/
+
 
 #----------------------------------------------
 
@@ -573,6 +560,7 @@ Just a few examples:
 - sync
 - logging
 - os
+- sort
 - networking
 - http, http2: client and server
 - encoding (json, xml, mime)

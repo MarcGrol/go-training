@@ -1,26 +1,27 @@
 package main
 
-import "log"
+import "fmt"
 
 // START OMIT
-type Person struct { // public
-	Name     string  // public
-	children []child // private
+type Student struct { // public
+	Name string       // public
+	password  string  // private
+	teacher teacher   // private
 }
 
-type child struct { // private
-	Name string // public
+type teacher struct { // not accessible outside package
+	Name string
 }
 
 func main() {
-	me := Person{
-		Name: "Marc Grol",
-		children: []child{
-			{Name: "Pien"},
-			{Name: "Tijl"},
+	son := Student{ // constructor like
+		Name: "Freek",
+		password:  "secret",
+		teacher:teacher{
+			Name: "Lisette",
 		},
 	}
-	log.Printf("me:%+v", me)
+	fmt.Printf("%+v", son) // %+v: convenience debugging
 }
 
 // END OMIT
