@@ -407,7 +407,7 @@ Dynamic size
     slice2 := []string{"a", "b", "c"}  // initialize with data
     slice3 := make( []string, 0, 5 )   // optimization: empty with reserved capacity
 
-- You will use them a lot
+- Not thread safe (combine with Mutex)
 
 #----------------------------------------------
 
@@ -446,28 +446,29 @@ initialization:
 
 * Exercise: slices and maps
 
-
 #----------------------------------------------
 * Interfaces
 #----------------------------------------------
 
 * Interfaces
 - UNIX filosophy: small, sharp tool combined to solve larger tasks
-- Good for testability
-# decribe the "what", not the "how"
+- Duck-typing: no explicit "implements"
+- Good to improve testability
 
-- The function below accepts anything that implements the "Writer"-interface: This can be a file, buffer, stdout, network, http-response, zip-file etc
+example from stdlib
 
    package fmt;
-   ...
+   //  accepts anything that implements the "Writer"-interface: file, buffer, stdout, network, http-response, zip-file etc
    func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) { ... }
 
-- Implement your own error in order to be able to return meaningful "restful" error-codes
+other example
+
+   // Let businesslogic indicate kind of error, so we can return an appropriate http-response
    type HttpError struct {
         HttpResponseCode int
         ErrorMessage string
    }
-   func (e HttpError)Error() string {
+   func (e HttpError)Error() string { // imolement Error-interface
       return e.ErrorMessage
    }
 
@@ -476,8 +477,9 @@ initialization:
 #----------------------------------------------
 
 * Interface example
-- Just implement the methods.
-- Type it implements is not required!
+- Use dependency injection
+- Testability
+- The business logic of PatientService is testable without a "real"-database
 
 .play -edit examples/interfaces/interfaces.go /START OMIT/,/END OMIT/
 

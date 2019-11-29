@@ -14,7 +14,7 @@ type Patient struct {
 }
 
 func (p Patient) HasHighRiskOnDisease() bool { // no side effect
-	return (time.Now().Year() - p.YearBorn) > 70
+	return (time.Now().Year() - p.YearBorn) > 70 // p => "this"
 }
 
 func (p *Patient) MarkHealthy() { // has side effect

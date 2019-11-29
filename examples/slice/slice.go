@@ -20,7 +20,7 @@ func main() {
 	fmt.Printf("begin:   %v\n", letters[:2])             // [a b]
 	fmt.Printf("middlet: %v\n", letters[1:3])            // [b c]
 	fmt.Printf("end:     %v\n", letters[3:])             // [d e]
-	fmt.Printf("last:    %v\n", letters[len(letters)-1]) // e
+	fmt.Printf("last:    %v\n", letters[len(letters)-1]) // e (safe????)
 
 	// iterate
 	for idx, value := range letters {
