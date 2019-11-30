@@ -2,11 +2,9 @@ package testit
 
 // START OMIT
 import (
-	"fmt"
 	"testing"
 )
 
-// function under test defined in other source file
 // Naming convention:  starts with Test and has "t *testing.T" as parameter
 func TestReverseAscii(t *testing.T) {
 	value := Reverse("cram")
@@ -15,9 +13,9 @@ func TestReverseAscii(t *testing.T) {
 	}
 }
 
-func ExampleReverse() {
-	fmt.Println(Reverse("hello"))
-	// Output: olleh
-}
-
 // END OMIT
+
+//func ExampleReverse() {
+//	fmt.Println(Reverse("hello"))
+//	// Output: olleh
+//}

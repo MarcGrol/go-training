@@ -5,19 +5,44 @@ Tags: go golang xebia
 Marc Grol
 Software engineer, Xebia
 mgrol@xebia.com
-http://www.xebia.com/
-https://github.com/MarcGrol/
+.link  http://www.xebia.com/
+.link  https://github.com/MarcGrol/
 
 #----------------------------------------------
 
 * About me
-
 .image examples/images/ideal.jpg
-- Running, cycling
+- Running, hockey
 
 - Telecom, Finance, Mobile, Healthcare, Transport, Startups
 - Allround, cost-benefit, get things done
 - Running golang in production @Duxxie
+
+#----------------------------------------------
+
+* Who is who?
+
+#----------------------------------------------
+
+* Expectations and goals
+
+#----------------------------------------------
+
+* Rules
+
+#----------------------------------------------
+
+* Agenda
+
+Day 1:
+- Basis
+
+Day 2:
+- Advanced
+
+Day 3:
+- Exercise in groups
+- Evaluation
 
 #----------------------------------------------
 
@@ -75,8 +100,8 @@ Also works for us
 Missing in go:
 
 - Generics (but has slice and map)
-- Constructors
-- Inheritance
+- Constructors (but uses "constructing" functions)
+- Inheritance (but has "embedding")
 - Exceptions
 - Annotations
 
@@ -84,6 +109,19 @@ Missing in java:
 
 - Rich standard library and toolchain
 - Built-in concurrency
+
+
+#----------------------------------------------
+
+* Useful sources of information
+
+https://golang.org/doc/effective_go.html
+
+https://golangweekly.com/ (newsletter to keep up)
+
+https://github.com/avelino/awesome-go
+
+https://dave.cheney.net/
 
 #----------------------------------------------
 
@@ -183,16 +221,6 @@ Everything will end up in:
 Switch to this dir:
 
     $ cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
-
-#----------------------------------------------
-
-* Useful sources of information
-
-https://golang.org/doc/effective_go.html
-
-https://golangweekly.com/ (newsletter to keep up)
-
-https://github.com/avelino/awesome-go
 
 #----------------------------------------------
 
@@ -315,7 +343,6 @@ Enforce rules:
 * If, else
 .play -edit examples/if/if.go
 
-(switch-case will be demonstrated later)
 #----------------------------------------------
 
 * Switch
@@ -326,18 +353,20 @@ Enforce rules:
 
 #----------------------------------------------
 
-* Excercise: controll structures
+* Exercise: controll structures
 
 #----------------------------------------------
 
 * Functions
 - Core building block
-
 - Scope: based on case
- func ConvertIt( arg int ) string {
+- Java: static methods
+
+ func ConvertIt( arg int ) string { // public
      return convertInternal( arg )
  }
- func convertInternal( arg int ) string { // internal, unexported function
+
+ func convertInternal( arg int ) string { // internal, private function
      return fmt.Sprintf( "My integer value as string: %d", arg)
  }
 
@@ -346,7 +375,7 @@ Enforce rules:
     return y, x 
  }
 
-(More on functions will be demonstrated later)
+(More on functions later)
 
 #----------------------------------------------
 
@@ -372,11 +401,13 @@ Enforce rules:
   resp, _ := doit(arg1, arg2)
 
 - Function signature tells that things can go wrong
-- !!!!! All your own API's should use this pattern
+- Keep indentation low
+
+!!! All your own API's should use this pattern !!!
 
 #----------------------------------------------
 
-* Excercise: error-handling and cleanup
+* Exercise: error-handling and cleanup
 
 #----------------------------------------------
 
@@ -407,7 +438,7 @@ Enforce rules:
   ho := new(HugeObject)
   insuranceService.CalculateRisk( hu )
 
-- For methods that mutate data:
+- For methods that mutate data
 
   func (p Patient)MarkDeceased() { // won't adjust patient
     p.Deceased = true
@@ -545,37 +576,132 @@ other example
 - For dependency injection
 - The business logic of PatientService is testable without a "real"-datastore
 
-.play -edit examples/interfaces/main.go  /START OMIT/,/END OMIT/
+.code -edit examples/interfaces/main.go  /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
-* Excercise: interfaces
+* Exercise: interfaces
 
 #----------------------------------------------
 * Testing
 #----------------------------------------------
-* Why?
 
-TODO
+* Testing
+
+Essential for software with a long predicted lifetime
+
+Why:
+
+- Need “Safety-net" so you dare to keep improving and extending your software
+
+How:
+
+- Do from beginning
+- Tests should be easy and fast to run
+- Test against the API: not against the internals
+- Prefer HTTP (as the ultimate API) to trigger your business logic, so you have freedom to change the internals and still keep your safety net intact
+
+
 #----------------------------------------------
 
 * Unit testing
 - Part of toolchain
 - In same package, dedicated file
 - Filename convention: _test.go
+
 .code examples/testit/reverse_test.go /START OMIT/,/END OMIT/
+
     $ go test
-    FAIL: TestDoit (0.00s)
-    go_test.go:14: ERROR : Expecting[marc] Received[cram]
+    --- FAIL: TestReverseAscii (0.00s)
+        reverse_test.go:13: ERROR : Expecting[marc] Received[cram]
+    FAIL
+    exit status 1
+
+#----------------------------------------------
+* Table driven test
+- Used a lot in the stdlib
+- Very readable
+- Easy to be complete
+
+    func TestSplit(t *testing.T) {
+        tests := []struct { // anonymous struct
+            input,sep string, want []string
+        }{
+            {input: "a/b/c", sep: "/", want: []string{"a", "b", "c"}},
+            {input: "a/b/c", sep: ",", want: []string{"a/b/c"}},
+            {input: "abc", sep: "/", want: []string{"abc"}},
+        }
+
+        for _, tc := range tests {
+            got := Split(tc.input, tc.sep)
+            if !reflect.DeepEqual(tc.want, got) {
+                t.Fatalf("expected: %v, got: %v", tc.want, got)
+            }
+        }
+    }
+
+#----------------------------------------------
+* Design for testability: Use dependency injection
+
+    package uniqueid
+
+    // Generator provides an interface for creating uuid's.
+    type Generator interface {
+        Generate() string
+    }
+
+Service must internally create uuid's:
+
+    package patient
+
+    type Service struct {
+        uuidGenerator uniqueid.Generator
+    }
+
+    func New(uuidGenerator uniqueid.Generator) *Service {
+        return &Service{
+            uuidGenerator: uuidGenerator,
+        }
+    }
+
+- This pattern also suited to replace direct calls to time.Now() or manage access to databases etc
+
+#----------------------------------------------
+* Mocks and stubs
+
+- Create by hand
+- Generate from interface using mockgen
+
+    package uniqueid
+
+    //go:generate mockgen -source=api.go -destination=gen_GeneratorMock.go -package=uniqueid \
+       github.com/MarcGrol/forwardhttp/uniqueid Generator
+
+    type Generator interface {
+    	Generate() string
+    }
+
+Trigger generation:
+
+    go generate ./...
+
+#----------------------------------------------
+
+* Benchmarking
+- Premature optimization is ...
+- Never optimize before measuring first
+
+.code examples/benchmark/mycalclib_test.go /START OMIT/,/END OMIT/
+
+- On profiling: https://www.youtube.com/watch?v=O-bJ4s8OdcA
 
 #----------------------------------------------
 
 * More on testing
-- Benchmarking
-- Code coverage
+- Standard library offers utils for testing http-clients and http-servers
+- Code coverage: IntellijIDEA
 - Race condition detection
-- Http integration testing: see "httptest"-package
-.link https://www.youtube.com/watch?v=ndmB0bj7eyw More details: google-search "testing techniques golang"
+- Continuous integration
 
 #----------------------------------------------
 
@@ -664,7 +790,7 @@ example:
 
 #----------------------------------------------
 
-* Excercise: json, xml and protocol buffers
+* Exercise: json, xml and protocol buffers
 
 #----------------------------------------------
 
@@ -674,7 +800,7 @@ example:
 
 #----------------------------------------------
 
-* Excercise: flags
+* Exercise: flags
 
 #----------------------------------------------
 * HTTP
@@ -686,7 +812,7 @@ example:
 
 #----------------------------------------------
 
-* Excercise: http client
+* Exercise: http client
 
 #----------------------------------------------
 
@@ -696,19 +822,136 @@ example:
 
 #----------------------------------------------
 
-* Excercise: http server
+* Exercise: http server
 
 #----------------------------------------------
+
+* Tooling
 
 #----------------------------------------------
 
 * Debugging
 
-- TODO
+- Use intelliJ IDEA or Goland
 
 #----------------------------------------------
 
-* Excercise: fix using debugger
+* Exercise: fix using debugger
+
+
+#----------------------------------------------
+
+* Static analysis
+
+.code examples/staticanalysis/staticanalysis.go
+
+- go vet, golint, gocyclo, varcheck, errcheck, test-coverage, ...
+=> goreporter
+
+#----------------------------------------------
+
+* Exercise: detect problems with static analysis tools
+
+#----------------------------------------------
+
+* Dependency analysis
+
+- go list
+
+.code examples/dependencyanalysis/main.go
+
+
+#----------------------------------------------
+
+* Exercise: dependency analysis
+
+#----------------------------------------------
+* More on functions
+#----------------------------------------------
+
+* Package initialisation
+- Executed only once at startup
+- Can be multiple
+- For advanced initialisations
+
+  func init() {
+    // your global initialisations here
+  }
+
+#----------------------------------------------
+
+* Variadic functions
+.play -edit examples/variadic/variadic.go
+
+#----------------------------------------------
+
+* Closures
+
+- Alternative to single method interfaces
+
+example: binary search
+
+.play -edit examples/binarysearch/main.go
+
+#----------------------------------------------
+* More examples usages of closures
+
+- HTTP middleware
+
+example: measure duration of http-call
+
+    func timed(f http.HandlerFunc) http.HandlerFunc {
+        return func(w http.ResponseWriter, r *http.Request) {
+            start := time.Now()
+            f(w, r)
+            end := time.Now()
+            fmt.Println("The request took", end.Sub(start))
+        }
+    }
+
+
+#----------------------------------------------
+
+* More examples usages of closures
+
+- Pass data into handlers without global data
+
+    func main() {
+      db := NewDatabase("localhost:5432")
+
+      http.HandleFunc("/hello", hello(db))
+      http.ListenAndServe(":3000", nil)
+    }
+
+    func hello(db Database) func(http.ResponseWriter, *http.Request) {
+      return func(w http.ResponseWriter, r *http.Request) {
+        // has access to db without using globals vars
+        ...
+      }
+    }
+
+#----------------------------------------------
+
+
+* More examples usages of closures
+
+combine with go routines to execute work in background
+
+.play -edit examples/fireforget/main.go /START OMIT/,/END OMIT/
+
+
+#----------------------------------------------
+
+* Overridable functions
+- Interfaces more suitable for overriding however you might encounter this
+
+.code -edit examples/emailapi/api.go
+
+- Can be useful in combination with build-tags
+
+#----------------------------------------------
+
+* Extras
 
 #----------------------------------------------
 
@@ -721,7 +964,7 @@ example:
 
 #----------------------------------------------
 
-* Excercise: templating
+* Exercise: templating
 
 #----------------------------------------------
 
@@ -739,20 +982,6 @@ example:
   generates cyclist_slice.go with "SortBy"- and "Where"-methods on CyclistSlice
 - Just commit and distribute with your package
 .link https://github.com/MarcGrol/goopenkitchen/blob/master/generate/cyclist_slice.go cyclist_slice.go
-
-#----------------------------------------------
-
-* Static analysis
-
-.code examples/staticanalysis/staticanalysis.go
-
-- go vet, golint, gocyclo, varcheck, errcheck, ...
-=> goreporter
-
-
-#----------------------------------------------
-
-* Excercise: detect problems with static analysis tools
 
 #----------------------------------------------
 
@@ -856,33 +1085,3 @@ example:
 
 * Wrapping errors
 TODO
-#----------------------------------------------
-* More on functions
-#----------------------------------------------
-
-* Package initialisation
-  func init() {
-    // your global initialisations here
-  }
-
-* Variadic functions
-.play -edit examples/variadic/variadic.go
-
-#----------------------------------------------
-
-* Defer
-- Cleanup of file-handles, mutexes, channels and connections
-- Debugging: log "enter" and "leave" of function
-- Unit-testing: "setup" and "teardown"
-
-.play -edit examples/defer/defer.go /START OMIT/,/END OMIT/
-
-#----------------------------------------------
-
-* Functions as parameters
-- Single method interfaces, closures, anonymous functions
-- Can reference variables from outside its function body.
-.play -edit examples/closure/closure.go /START OMIT/,/END OMIT/
-
-https://www.calhoun.io/5-useful-ways-to-use-closures-in-go/
-

@@ -18,7 +18,7 @@ func main() {
 	sum(1, 2, 3) // HL
 
 	nums := []int{1, 2, 3, 4}
-	sum(nums...)
+	sum(nums...) // HL
 }
 
 // END OMIT

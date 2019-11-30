@@ -21,8 +21,10 @@ func TestDoCalculationByReference(t *testing.T) {
 	assert.Equal(t, 42, value)
 }
 
-// Naming convention: starts with "Benchmark" and has "b *testing.B" as parameter
+//START OMIT
 // trigger benchmark with: go test -bench=.
+
+// Naming convention: starts with "Benchmark" and has "b *testing.B" as parameter
 func BenchmarkDoCalculationByValue(b *testing.B) {
 	// run the function b.N times
 	for n := 0; n < b.N; n++ {
@@ -35,3 +37,5 @@ func BenchmarkDoCalculationByReference(b *testing.B) {
 		(&bs).DoCalculationByReference()
 	}
 }
+
+// END OMIT
