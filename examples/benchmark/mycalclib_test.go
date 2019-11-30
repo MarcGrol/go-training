@@ -1,8 +1,9 @@
 package benchmark
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -10,14 +11,14 @@ var (
 )
 
 // Regular tests
-func TestDoCalculationByValue( t *testing.T) {
+func TestDoCalculationByValue(t *testing.T) {
 	value := bs.DoCalculationByValue()
-	assert.Equal(t, 1984,value)
+	assert.Equal(t, 1984, value)
 }
 
-func TestDoCalculationByReference( t *testing.T) {
+func TestDoCalculationByReference(t *testing.T) {
 	value := (&bs).DoCalculationByReference()
-	assert.Equal(t, 42,value)
+	assert.Equal(t, 42, value)
 }
 
 // Naming convention: starts with "Benchmark" and has "b *testing.B" as parameter
@@ -34,4 +35,3 @@ func BenchmarkDoCalculationByReference(b *testing.B) {
 		(&bs).DoCalculationByReference()
 	}
 }
-

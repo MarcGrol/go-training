@@ -268,7 +268,7 @@ NB:
 
 * Comments
 
-    /* */  and //
+    /* a comment */  and // another one
 
 Document your packages:
 - Package level comment
@@ -318,6 +318,18 @@ Enforce rules:
 (switch-case will be demonstrated later)
 #----------------------------------------------
 
+* Switch
+- On any type
+- No fallthrough unless explicitly stated
+- Multiple cases as comma-separated list
+.code -edit examples/switching/switch.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Excercise: controll structures
+
+#----------------------------------------------
+
 * Functions
 - Core building block
 
@@ -338,6 +350,15 @@ Enforce rules:
 
 #----------------------------------------------
 
+* Defer
+- Cleanup of file-handles, mutexes, channels and connections
+- Debugging: log "enter" and "leave" of function
+- Unit-testing: "setup" and "teardown"
+
+.play -edit examples/defer/defer.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
 * Error handling
 - Multiple return values
 - if error is nil, the call worked
@@ -355,7 +376,11 @@ Enforce rules:
 
 #----------------------------------------------
 
-* Excercise: functions, loops, if
+* Excercise: error-handling and cleanup
+
+#----------------------------------------------
+
+* Data
 
 #----------------------------------------------
 
@@ -829,13 +854,6 @@ example:
 * Extra's
 #----------------------------------------------
 
-* Switch
-- On any type
-- No fallthrough unless explicitly stated
-- Multiple cases
-.play -edit examples/switch/switch.go /START OMIT/,/END OMIT/
-
-#----------------------------------------------
 * Wrapping errors
 TODO
 #----------------------------------------------
