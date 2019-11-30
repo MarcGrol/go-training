@@ -13,8 +13,8 @@ type PatientStorer interface {
 
 	// Store persists a patient
 	// on a technical error, the error parameter is not nil
-	// on success: the Patient is returned (and error is set to nil)
-	// if the patient does not yet exist, UID (=globally unique) is set before storing
+	// on success: the Patient is returned
+	// if the patient does not yet exist, UID (=globally unique) is set before pe
 	Store(patient Patient) (Patient, error)
 }
 

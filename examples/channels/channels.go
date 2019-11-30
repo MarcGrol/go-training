@@ -12,8 +12,8 @@ func sum(a []int, resultChannel chan int) {
 }
 
 func doit() {
-	responseChannel := make(chan int)
-	defer close(responseChannel) // prevent resource leak
+	responseChannel := make(chan int) // construct channel // HL
+	defer close(responseChannel)      // prevent resource leak
 
 	go sum([]int{1, 2, 3}, responseChannel)      // 1 + 2 + 3 = 6 // HL
 	go sum([]int{4, 5, 6}, responseChannel)      // 4 + 5 + 6 = 15 // HL
