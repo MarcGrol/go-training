@@ -799,12 +799,12 @@ example:
 
 #----------------------------------------------
 
-* Exercise: json, xml and protocol buffers
+* Exercise: json and xml
 
 #----------------------------------------------
 
 * Flags
-- Read command-line argument
+- Read command-line arguments
 .play -edit examples/flags/flags.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
@@ -817,14 +817,18 @@ example:
 
 * HTTP client
 
-- Methods: POST, PUT, DELETE and GET
-- Url: REST-ful?
-- Headers: Content-Type and Accept
-- Payload: Json and XML
-- Authentication: Basic Auth or OpenID
+Request and response:
+
+- Request.Method: POST, PUT, DELETE and GET
+- Request.Url: REST-ful?
+- *.Headers: Content-Type, Accept, Authorization (Basic or Bearer)
+- *.Payload: Json, XML
 - Timeout
-- Based on Swagger/OpenApi-spec?
-- Standard library provides API
+- Response.StatusCode: 200, 201, 202, 301, 307, 400, 401, 403, 404, 500, 501, 503
+
+Based on Swagger/OpenApi-spec?
+
+Standard library provides API
 
 #----------------------------------------------
 
@@ -842,12 +846,14 @@ example:
 
 - Methods: POST, PUT, DELETE, GET AND HEAD
 - Url: REST-ful?
-- Headers: Content-Type and Accept, CORS
-- Payload: Json and XML
-- Authentication: Basic Auth or OpenID
-- Based on Swagger/OpenApi-spec?
-- Middleware for non-functionals
-- Standard library provides API
+- Payload: Json, XML
+- Middleware for non-functionals (CORS, Auth, Monitoring)
+- Response status-code and error-message
+
+Based on Swagger/OpenApi-spec?
+
+Standard library provides API:
+
 - HTTP/2 capable
 - Each request runs in its own goroutine
 
@@ -971,7 +977,7 @@ Major version upgrade appears in the import path
 
 - Try to minimize your dependencies
 - Sometimes a little duplication is better than introducing a huge dependency
-- Duck-typing allows interface duplication
+- Duck-typing allows add-hoc interface creation
 
 #----------------------------------------------
 
@@ -1067,6 +1073,13 @@ combine with go routines to execute work in background
 
 #----------------------------------------------
 
+* Contract based interfaces
+- Swagger/OpenApi spec
+- GRPC (Protocol buffers)
+- (WSDL/XSD)
+
+#----------------------------------------------
+
 * Templating
 - web-server: generate html response using template
 - code-generator: generate source-code from dsl
@@ -1089,23 +1102,55 @@ combine with go routines to execute work in background
   $ go generate ./...
   generates cyclist_slice.go with "SortBy"- and "Where"-methods on CyclistSlice
 - Just commit and distribute with your package
-.link https://github.com/MarcGrol/goopenkitchen/blob/master/generate/cyclist_slice.go cyclist_slice.go
+
+.link https://github.com/MarcGrol/goopenkitchen/blob/master/examples/generate/cyclist_slice.go cyclist_slice.go
+
+#----------------------------------------------
+
+* Parsing go
+
+- Extract documentation from code
+- Create boiler-plate code
+- stdlib provides api:
+    import (
+        "go/ast"
+        "go/parser"
+        "go/token"
+    )
+
+Example:
+
+- github.com/MarcGrol/golangAnnotations
+- Used in large scale project
 
 #----------------------------------------------
 
 
 #----------------------------------------------
 
-* Optimal
+* Understandability is king
 
 .image examples/images/sweet.png
 
 #----------------------------------------------
 
-* Don't be afraid
+* Just start
 
 .image examples/images/minimum.png
 
+
+#----------------------------------------------
+
+* Conclusions
+
+
+#----------------------------------------------
+
+* Improvements
+
+#----------------------------------------------
+
+* What's next?
 
 #----------------------------------------------
 
