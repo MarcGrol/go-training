@@ -245,7 +245,7 @@ TIP:
 
 #----------------------------------------------
 
-* First program
+* First program <first>
 
     $ cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
     $ mkdir -p hello
@@ -253,7 +253,7 @@ TIP:
 
 - Source code: first.go
 
-.play -edit examples/hello/first.go
+.play -edit examples/first/first.go
 
     $ go fmt             # standard formatter (goimports is even better)
 
@@ -290,7 +290,7 @@ NB:
 
 #----------------------------------------------
 
-* Using other packages
+* Using other packages <packageusage>
 
 - Import
 - Use package-name as prefix
@@ -319,14 +319,14 @@ Enforce rules:
 
 
 #----------------------------------------------
-* Commenting example
+* Commenting example <patientstore>
 
 .play -edit examples/patientstore/patientstore.go
 
 
 #----------------------------------------------
 
-* Variables
+* Variables (vars)
 
 - Name and type swapped (from Java perspective)
 - Have reasonable defaults (not nil)
@@ -335,7 +335,7 @@ Enforce rules:
 
 #----------------------------------------------
 
-* Loops
+* Loops <for,while,iterate>
 - for
 .play -edit examples/for/for.go /START OMIT/,/END OMIT/
 - while-like
@@ -345,12 +345,12 @@ Enforce rules:
 
 #----------------------------------------------
 
-* If, else
+* If, else <if>
 .play -edit examples/if/if.go
 
 #----------------------------------------------
 
-* Switch
+* Switch <switching>
 - On any type
 - No fallthrough unless explicitly stated
 - Multiple cases as comma-separated list
@@ -384,7 +384,7 @@ Enforce rules:
 
 #----------------------------------------------
 
-* Defer
+* Defer <defer>
 - Cleanup of file-handles, mutexes, channels and connections
 - Debugging: log "enter" and "leave" of function
 - Unit-testing: "setup" and "teardown"
@@ -420,7 +420,7 @@ Enforce rules:
 
 #----------------------------------------------
 
-* Struct
+* Struct <struct>
 - No constructor
 - Case of variable determines accessibility (private, public)
 
@@ -429,7 +429,7 @@ Enforce rules:
 
 #----------------------------------------------
 
-* Struct methods
+* Struct methods <methods>
 
 .play -edit examples/methods/methods.go /START OMIT/,/END OMIT/
 
@@ -461,7 +461,7 @@ Enforce rules:
 
 #----------------------------------------------
 
-* Enumerations in action
+* Enumerations <enum>
 
 .play -edit examples/enum/enum.go /START OMIT/,/END OMIT/
 
@@ -502,7 +502,7 @@ Dynamic size
 
 #----------------------------------------------
 
-* Slices in action
+* Slices in action <slice>
 
 .play -edit examples/slice/slice.go /START OMIT/,/END OMIT/
 
@@ -528,7 +528,7 @@ initialization:
 - Not thread safe (combine with Mutex)
 
 #----------------------------------------------
-* Maps in action
+* Maps in action <maps>
 
 .play -edit examples/maps/maps.go /START OMIT/,/END OMIT/
 
@@ -568,7 +568,7 @@ other example
 
 #----------------------------------------------
 
-* Interface
+* Interface <interfaces>
 - Naming convention: ends with "er"
 - Keep them small. Why?
 - Composeable
@@ -577,7 +577,7 @@ other example
 .code -edit examples/interfaces/storeApi.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
-* Example usage of interface
+* Example usage of interface <interfaces>
 - For dependency injection
 - The business logic of PatientService is testable without a "real"-datastore
 
@@ -609,7 +609,7 @@ How:
 
 #----------------------------------------------
 
-* Unit testing
+* Unit testing <testit>
 - Part of toolchain
 - In same package, dedicated file
 - Filename convention: _test.go
@@ -692,7 +692,7 @@ Trigger generation:
 
 #----------------------------------------------
 
-* Benchmarking
+* Benchmarking <benchmark>
 - Premature optimization is ...
 - Never optimize before measuring first
 
@@ -731,14 +731,14 @@ Concurrent-style not forced upon you, used selectively
 
 #----------------------------------------------
 
-* Concurrency example
+* Concurrency example <channels>
 - Do not communicate by sharing memory. Instead, share memory by communicating.
 
 .play -edit examples/channels/channels.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
-* Select example
+* Select example <select>
 - Waitfor events on multiple channels
 
 .play -edit examples/select/select.go /START OMIT/,/END OMIT/
@@ -794,7 +794,7 @@ example:
    }
 
 
-* Serialisation example
+* Serialisation example <encoding>
 .play -edit examples/encoding/encoding.go  /^func main/,/^}/
 
 #----------------------------------------------
@@ -803,7 +803,8 @@ example:
 
 #----------------------------------------------
 
-* Flags
+* Flags <flags>
+
 - Read command-line arguments
 .play -edit examples/flags/flags.go /START OMIT/,/END OMIT/
 
@@ -832,7 +833,7 @@ Standard library provides API
 
 #----------------------------------------------
 
-* Example
+* Example <myhttpclient>
 
 .code examples/myhttpclient/main.go /START OMIT/,/END OMIT/
 
@@ -859,14 +860,14 @@ Standard library provides API:
 
 #----------------------------------------------
 
-* Example
+* Example <webserver>
 
 .code examples/webserver/webserver.go /START OMIT/,/END OMIT/
 - Fileserver and reverse proxy included
 
 #----------------------------------------------
 
-* Middleware
+* Middleware <middleware>
 
 - Like Java "servlet filters"
 
@@ -954,7 +955,7 @@ Major version upgrade appears in the import path
 
 
 #----------------------------------------------
-* Static analysis
+* Static analysis <staticanalysis>
 
 .code examples/staticanalysis/staticanalysis.go
 
@@ -998,12 +999,12 @@ Major version upgrade appears in the import path
 
 #----------------------------------------------
 
-* Variadic functions
+* Variadic functions <variadic>
 .play -edit examples/variadic/variadic.go
 
 #----------------------------------------------
 
-* Closures
+* Closures <binarysearch>
 
 - Alternative to single method interfaces
 
@@ -1051,7 +1052,7 @@ example: measure duration of http-call
 #----------------------------------------------
 
 
-* More examples usages of closures
+* More examples usages of closures <fireforget>
 
 combine with go routines to execute work in background
 
@@ -1060,7 +1061,7 @@ combine with go routines to execute work in background
 
 #----------------------------------------------
 
-* Overridable functions
+* Overridable functions <emailapi>
 - Interfaces more suitable for overriding however you might encounter this
 
 .code -edit examples/emailapi/api.go
@@ -1080,7 +1081,8 @@ combine with go routines to execute work in background
 
 #----------------------------------------------
 
-* Templating
+* Templating <template>
+
 - web-server: generate html response using template
 - code-generator: generate source-code from dsl
 - Minimize logic in your template (move common concerns to template.FuncMap)
@@ -1089,14 +1091,14 @@ combine with go routines to execute work in background
 
 #----------------------------------------------
 
-* Synchronisation
+* Synchronisation <sync>
 - Alternative to channels
 - Use for small syncs or lazy initialisation
 .play -edit examples/sync/sync.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
-* "Kind of" generics
+* "Kind of" generics <generate>
 - go get github.com/clipperhouse/gen
 .code examples/generate/generate.go
   $ go generate ./...
