@@ -1,29 +1,29 @@
 // Package patientstore allows for fetching and storing patients in a persistent store
-package patientstore // HL
+package patientstore
 
-import "fmt" // HL
+import "fmt"
 
 // PatientStorer is used to persist (create and modify) and fetch hospital patients
-type PatientStorer interface { // HL
+type PatientStorer interface {
 	// GetOnUID fetches a patient based on its globally unique id
-	// on success: a Patient is returned (and error is set to nil)
+	// on a technical error, the error parameter is not nil
 	// if the patient was not found, the second return parameter is set to false
-	// on a technical error, the third parameter is not nil
-	GetOnUID(uid string) (Patient, bool, error) // HL
+	// on success: a Patient is returned
+	GetOnUID(uid string) (Patient, bool, error)
 
 	// Store persists a patient
+	// on a technical error, the error parameter is not nil
 	// on success: the Patient is returned (and error is set to nil)
-	// If the patient did not yet exist, a globally unique id is assigned to that patient before storing.
-	// on a technical error, the third parameter is not nil
-	Store(patient Patient) (Patient, error) // HL
-} // HL
+	// if the patient does not yet exist, UID (=globally unique) is set before storing
+	Store(patient Patient) (Patient, error)
+}
 
 // New constructs a new patient-store
-func New() PatientStorer { // HL
-	return &simplePatientStore{} // HL
-} // HL
+func New() PatientStorer {
+	return &simplePatientStore{}
+}
 
-type simplePatientStore struct{} // HL
+type simplePatientStore struct{}
 
 func (ps *simplePatientStore) GetOnUID(uid string) (Patient, bool, error) {
 	return Patient{}, false, fmt.Errorf("Not implemented")
