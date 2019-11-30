@@ -186,6 +186,16 @@ Switch to this dir:
 
 #----------------------------------------------
 
+* Useful sources of information
+
+https://golang.org/doc/effective_go.html
+
+https://golangweekly.com/ (newsletter to keep up)
+
+https://github.com/avelino/awesome-go
+
+#----------------------------------------------
+
 * Exercise: first program
 
 #----------------------------------------------
@@ -256,7 +266,29 @@ NB:
 
 #----------------------------------------------
 
-* Exercise: using packages
+* Comments
+
+    /* */  and //
+
+Document your packages:
+- Package level comment
+- Every exported (capitalized) name in a program should have a comment
+
+Verify documentation: should be a good summary
+
+    go doc -all
+
+Enforce rules:
+
+    golint
+
+- helps you minimize your public exports
+
+
+#----------------------------------------------
+* Commenting example
+
+.play -edit examples/patientstore/patientstore.go
 
 
 #----------------------------------------------
