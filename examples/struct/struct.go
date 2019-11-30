@@ -4,9 +4,9 @@ import "fmt"
 
 // START OMIT
 type Student struct { // public
-	Name string       // public
-	password  string  // private
-	teacher teacher   // private
+	Name     string  // public
+	password string  // private
+	teacher  teacher // private
 }
 
 type teacher struct { // not accessible outside package
@@ -15,9 +15,9 @@ type teacher struct { // not accessible outside package
 
 func main() {
 	son := Student{ // constructor like
-		Name: "Freek",
-		password:  "secret",
-		teacher:teacher{
+		Name:     "Freek",
+		password: "secret",
+		teacher: teacher{
 			Name: "Lisette",
 		},
 	}
