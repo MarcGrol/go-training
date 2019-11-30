@@ -13,7 +13,7 @@ func TestServer(t *testing.T) {
 	// mock response
 	recorder := httptest.NewRecorder()
 
-	// create a http request that trigger your server
+	// create a http request that triggers your server
 	req, _ := http.NewRequest("GET", "", nil)
 	req.RemoteAddr = "1.2.3.4"
 	req.RequestURI = "/doit?arg1=1&arg2=two"

@@ -20,9 +20,6 @@ func main() {
 
 func measuringFilter(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("Start measuring")
-		defer log.Printf("Done measuring")
-
 		t1 := time.Now()
 		next.ServeHTTP(w, r) // HL
 		t2 := time.Now()

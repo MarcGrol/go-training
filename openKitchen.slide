@@ -125,19 +125,6 @@ https://dave.cheney.net/
 
 #----------------------------------------------
 
-* Optimal
-
-.image examples/images/sweet.png
-
-#----------------------------------------------
-
-* Don't be afraid
-
-.image examples/images/minimum.png
-
-
-#----------------------------------------------
-
 * Setup environment
 
 #----------------------------------------------
@@ -745,6 +732,10 @@ Concurrent-style not forced upon you, used selectively
 
 #----------------------------------------------
 
+* The standard library
+
+#----------------------------------------------
+
 * Rich standard libraries
 Just a few examples:
 - flags
@@ -807,8 +798,13 @@ example:
 #----------------------------------------------
 
 * HTTP client
+- TODO
 
--TODO
+#----------------------------------------------
+
+* Example
+
+.code examples/myhttpclient/main.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -817,8 +813,26 @@ example:
 #----------------------------------------------
 
 * HTTP server
+- TODO
+
+#----------------------------------------------
+
+* Example
+
 .code examples/webserver/webserver.go /START OMIT/,/END OMIT/
 - Fileserver and reverse proxy included
+
+#----------------------------------------------
+
+* Middleware
+
+- Like Java "servlet filters"
+
+Example with "Alice"
+
+.code examples/middleware/main.go /START OMIT/,/END OMIT/
+
+- Later more on middleware functions
 
 #----------------------------------------------
 
@@ -856,10 +870,15 @@ example:
 
 * Dependency analysis
 
-- go list
+- Golang does not allow cyclic dependencies :)
+- Standard tooling
 
-.code examples/dependencyanalysis/main.go
+    go list -f '{{ .Name }}: {{ .Doc }}' # current package
+    go list -f '{{ join .Imports  "\n" }}' # Nice input for a script
 
+- Try to minimize your dependencies
+- Sometimes a little duplication is better than introducing a huge dependency
+- Duck-typing allows interface duplication
 
 #----------------------------------------------
 
@@ -964,10 +983,6 @@ combine with go routines to execute work in background
 
 #----------------------------------------------
 
-* Exercise: templating
-
-#----------------------------------------------
-
 * Synchronisation
 - Alternative to channels
 - Use for small syncs or lazy initialisation
@@ -984,6 +999,23 @@ combine with go routines to execute work in background
 .link https://github.com/MarcGrol/goopenkitchen/blob/master/generate/cyclist_slice.go cyclist_slice.go
 
 #----------------------------------------------
+
+
+#----------------------------------------------
+
+* Optimal
+
+.image examples/images/sweet.png
+
+#----------------------------------------------
+
+* Don't be afraid
+
+.image examples/images/minimum.png
+
+
+#----------------------------------------------
+
 
 * Complete tool-chain
   $ go list ./...                  # list sub-packages
