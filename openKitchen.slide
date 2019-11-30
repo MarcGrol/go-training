@@ -467,7 +467,7 @@ Enforce rules:
 
 #----------------------------------------------
 
-* Exercise: structs, enums and pointers
+* Exercise: data
 
 #----------------------------------------------
 
@@ -710,7 +710,7 @@ Trigger generation:
 
 #----------------------------------------------
 
-* Exercise: test
+* Exercise: tests
 
 #----------------------------------------------
 * Concurrency
@@ -795,7 +795,7 @@ example:
 
 
 * Serialisation example <encoding>
-.play -edit examples/encoding/encoding.go  /^func main/,/^}/
+.play -gsedit examples/encoding/encoding.go  /^func main/,/^}/
 
 #----------------------------------------------
 
@@ -810,7 +810,7 @@ example:
 
 #----------------------------------------------
 
-* Exercise: flags
+* Exercise: command-line flags
 
 #----------------------------------------------
 * HTTP
