@@ -80,7 +80,6 @@ Day 3:
 
 Also works for us
 
-
 #----------------------------------------------
 
 * Similarities with Java
@@ -110,6 +109,25 @@ Missing in java:
 - Rich standard library and toolchain
 - Built-in concurrency
 
+#----------------------------------------------
+
+* Summary of language (fits on one sheet!!!!)
+- Keywords:
+    break case continue default defer else (fallthrough) for (goto) if return switch
+    package import func const interface map range struct type chan go select var
+
+- Types:
+	error string rune bool byte int int8 int16 int32 int64 float32 float64
+	uint uint8 uint16 uint32 uint64 (uintptr) (complex64) (complex128)
+
+- Constants:
+	true false iota
+
+- Zero value:
+	nil
+
+- Functions:
+	append cap close complex copy delete len make new (panic) (recover)
 
 #----------------------------------------------
 
@@ -798,7 +816,15 @@ example:
 #----------------------------------------------
 
 * HTTP client
-- TODO
+
+- Methods: POST, PUT, DELETE and GET
+- Url: REST-ful?
+- Headers: Content-Type and Accept
+- Payload: Json and XML
+- Authentication: Basic Auth or OpenID
+- Timeout
+- Based on Swagger/OpenApi-spec?
+- Standard library provides API
 
 #----------------------------------------------
 
@@ -813,7 +839,17 @@ example:
 #----------------------------------------------
 
 * HTTP server
-- TODO
+
+- Methods: POST, PUT, DELETE, GET AND HEAD
+- Url: REST-ful?
+- Headers: Content-Type and Accept, CORS
+- Payload: Json and XML
+- Authentication: Basic Auth or OpenID
+- Based on Swagger/OpenApi-spec?
+- Middleware for non-functionals
+- Standard library provides API
+- HTTP/2 capable
+- Each request runs in its own goroutine
 
 #----------------------------------------------
 
@@ -843,6 +879,64 @@ Example with "Alice"
 * Tooling
 
 #----------------------------------------------
+* Dependency management
+
+The old way:
+
+Use GOPATH and go get:
+- Fetch latest and greatest versions of your dependencies
+- Rely on well behaving citizens: backwards compatility
+- Repair work unpredictable: Upgrade your own code or offer pr on dependency
+- Okay when you test, build and deploy every day
+
+The new way:
+
+Use go modules:
+- Stores versions of dependencies within project to have reproducable builds
+- Repair work more predictable: you decide when and what to upgrade
+- If build broken, downgrade to lower version of dependency or upgrade your own code
+- Depends on semantic versioning:
+
+    major.minor.release
+    breaking.feature.fix
+
+#----------------------------------------------
+* Go modules
+
+What is a module?
+
+- Collection of Go packages stored in a file tree with a go.mod file at its root
+
+Create a module
+
+    go mod init github.com/my/project # creates a new go.mod file
+    go build ./... && go test ./...   # adds regular and test dependencies
+    go mod tidy                       # add transitive dependencies
+    go list -m all
+
+Upgrade a module
+
+    go list -m -versions github.com/my/dependency1
+    go install github.com/my/dependency1
+    go install github.com/other/dependency2@v1.0.3
+
+Major version upgrade appears in the import path
+
+    import (
+        "rsc.io/quote"
+        quoteV3 "rsc.io/quote/v3"
+    )
+
+#Backwards compatibilty:
+#- If an old package and a new package have the same import path,
+#  the new package must be backwards compatible with the old package.
+#- One does not lighty introduce a new major version, because it requires you to maintain multiple trees
+
+#----------------------------------------------
+
+* Exercise: add go modules to an existing project
+
+#----------------------------------------------
 
 * Debugging
 
@@ -854,7 +948,6 @@ Example with "Alice"
 
 
 #----------------------------------------------
-
 * Static analysis
 
 .code examples/staticanalysis/staticanalysis.go
@@ -1040,25 +1133,6 @@ combine with go routines to execute work in background
 
 - All CLI -> Easy to automate
 
-#----------------------------------------------
-
-* Summary of language (fits on one sheet!!!!)
-- Keywords:
-    break case continue default defer else fallthrough for goto if return switch
-    package import func const interface map range struct type chan go select var
-
-- Types:
-	error string rune bool byte int int8 int16 int32 int64 float32 float64
-	uint uint8 uint16 uint32 uint64 uintptr complex64 complex128
-
-- Constants:
-	true false iota
-
-- Zero value:
-	nil
-
-- Functions:
-	append cap close complex copy delete len make new panic recover
 
 
 #----------------------------------------------
@@ -1081,7 +1155,6 @@ combine with go routines to execute work in background
 #----------------------------------------------
 
 * The not so good
-# - Reproducable builds: versioning of 3rd party dependencies -> Vendoring
 - No immutability by default
 - Missing generics? -> Use code generation
 - Go 2.0 will have generics
