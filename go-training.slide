@@ -893,6 +893,28 @@ Standard library provides API
 #----------------------------------------------
 
 * Exercise: http client
+- Create a HTTP client that fetches and creates a patient
+- Create a unit test in which you simulate server behavior
+
+    GET /api/patient/123
+
+    200 OK
+    Content-Type: application/json
+
+    {
+        "UID":"123",
+        "FullName":"FirstName LastName",
+        "AddressLine":"MyStreet 10, London",
+        "Allergies":["peanut", "antibiotics"]
+    }
+
+    POST /api/patient
+    Content-Type: application/json
+    Accept: application/json
+    {
+        ...
+    }
+    ...
 
 #----------------------------------------------
 
@@ -969,6 +991,10 @@ Example with "Alice"
 #----------------------------------------------
 
 * Exercise: http server
+
+- Create a HTTP server that supports GET, POST, PUT and DELETE on /api/patient
+- Create a unit test in which you simulate client behavior
+
 
 #----------------------------------------------
 
