@@ -616,6 +616,14 @@ other example
 
 * Exercise: interfaces
 
+Implement a simple in-memory database that implements the following interface:
+
+    type Datastorer interface {
+    	Put(key string, value interface{}) error
+    	Get(key string) (interface{}, bool, error)
+    	Remove(key string) error
+    }
+
 #----------------------------------------------
 * Testing
 #----------------------------------------------
