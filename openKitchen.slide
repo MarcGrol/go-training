@@ -910,13 +910,27 @@ Standard library provides API:
 
 - HTTP/2 capable
 - Each request runs in its own goroutine
+- Fileserver and reverse proxy included
 
 #----------------------------------------------
 
-* Example <webserver>
+* Example main
+- Uses "github.com/gorilla/mux" for convenience
 
-.code examples/webserver/webserver.go /START OMIT/,/END OMIT/
-- Fileserver and reverse proxy included
+.code examples/webserver/main.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Example web
+
+.code examples/webserver/web.go /START OMIT/,/END OMIT/
+
+
+#----------------------------------------------
+
+* Example logic
+
+.code examples/webserver/logic.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -1166,16 +1180,22 @@ combine with go routines to execute work in background
 
 - Extract documentation from code
 - Create boiler-plate code
-- stdlib provides api:
-    import (
-        "go/ast"
-        "go/parser"
-        "go/token"
-    )
+- stdlib provides apis to parse: go/ast, go/parser
 
 Example:
-
 - github.com/MarcGrol/golangAnnotations
+
+    // @RestService( path = "/api/caregiver/basket", protected = "true" )
+    type service struct {
+    }
+
+    // @RestOperation( method = "POST", path = "/notification/{role}", roles = "caregiver",
+                       format = "JSON", producesEvents = "Basket.ContactInfoSetForBasket" )
+    func (s *service) setNotificationInfoForBasket(c context.Context, rc request.Context, role string,
+                               req SetContactInfoRequest) (*basketModel.Basket, error) {
+        ...
+    }
+
 - Used in large scale project
 
 #----------------------------------------------
