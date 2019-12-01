@@ -20,7 +20,7 @@ type patientWebService struct {
 func (s *patientWebService)getPatientOnUID(patientUID string) (Patient, error) { // HL
 	// Dummy implementation: a real service would use an inject datastore
 	return Patient{
-		UID:uuid.New().String(),
+		UID:patientUID,
 		FullName:"FirstName LastName",
 		AddressLine:"Lindelaan 13, Groenekan",
 		Allergies:[]string{"pinda", "antibiotics"},
