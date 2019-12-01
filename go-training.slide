@@ -220,7 +220,7 @@ https://dave.cheney.net/
 Everything will end up in:
 
     ${GOPATH}/src/github.com/MarcGrol/go-training
-    ├── openKitchen.slide
+    ├── go-training.slide
     ├── examples/
     └── exercises/
 

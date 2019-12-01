@@ -11,7 +11,7 @@ Most examples can be run and edited from within the presentation.
 
 The interactive presentation is available via the following link:
 
-http://go-talks.appspot.com/github.com/MarcGrol/go-training/openKitchen.slide#1
+http://go-talks.appspot.com/github.com/MarcGrol/go-training/go-training.slide#1
 
 ---
 
