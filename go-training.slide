@@ -215,18 +215,18 @@ https://dave.cheney.net/
 * Get the training material
 
 
-    $ go get github.com/MarcGrol/goopenkitchen
+    $ go get github.com/MarcGrol/go-training
 
 Everything will end up in:
 
-    ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
+    ${GOPATH}/src/github.com/MarcGrol/go-training
     ├── openKitchen.slide
     ├── examples/
     └── exercises/
 
 Switch to this dir:
 
-    $ cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
+    $ cd ${GOPATH}/src/github.com/MarcGrol/go-training
 
 #----------------------------------------------
 
@@ -248,7 +248,7 @@ TIP:
 
 * First program <first>
 
-    $ cd ${GOPATH}/src/github.com/MarcGrol/goopenkitchen
+    $ cd ${GOPATH}/src/github.com/MarcGrol/go-training
     $ mkdir -p hello
     $ cd hello
 
@@ -1194,7 +1194,7 @@ combine with go routines to execute work in background
   generates cyclist_slice.go with "SortBy"- and "Where"-methods on CyclistSlice
 - Just commit and distribute with your package
 
-.link https://github.com/MarcGrol/goopenkitchen/blob/master/examples/generate/cyclist_slice.go cyclist_slice.go
+.link https://github.com/MarcGrol/go-training/blob/master/examples/generate/cyclist_slice.go cyclist_slice.go
 
 #----------------------------------------------
 

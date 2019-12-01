@@ -11,10 +11,10 @@ To run:
 
     goos: darwin
     goarch: amd64
-    pkg: github.com/MarcGrol/goopenkitchen/examples/debugging
+    pkg: github.com/MarcGrol/go-training/examples/debugging
     BenchmarkMyHandler-8   	  100000	     13946 ns/op
     PASS
-    ok  	github.com/MarcGrol/goopenkitchen/examples/debugging	1.557s
+    ok  	github.com/MarcGrol/go-training/examples/debugging	1.557s
     
 ## Make your fix
   
@@ -26,10 +26,10 @@ Do not recreate regexp upon each request
     
     goos: darwin
     goarch: amd64
-    pkg: github.com/MarcGrol/goopenkitchen/examples/debugging
+    pkg: github.com/MarcGrol/go-training/examples/debugging
     BenchmarkMyHandler-8   	  500000	      2699 ns/op
     PASS
-    ok  	github.com/MarcGrol/goopenkitchen/examples/debugging	1.394s
+    ok  	github.com/MarcGrol/go-training/examples/debugging	1.394s
 
 # Has improved enough?
 
