@@ -1204,8 +1204,7 @@ combine with go routines to execute work in background
 - Create boiler-plate code
 - stdlib provides apis to parse: go/ast, go/parser
 
-Example:
-- github.com/MarcGrol/golangAnnotations
+Example: github.com/MarcGrol/golangAnnotations
 
     // @RestService( path = "/api/caregiver/basket", protected = "true" )
     type service struct {
