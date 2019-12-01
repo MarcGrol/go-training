@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	filename = "./exercises/errorhandling/main.go"
+	filename = "./solutions/errorhandling/main.go"
 	filenameInCaps = filename + ".txt"
 )
 
