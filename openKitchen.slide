@@ -791,6 +791,16 @@ Concurrent-style not forced upon you, used selectively
 
 * Exercise: concurrency
 
+- Create a "thread-safe" in-memory cache (get, put) that automatically removes entries older than 10 seconds
+- Execute a slow action (see function below) concurrently (100x) and wait for all the results for no more than 1 second. Report the number of results received.
+
+    func SimulateSlowAction( a, b int) int {
+    	sleepDurationInMillsec := 500 + (rand.Intn(1000)) // what does this do?
+    	time.Sleep(time.Duration(sleepDurationInMillsec) * time.Millisecond)
+    	return a*b
+    }
+
+
 #----------------------------------------------
 
 * The standard library
