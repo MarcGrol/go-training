@@ -35,6 +35,7 @@ mgrol@xebia.com
 * Agenda
 
 Day 1:
+- Startup
 - Basis
 
 Day 2:
@@ -99,7 +100,7 @@ Also works for us
 Missing in go:
 
 - Generics (but has slice and map)
-- Constructors (but uses "constructing" functions)
+- Constructors (but uses "constructor" functions)
 - Inheritance (but has "embedding")
 - Exceptions
 - Annotations
@@ -280,7 +281,6 @@ TIP:
      package main // package that results in executable with same name as package
 
 or
-
      package news // package that results in library that is accessible via 'news'
 
 NB:
@@ -360,6 +360,12 @@ Enforce rules:
 
 * Exercise: controll structures
 
+Create a program that calculates:
+
+- Sum of all values from 1 to 100
+- Sum incremental values untill their sum exceeds 1000
+- Put calculation logic in separate library
+
 #----------------------------------------------
 
 * Functions
@@ -412,7 +418,14 @@ Enforce rules:
 
 #----------------------------------------------
 
-* Exercise: error-handling and cleanup
+* Exercise: error-handling
+
+File access using the ioutil-package:
+
+- Read a file
+- Capitalize the content of the file
+- Write this capitalized content to a new other name
+- Use Proper error-handling
 
 #----------------------------------------------
 
@@ -468,6 +481,9 @@ Enforce rules:
 #----------------------------------------------
 
 * Exercise: data
+
+- Model your business domain using structs, enums and pointers
+- Might need slices (see next section)
 
 #----------------------------------------------
 
@@ -536,6 +552,19 @@ initialization:
 #----------------------------------------------
 
 * Exercise: slices and maps
+
+Use maps and slices to group the following people on hobby:
+
+    Julia: voetbal tekenen
+    Sophie: hockey
+    Mila: tekenen
+    Emma: volleybal, turnen
+    Tess: hardlopen
+    Zoë: kunst, voetbal
+    Noor: voetbal
+    Elin: hockey
+    Sara: voetbal, turnen
+    Yara: tekenen
 
 #----------------------------------------------
 * Interfaces
@@ -795,7 +824,7 @@ example:
 
 
 * Serialisation example <encoding>
-.play -gsedit examples/encoding/encoding.go  /^func main/,/^}/
+.play -edit examples/encoding/encoding.go  /^func main/,/^}/
 
 #----------------------------------------------
 
