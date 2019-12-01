@@ -17,7 +17,7 @@ type Patient struct {
 type patientWebService struct {
 }
 
-func (s *patientWebService)getPatientOnUID(patientUID string) (Patient, error) { // HL
+func (s *patientWebService)getPatientOnUID(patientUID string) (Patient, error) {
 	// Dummy implementation: a real service would use an inject datastore
 	return Patient{
 		UID:patientUID,

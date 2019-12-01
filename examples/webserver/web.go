@@ -17,7 +17,6 @@ func (s *patientWebService) registerTestEndpoint() *mux.Router {
 
 func (s *patientWebService) RegisterEndpoint(router *mux.Router) *mux.Router{
 	subRouter := router.PathPrefix("/api/patient").Subrouter()
-
 	subRouter.HandleFunc("/{patientUid}",s.getPatient() ).Methods("GET") // HL
 	subRouter.HandleFunc("", s.postPatient()).Methods("POST")
 	subRouter.HandleFunc("/{patientUid}", s.putPatient()).Methods("PUT")
@@ -28,16 +27,16 @@ func (s *patientWebService) RegisterEndpoint(router *mux.Router) *mux.Router{
 func (s *patientWebService)getPatient() http.HandlerFunc { // HL
 	return func(w http.ResponseWriter, r *http.Request) {
 		patientUid := mux.Vars(r)["patientUid"] // extract path param
-
 		response, err := s.getPatientOnUID(patientUid) // call business logic // HL
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
-
-		w.Header().Set("Content-Type", "application/json")
-		err = json.NewEncoder(w).Encode(response) // write response
+		w.Header().Set("Content-Type", "application/json")  // write response
+		err = json.NewEncoder(w).Encode(response)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 	}
 }

@@ -914,23 +914,45 @@ Standard library provides API:
 
 #----------------------------------------------
 
-* Example main
-- Uses "github.com/gorilla/mux" for convenience
+* Example main: start server
+- Uses "github.com/gorilla/mux" for convenience in REST-urls
 
 .code examples/webserver/main.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
-* Example web
+* Example web-part contains no business logic
 
 .code examples/webserver/web.go /START OMIT/,/END OMIT/
 
 
 #----------------------------------------------
 
-* Example logic
+* Example business logic-part
+- Pure business logic
+- Contains nothing http related
+- Typically has "injected" dependencies
 
-.code examples/webserver/logic.go /START OMIT/,/END OMIT/
+    type patientWebService struct {
+    }
+
+    func (s *patientWebService)getPatientOnUID(patientUID string) (Patient, error) {
+        ...
+    }
+
+    func (s *patientWebService)createPatient(patient Patient) (Patient, error) {
+        ...
+    }
+
+    func (s *patientWebService)modifyPatientOnUid(patient Patient) (Patient, error) {
+        ...
+    }
+
+    func (s *patientWebService)deletePatientOnUid(patient Patient) (error) {
+        ...
+    }
+
+
 
 #----------------------------------------------
 
