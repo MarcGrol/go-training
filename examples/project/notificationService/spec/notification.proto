@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package notification;
+
+service Notification {
+    rpc SendEmail (SendEmailRequest) returns (SendEmailReply) {}
+    rpc SendSms (SendSmsRequest) returns (SendSmsReply) {}
+    rpc GetNotificationStatus (GetNotificationStatusRequest) returns (GetNotificationStatusReply) {}
+}
+
+message SendEmailRequest {
+    string recipientEmailAddress = 1;
+    string subject = 2;
+    string body = 3;
+}
+
+message SendEmailReply {
+    string NotificationUid = 1;
+    Error error = 2;
+}
+
+message SendSmsRequest {
+    string recipientPhoneNumber = 1;
+    string body = 2;
+}
+
+message SendSmsReply {
+    string NotificationUid = 1;
+    Error error = 2;
+}
+
+message GetNotificationStatusRequest {
+    string notificationUid = 1;
+}
+
+message GetNotificationStatusReply {
+    NotificationStatus status = 1;
+    Error error = 2;
+}
+
+enum NotificationStatus {
+    UNKNOWN = 0;
+    SENT = 1;
+    PENDING = 2;
+    FAILED = 3;
+}
+
+message Error {
+    int32 code = 1;
+    string message = 2;
+}
