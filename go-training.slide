@@ -215,7 +215,7 @@ https://dave.cheney.net/
 * Get the training material
 
 
-    $ go get github.com/MarcGrol/go-training
+    $ go get -v github.com/MarcGrol/go-training/...
 
 Everything will end up in:
 
@@ -415,6 +415,7 @@ Create a program that calculates:
 - Keep indentation low
 
 !!! All your own API's should use this pattern !!!
+Do not use panic and recover
 
 #----------------------------------------------
 
