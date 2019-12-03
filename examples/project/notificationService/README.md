@@ -1,5 +1,12 @@
 # Project
 
+
+## Use a grpc spec to server both grpc as rest traffic
+
+explained here: https://github.com/grpc-ecosystem/grpc-gateway
+
+
+
 ## Setup
 
     go get -u github.com/golang/protobuf/protoc-gen-go
