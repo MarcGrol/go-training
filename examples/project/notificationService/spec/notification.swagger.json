@@ -1,0 +1,177 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "notification.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/notification/email": {
+      "post": {
+        "operationId": "SendEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/notificationSendEmailReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/notificationEmailMessage"
+            }
+          }
+        ],
+        "tags": [
+          "Notification"
+        ]
+      }
+    },
+    "/api/notification/sms": {
+      "post": {
+        "operationId": "SendSms",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/notificationSendSmsReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/notificationSmsMessage"
+            }
+          }
+        ],
+        "tags": [
+          "Notification"
+        ]
+      }
+    },
+    "/api/notification/status/{notificationUid}": {
+      "get": {
+        "operationId": "GetNotificationStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/notificationGetNotificationStatusReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "notificationUid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Notification"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "notificationEmailMessage": {
+      "type": "object",
+      "properties": {
+        "recipientEmailAddress": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    "notificationError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "notificationGetNotificationStatusReply": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/notificationNotificationStatus"
+        },
+        "error": {
+          "$ref": "#/definitions/notificationError"
+        }
+      }
+    },
+    "notificationNotificationStatus": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "SENT",
+        "PENDING",
+        "FAILED"
+      ],
+      "default": "UNKNOWN"
+    },
+    "notificationSendEmailReply": {
+      "type": "object",
+      "properties": {
+        "NotificationUid": {
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/notificationError"
+        }
+      }
+    },
+    "notificationSendSmsReply": {
+      "type": "object",
+      "properties": {
+        "NotificationUid": {
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/notificationError"
+        }
+      }
+    },
+    "notificationSmsMessage": {
+      "type": "object",
+      "properties": {
+        "recipientPhoneNumber": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
