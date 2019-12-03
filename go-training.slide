@@ -877,6 +877,22 @@ combine with go routines to execute work in background
 
 .play -edit examples/fireforget/main.go /START OMIT/,/END OMIT/
 
+#----------------------------------------------
+
+* Wrapping
+
+Wrap business logic in a transaction
+
+    ....
+    err := eventStore.RunInTransaction(c, rc, func(c context.Context) error {
+      return b.FinalizeBasket(c, rc, basketUid)
+    })
+    if err != nil {
+         w.WriteHeader(http.StatusConflict)
+        return
+    }
+    w.WriteHeader(http.StatusOk)
+    ....
 
 #----------------------------------------------
 
@@ -1190,81 +1206,6 @@ https://bettercodehub.com/docs/faq
 #----------------------------------------------
 
 * Exercise: dependency analysis
-
-#----------------------------------------------
-* More on functions
-#----------------------------------------------
-
-* Package initialisation
-- Executed only once at startup
-- Can be multiple
-- For advanced initialisations
-
-  func init() {
-    // your global initialisations here
-  }
-
-#----------------------------------------------
-
-* Variadic functions <variadic>
-.play -edit examples/variadic/variadic.go
-
-#----------------------------------------------
-
-* Closures <binarysearch>
-
-- Alternative to single method interfaces
-
-example: binary search
-
-.play -edit examples/binarysearch/main.go
-
-#----------------------------------------------
-* More examples usages of closures
-
-- HTTP middleware
-
-example: measure duration of http-call
-
-    func timed(f http.HandlerFunc) http.HandlerFunc {
-        return func(w http.ResponseWriter, r *http.Request) {
-            start := time.Now()
-            f(w, r)
-            end := time.Now()
-            fmt.Println("The request took", end.Sub(start))
-        }
-    }
-
-
-#----------------------------------------------
-
-* More examples usages of closures
-
-- Pass data into handlers without global data
-
-    func main() {
-      db := NewDatabase("localhost:5432")
-
-      http.HandleFunc("/hello", hello(db))
-      http.ListenAndServe(":3000", nil)
-    }
-
-    func hello(db Database) func(http.ResponseWriter, *http.Request) {
-      return func(w http.ResponseWriter, r *http.Request) {
-        // has access to db without using globals vars
-        ...
-      }
-    }
-
-#----------------------------------------------
-
-
-* More examples usages of closures <fireforget>
-
-combine with go routines to execute work in background
-
-.play -edit examples/fireforget/main.go /START OMIT/,/END OMIT/
-
 
 #----------------------------------------------
 
