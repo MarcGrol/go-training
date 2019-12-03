@@ -2,8 +2,8 @@
 package main
 
 import (
+	_ "github.com/MarcGrol/go-training/examples/grpc/spec"
 	"log"
-	_ "github.com/MarcGrol/go-training/examples/project/notificationService/spec"
 	"time"
 )
 

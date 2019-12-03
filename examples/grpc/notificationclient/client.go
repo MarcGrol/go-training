@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"log"
 
+	pb "github.com/MarcGrol/go-training/examples/grpc/spec"
 	"google.golang.org/grpc"
-	pb "github.com/MarcGrol/go-training/examples/project/notificationService/spec"
 )
 
 
 type Client struct {
-	conn *grpc.ClientConn
+	conn   *grpc.ClientConn
 	client pb.NotificationClient
 }
 

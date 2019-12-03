@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	pb "github.com/MarcGrol/go-training/examples/project/notificationService/spec"
+	pb "github.com/MarcGrol/go-training/examples/grpc/spec"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 	"log"

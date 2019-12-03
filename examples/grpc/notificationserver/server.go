@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	pb "github.com/MarcGrol/go-training/examples/project/notificationService/spec"
+	pb "github.com/MarcGrol/go-training/examples/grpc/spec"
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"log"
@@ -56,7 +56,7 @@ func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.Se
 	msgUID := uuid.New().String()
 	status := pb.NotificationStatus_SENT
 	s.messages[msgUID] = status
-	return &pb.SendEmailReply{NotificationUid:msgUID}, nil
+	return &pb.SendEmailReply{NotificationUid: msgUID}, nil
 }
 
 func (s *server) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendSmsReply, error) {
@@ -65,7 +65,7 @@ func (s *server) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendSm
 	msgUID := uuid.New().String()
 	status := pb.NotificationStatus_PENDING
 	s.messages[msgUID] = status
-	return &pb.SendSmsReply{NotificationUid:msgUID}, nil
+	return &pb.SendSmsReply{NotificationUid: msgUID}, nil
 }
 
 func (s *server) GetNotificationStatus(ctx context.Context, in *pb.GetNotificationStatusRequest) (*pb.GetNotificationStatusReply, error) {
@@ -74,7 +74,7 @@ func (s *server) GetNotificationStatus(ctx context.Context, in *pb.GetNotificati
 	status, found := s.messages[in.GetNotificationUid()]
 	if !found {
 		return &pb.GetNotificationStatusReply{
-			Status:pb.NotificationStatus_UNKNOWN,
+			Status: pb.NotificationStatus_UNKNOWN,
 			Error: &pb.Error{
 				Code:                 404,
 				Message:              "Notification with uid not found",
