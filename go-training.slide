@@ -1166,6 +1166,7 @@ https://www.youtube.com/watch?v=H_4eRD8aegk
 .code examples/staticanalysis/staticanalysis.go
 
 - go vet, golint, gocyclo, varcheck, errcheck, test-coverage, ...
+https://bettercodehub.com/docs/faq
 => goreporter
 
 #----------------------------------------------
