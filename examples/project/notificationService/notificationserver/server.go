@@ -76,12 +76,25 @@ func (s *server)ListenHttpBlocking(grpcPort string, restPort string) error{
 	if err != nil {
 		return fmt.Errorf("Error registering http-client: %s", err)
 	}
+
+	// Serve the swagger-ui and swagger file
+	mux := http.NewServeMux()
+	mux.Handle("/", rmux)
+
+	mux.HandleFunc("/swagger.json", serveSwagger)
+	fs := http.FileServer(http.Dir("swaggerui"))
+	mux.Handle("/swaggerui/", http.StripPrefix("/swaggerui", fs))
+
 	log.Println("REST server starts listening...")
-	err = http.ListenAndServe(restPort, rmux)
+	err = http.ListenAndServe(restPort, mux)
 	if err != nil {
 		return fmt.Errorf("Error listening on http: %s", err)
 	}
 	return nil
+}
+
+func serveSwagger(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "swaggerui/swagger.json")
 }
 
 func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.SendEmailReply, error) {

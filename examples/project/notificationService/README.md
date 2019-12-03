@@ -6,7 +6,6 @@
 explained here: https://github.com/grpc-ecosystem/grpc-gateway
 
 
-
 ## Setup
 
     go get -u github.com/golang/protobuf/protoc-gen-go
@@ -29,4 +28,11 @@ explained here: https://github.com/grpc-ecosystem/grpc-gateway
 ## Submit email using rest
 
     curl -vvv -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' --data '{"recipientEmailAddress":"mgrol@xebia.com", "subject": "my subject", "body":"my body"}' http://localhost:8080/api/notification/email
+
+## Serve swagger-ui
+
+go generate creates spec/notification.swagger.json
+
+    cp spec/notification.swagger.json notificationserver/swaggerui/swagger.json
     
+Swagger ui available at: http://localhost:8080/swaggerui/
