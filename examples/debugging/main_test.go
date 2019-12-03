@@ -15,7 +15,7 @@ func TestHandler(t *testing.T) {
 		status int
 		output string
 	}{
-		{input: "/dylan@nexushealth.be", status: http.StatusOK, output: "Hallo dylan van nexushealth"},
+		{input: "/dylan@nexuzhealth.be", status: http.StatusOK, output: "Hallo dylan van nexushealth"},
 		{input: "/mgrol@xebia.com", status: http.StatusOK, output: "Hi there\n"},
 	}
 	for _, tc := range testCases {

@@ -15,14 +15,14 @@ func main() {
 	}
 }
 
-var re = regexp.MustCompile("^(.+)@nexushealth.be$")
+var re = regexp.MustCompile("^(.+)@nexuzhealth.be$")
 
 func myhandler(w http.ResponseWriter, r *http.Request) {
 
 	path := r.URL.Path[1:]
 	match := re.FindAllStringSubmatch(path, -1)
 	if match != nil {
-		fmt.Fprintf(w, "Hallo %s van nexushealth", match[1])
+		fmt.Fprintf(w, "Hallo %s van nexuzhealth", match[1])
 		return
 	}
 	fmt.Fprintln(w, "Hi there")
