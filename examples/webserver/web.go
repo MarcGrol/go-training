@@ -8,11 +8,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-
-func (s *patientWebService) registerTestEndpoint() *mux.Router {
-	return s.RegisterEndpoint(mux.NewRouter())
-}
-
 // START OMIT
 
 func (s *patientWebService) RegisterEndpoint(router *mux.Router) *mux.Router{

@@ -10,9 +10,9 @@ import (
 // START OMIT
 
 func main() {
-	webService := &patientWebService{}
+	var router *mux.Router = mux.NewRouter()
 
-	var router = mux.NewRouter()
+	webService := &patientWebService{}
 	webService.RegisterEndpoint(router)
 
 	http.Handle("/", router)

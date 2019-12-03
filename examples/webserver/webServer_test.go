@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
@@ -9,36 +10,40 @@ import (
 )
 
 func TestGet(t *testing.T) {
-	// mock response
-	recorder := httptest.NewRecorder()
+	// setup
+	router := mux.NewRouter()
+	sut := &patientWebService{}
+	sut.RegisterEndpoint(router)
 
-	// create a http request that trigger your server
+	// given
 	req, _ := http.NewRequest("GET", "/api/patient/123", nil)
 
-	// call subject of test
-	webservice := &patientWebService{}
-	webservice.registerTestEndpoint().ServeHTTP(recorder, req)
+	// when
+	recordedResponse := httptest.NewRecorder() // records what was send back by the server
+	router.ServeHTTP(recordedResponse, req)
 
-	//  verify response
-	assert.Equal(t, http.StatusOK, recorder.Code)
-	assert.Contains(t, string(recorder.Body.Bytes()),`{"UID":"`, )
+	// then
+	assert.Equal(t, http.StatusOK, recordedResponse.Code)
+	assert.Contains(t, string(recordedResponse.Body.Bytes()),`{"UID":"`, )
 }
 
 func TestPost(t *testing.T) {
-	// mock response
-	recorder := httptest.NewRecorder()
+	// setup
+	router := mux.NewRouter()
+	sut := &patientWebService{}
+	sut.RegisterEndpoint(router)
 
-	// create a http request that trigger your server
+	// given
 	req, _ := http.NewRequest("POST", "/api/patient", strings.NewReader(
 		`{"FullName":"Marc","AddressLine":"Heemstra","Allergies":["pinda"]}`))
 
-	// call subject of test
-	webservice := &patientWebService{}
-	webservice.registerTestEndpoint().ServeHTTP(recorder, req)
+	// when
+	recordedResponse := httptest.NewRecorder()
+	router.ServeHTTP(recordedResponse, req)
 
-	//  verify response
-	assert.Equal(t, http.StatusOK, recorder.Code)
-	assert.Contains(t, string(recorder.Body.Bytes()),`{"UID":"`, )
+	// then
+	assert.Equal(t, http.StatusOK, recordedResponse.Code)
+	assert.Contains(t, string(recordedResponse.Body.Bytes()),`{"UID":"`, )
 }
 
 func TestPut(t *testing.T) {
