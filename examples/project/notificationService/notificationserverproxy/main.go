@@ -2,15 +2,12 @@
 package main
 
 import (
-	"log"
 	_ "github.com/MarcGrol/go-training/examples/project/notificationService/spec"
-	"time"
+	"log"
 )
 
 func main() {
-	s := New()
-	time.Sleep(time.Second*2)
-	err := s.GRPCListenBlocking(":50051")
+	err := New().ListenHttpBlocking(":50051", ":8080")
 	if err != nil {
 		log.Fatalf("Error starting rest-notification server: %s", err)
 	}

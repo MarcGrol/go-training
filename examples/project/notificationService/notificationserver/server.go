@@ -3,17 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"log"
-	"net"
-	"net/http"
-	"strings"
-	"time"
-
-	"google.golang.org/grpc"
 	pb "github.com/MarcGrol/go-training/examples/project/notificationService/spec"
 	"github.com/google/uuid"
-
+	"google.golang.org/grpc"
+	"log"
+	"net"
+	"strings"
 )
 
 type server struct {
@@ -44,57 +39,6 @@ func (s *server)GRPCListenBlocking(port string) error {
 		return fmt.Errorf("failed to serve: %v", err)
 	}
 	return nil
-}
-
-func (s *server)ListenHttpBlocking(grpcPort string, restPort string) error{
-	// start GRPC server in the background
-	go func() {
-		err := s.GRPCListenBlocking(grpcPort)
-		if err != nil {
-			log.Fatalf("Error starting grpc-notification server: %s", err)
-		}
-	}()
-
-	// give it some time to startup
-	time.Sleep(2* time.Second)
-
-	ctx := context.Background()
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
-
-	// Connect to the just created GRPC server
-	conn, err := grpc.Dial(grpcPort, grpc.WithInsecure())
-	if err != nil {
-		return fmt.Errorf("fail to dial: %v", err)
-	}
-	defer conn.Close()
-
-	// Register REST gateway that proxies rest to grpc and back
-	rmux := runtime.NewServeMux()
-	client := pb.NewNotificationClient(conn)
-	err = pb.RegisterNotificationHandlerClient(ctx, rmux, client)
-	if err != nil {
-		return fmt.Errorf("Error registering http-client: %s", err)
-	}
-
-	// Serve the swagger-ui and swagger file
-	mux := http.NewServeMux()
-	mux.Handle("/", rmux)
-
-	mux.HandleFunc("/swagger.json", serveSwagger)
-	fs := http.FileServer(http.Dir("swaggerui"))
-	mux.Handle("/swaggerui/", http.StripPrefix("/swaggerui", fs))
-
-	log.Println("REST server starts listening...")
-	err = http.ListenAndServe(restPort, mux)
-	if err != nil {
-		return fmt.Errorf("Error listening on http: %s", err)
-	}
-	return nil
-}
-
-func serveSwagger(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "swaggerui/swagger.json")
 }
 
 func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.SendEmailReply, error) {
