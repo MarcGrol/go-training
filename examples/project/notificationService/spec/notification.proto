@@ -2,13 +2,34 @@ syntax = "proto3";
 
 package notification;
 
+import "google/api/annotations.proto";
+
 service Notification {
-    rpc SendEmail (SendEmailRequest) returns (SendEmailReply) {}
-    rpc SendSms (SendSmsRequest) returns (SendSmsReply) {}
-    rpc GetNotificationStatus (GetNotificationStatusRequest) returns (GetNotificationStatusReply) {}
+    rpc SendEmail (SendEmailRequest) returns (SendEmailReply) {
+        option (google.api.http) = {
+            post: "/api/notification/email",
+            body: "email"
+
+        };
+    }
+    rpc SendSms (SendSmsRequest) returns (SendSmsReply) {
+        option (google.api.http) = {
+            post: "/api/notification/sms",
+            body: "sms"
+        };
+    }
+    rpc GetNotificationStatus (GetNotificationStatusRequest) returns (GetNotificationStatusReply) {
+        option (google.api.http) = {
+            get: "/api/notification/status/{notificationUid}"
+        };
+    }
 }
 
 message SendEmailRequest {
+    EmailMessage email = 1;
+}
+
+message EmailMessage {
     string recipientEmailAddress = 1;
     string subject = 2;
     string body = 3;
@@ -20,6 +41,10 @@ message SendEmailReply {
 }
 
 message SendSmsRequest {
+    SmsMessage sms = 1;
+}
+
+message SmsMessage {
     string recipientPhoneNumber = 1;
     string body = 2;
 }

@@ -38,9 +38,11 @@ func (c *Client)Close(){
 
 func (c *Client)SendEmail(ctx context.Context, recipientEmailAddress, subject, body string) (string,error){
 	response, err := c.client.SendEmail(ctx, &pb.SendEmailRequest{
-		RecipientEmailAddress: recipientEmailAddress,
-		Subject: subject,
-		Body: body,
+		Email:&pb.EmailMessage{
+			RecipientEmailAddress: recipientEmailAddress,
+			Subject:               subject,
+			Body:                  body,
+		},
 	})
 	if err != nil{
 		return "", fmt.Errorf("Could not send email: %v", err)
@@ -55,8 +57,10 @@ func (c *Client)SendEmail(ctx context.Context, recipientEmailAddress, subject, b
 
 func (c *Client)SendSms(ctx context.Context, recipientPhoneNumber, body string) (string,error){
 	response, err := c.client.SendSms(ctx, &pb.SendSmsRequest{
-		RecipientPhoneNumber: recipientPhoneNumber,
-		Body:                 body,
+		Sms:&pb.SmsMessage{
+			RecipientPhoneNumber: recipientPhoneNumber,
+			Body:                 body,
+		},
 	})
 	if err != nil {
 		return "", fmt.Errorf("Could not send sms: %v", err)

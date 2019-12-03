@@ -21,6 +21,7 @@ func main() {
 	}
 	defer client.Close()
 
+
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
