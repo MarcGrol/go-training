@@ -1193,6 +1193,16 @@ https://bettercodehub.com/docs/faq
 
 #----------------------------------------------
 
+* Parsing go
+
+Stdlib provides apis to parse: go/ast, go/parser
+
+Examples:
+- Extract documentation from code
+- Create boiler-plate code
+
+#----------------------------------------------
+
 * Exercise: detect problems with static analysis tools
 
 #----------------------------------------------
@@ -1251,41 +1261,11 @@ https://bettercodehub.com/docs/faq
 .play -edit examples/sync/sync.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
+* Group assigment
 
-* "Kind of" generics <generate>
-- go get github.com/clipperhouse/gen
-.code examples/generate/generate.go
-  $ go generate ./...
-  generates cyclist_slice.go with "SortBy"- and "Where"-methods on CyclistSlice
-- Just commit and distribute with your package
+- 3 person in group
 
-.link https://github.com/MarcGrol/go-training/blob/master/examples/generate/cyclist_slice.go cyclist_slice.go
-
-#----------------------------------------------
-
-* Parsing go
-
-- Extract documentation from code
-- Create boiler-plate code
-- stdlib provides apis to parse: go/ast, go/parser
-
-Example: github.com/MarcGrol/golangAnnotations
-
-    // @RestService( path = "/api/caregiver/basket", protected = "true" )
-    type service struct {
-    }
-
-    // @RestOperation( method = "POST", path = "/notification/{role}", roles = "caregiver",
-                       format = "JSON", producesEvents = "Basket.ContactInfoSetForBasket" )
-    func (s *service) setNotificationInfoForBasket(c context.Context, rc request.Context, role string,
-                               req SetContactInfoRequest) (*basketModel.Basket, error) {
-        ...
-    }
-
-- Used in large scale project
-
-#----------------------------------------------
-
+.image examples/images/groupassignment.jpg 500 800
 
 #----------------------------------------------
 
@@ -1402,3 +1382,38 @@ Example: github.com/MarcGrol/golangAnnotations
 
 * Wrapping errors
 TODO
+
+
+* Parsing go
+
+- Extract documentation from code
+- Create boiler-plate code
+- stdlib provides apis to parse: go/ast, go/parser
+
+Example: github.com/MarcGrol/golangAnnotations
+
+    // @RestService( path = "/api/caregiver/basket", protected = "true" )
+    type service struct {
+    }
+
+    // @RestOperation( method = "POST", path = "/notification/{role}", roles = "caregiver",
+                       format = "JSON", producesEvents = "Basket.ContactInfoSetForBasket" )
+    func (s *service) setNotificationInfoForBasket(c context.Context, rc request.Context, role string,
+                               req SetContactInfoRequest) (*basketModel.Basket, error) {
+        ...
+    }
+
+- Used in large scale project
+
+#----------------------------------------------
+
+
+* "Kind of" generics <generate>
+- go get github.com/clipperhouse/gen
+.code examples/generate/generate.go
+  $ go generate ./...
+  generates cyclist_slice.go with "SortBy"- and "Where"-methods on CyclistSlice
+- Just commit and distribute with your package
+
+.link https://github.com/MarcGrol/go-training/blob/master/examples/generate/cyclist_slice.go cyclist_slice.go
+#----------------------------------------------
