@@ -1263,9 +1263,16 @@ Examples:
 #----------------------------------------------
 * Group assigment
 
-- 3 person in group
+- Contract first
 
 .image examples/images/groupassignment.jpg 500 800
+
+#----------------------------------------------
+
+* Conclusions
+
+- Understandability and simplicity first
+- Write tests
 
 #----------------------------------------------
 
@@ -1279,22 +1286,23 @@ Examples:
 
 .image examples/images/minimum.png
 
-
-#----------------------------------------------
-
-* Conclusions
-
 #----------------------------------------------
 
 * Expectations and goals
+
+- Back to expectations at beginning of training
 
 #----------------------------------------------
 
 * Improvements
 
+- Retro
+
 #----------------------------------------------
 
 * What's next?
+
+- Zo snel mogelijk aan de bak. Niet laten verstoffen.
 
 #----------------------------------------------
 
