@@ -1,4 +1,4 @@
-package smsClient
+package smssending
 
 import (
 	"context"

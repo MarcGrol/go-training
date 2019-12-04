@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/MarcGrol/go-training/solutions/smsClient"
+	"github.com/MarcGrol/go-training/solutions/smssending"
 	"os"
 )
 
@@ -15,7 +15,8 @@ func main() {
 
 	c := context.Background()
 
-	err := smsClient.NewTwilloSmsClient(cfg.accountId, cfg.password).SendSms(c, cfg.recipientPhoneNumber, cfg.messageText)
+	client:= smssending.NewTwilloSmsClient(cfg.accountId, cfg.password)
+	err := client.SendSms(c, cfg.recipientPhoneNumber, cfg.messageText)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error sending sms via twillo: %s\n", err)
 		os.Exit(-1)

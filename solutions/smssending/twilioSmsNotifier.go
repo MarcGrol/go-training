@@ -1,4 +1,4 @@
-package smsClient
+package smssending
 
 import (
 	"context"
@@ -88,7 +88,7 @@ func (sn *smsClient) SendSms(c context.Context, destinationNumber string, msgPay
 			return fmt.Errorf("[twilio] http error status %d, msg '%s', error-msg '%s'", resp.StatusCode, response.Message, response.ErrorMessage)
 		}
 	}
-	
+
 	// parse success response
 	var response twilioSuccessResponse
 	err = json.NewDecoder(resp.Body).Decode(&response)
