@@ -787,12 +787,26 @@ Concurrent-style not forced upon you, used selectively
 
 .play -edit examples/select/select.go /START OMIT/,/END OMIT/
 
+#----------------------------------------------
+
+* Example usage
+
+- Devide and conquer: Chunk your problem in parts that can be processed concurrently in isolation
+- Send out multiple requests concurrently: Continue when all responses have been received
+- Cache eviction: Scheduled background "thread" removes old entries at regular intervals
+- Fan out: Fire and forget
+- Respond faster by moving non-criticals (like notification) off the main thread
+- Synchronzed state-machine: select loop is the heart
+
+NB:
+
+- When multiple go-routines access the same data, you will need to synchronize (with mutexes or channels)
+- Cleanup: don't leave dangling channels and goroutines
 
 #----------------------------------------------
 
 * Exercise: concurrency
 
-- Create a "thread-safe" in-memory cache (Get, Put) that automatically removes entries older than 10 seconds
 - Execute a slow action (see function below) concurrently (100x) and wait for all the results for no more than 1 second. Report the number of results received.
 
     func SimulateSlowAction( a, b int) int {
@@ -801,6 +815,7 @@ Concurrent-style not forced upon you, used selectively
     	return a*b
     }
 
+- Create a "thread-safe" in-memory cache (Get, Put) that automatically removes entries older than 10 seconds
 
 
 #----------------------------------------------
@@ -836,7 +851,7 @@ example: binary search
 
 - HTTP middleware
 
-example: measure duration of http-call
+example: Measure duration of http-call
 
     func timed(f http.HandlerFunc) http.HandlerFunc {
         return func(w http.ResponseWriter, r *http.Request) {
@@ -847,6 +862,14 @@ example: measure duration of http-call
         }
     }
 
+example: Transaction
+
+    err := eventStore.RunInTransaction(c, rc, func(c context.Context) error {
+         ...
+    })
+    if err != nil {
+         ...
+    }
 
 #----------------------------------------------
 
@@ -870,29 +893,12 @@ example: measure duration of http-call
 
 #----------------------------------------------
 
-
 * More examples usages of closures <fireforget>
 
 combine with go routines to execute work in background
 
 .play -edit examples/fireforget/main.go /START OMIT/,/END OMIT/
 
-#----------------------------------------------
-
-* Wrapping
-
-Wrap business logic in a transaction
-
-    ....
-    err := eventStore.RunInTransaction(c, rc, func(c context.Context) error {
-      return b.FinalizeBasket(c, rc, basketUid)
-    })
-    if err != nil {
-         w.WriteHeader(http.StatusConflict)
-        return
-    }
-    w.WriteHeader(http.StatusOk)
-    ....
 
 #----------------------------------------------
 
