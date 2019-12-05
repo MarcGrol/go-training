@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package notificationapi;
+
+import "google/api/annotations.proto";
+
+service Notification {
+    rpc SendEmail (SendEmailRequest) returns (SendEmailReply) {
+        option (google.api.http) = {
+            post: "/api/notification/email",
+            body: "email"
+
+        };
+    }
+}
+
+message SendEmailRequest {
+    EmailMessage email = 1;
+}
+
+message SendEmailReply {
+    Error error = 1;
+}
+
+
+message EmailMessage {
+    string recipientEmailAddress = 1;
+    string subject = 2;
+    string body = 3;
+}
+
+message Error {
+    int32 code = 1;
+    string message = 2;
+}

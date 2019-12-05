@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package appointmentapi;
+
+import "google/api/annotations.proto";
+
+service AppointmentInternal {
+    rpc GetAppointmentsOnStatus (GetAppointmentsOnStatusRequest) returns (GetAppointmentsOnStatusReply) {
+        option (google.api.http) = {
+            get: "/api/appointment/status/{status}"
+        };
+    }
+    rpc ModifyAppointmentStatus (ModifyAppointmentStatusRequest) returns (ModifyAppointmentStatusReply) {
+        option (google.api.http) = {
+            put: "/api/appointment/{appointmentUid}/status",
+        };
+    }
+}
+
+message GetAppointmentsOnStatusRequest{
+    AppointmentStatus status = 1;
+}
+
+message GetAppointmentsOnStatusReply{
+    Error error = 1;
+    repeated Appointment appointments  = 2;
+}
+
+message ModifyAppointmentStatusRequest{
+    string appointmentUid = 1;
+    AppointmentStatus status = 2;
+}
+
+message ModifyAppointmentStatusReply{
+    Error error = 1;
+    Appointment appointment = 2;
+}
+
+service AppointmentExternal {
+    rpc GetAppointmentsOnUser (GetAppointmentsOnUserRequest) returns (GetAppointmentsOnUserReply) {
+        option (google.api.http) = {
+            get: "/api/appointment/user/{userUid}"
+        };
+    }
+    rpc RequestAppointment (RequestAppointmentRequest) returns (RequestAppointmentReply) {
+        option (google.api.http) = {
+            post: "/api/appointment",
+            body: "appointment"
+
+        };
+    }
+}
+
+message RequestAppointmentRequest{
+    Appointment appointment = 1;
+}
+
+message RequestAppointmentReply{
+    Error error = 1;
+    Appointment appointment = 2;
+}
+
+message GetAppointmentsOnUserRequest{
+    string userUid = 1;
+}
+
+message GetAppointmentsOnUserReply{
+    Error error = 1;
+    repeated Appointment appointments  = 2;
+}
+
+message Appointment {
+    string appointmentUid = 1;
+    string userUid = 2;
+    string dateTime  = 3;
+    string location = 4;
+    string topic = 5;
+    AppointmentStatus status = 6;
+}
+
+enum AppointmentStatus {
+    UNKNOWN = 0;
+    REQUESTED = 1;
+    CONFIRMED = 2;
+}
+
+message Error {
+    int32 code = 1;
+    string message = 2;
+}
