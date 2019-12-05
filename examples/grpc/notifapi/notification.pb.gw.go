@@ -255,7 +255,7 @@ func RegisterNotificationHandler(ctx context.Context, mux *runtime.ServeMux, con
 // RegisterNotificationHandlerClient registers the http handlers for service Notification
 // to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "NotificationClient".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "NotificationClient"
-// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// doesn't go through the normal gRPC flow (creating a gRPC grpcClient etc.) then it will be up to the passed in
 // "NotificationClient" to call the correct interceptors.
 func RegisterNotificationHandlerClient(ctx context.Context, mux *runtime.ServeMux, client NotificationClient) error {
 

@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	pb "github.com/MarcGrol/go-training/examples/grpc/notifapi"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"google.golang.org/grpc"
 	"log"
 	"net/http"
+
+	pb "github.com/MarcGrol/go-training/examples/grpc/notifapi"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
 type server struct {
@@ -26,26 +26,27 @@ func (s *server) ListenHttpBlocking(grpcPort string, restPort string) error {
 	mux := http.NewServeMux()
 
 	{
-		// Prepare connector that forwards towards GRPC server
-		conn, err := grpc.Dial(grpcPort, grpc.WithInsecure())
+		// create a regular grpc-client
+		grpcClient, cleanup, err := pb.NewGrpcClient(grpcPort)
 		if err != nil {
-			return fmt.Errorf("fail to dial: %v", err)
+			return err
 		}
-		defer conn.Close() // assume the surrounding function blocks
+		defer cleanup()
 
-		// Register REST gateway that proxies rest to grpc and back
-		client := pb.NewNotificationClient(conn)
+		// create a rest-endpoint that uses the regular grpc-client to forward to the real grpc server
 		rmux := runtime.NewServeMux()
-		err = pb.RegisterNotificationHandlerClient(ctx, rmux, client)
+		err = pb.RegisterNotificationHandlerClient(ctx, rmux, grpcClient)
 		if err != nil {
-			return fmt.Errorf("Error registering http-client: %s", err)
+			return fmt.Errorf("Error registering notif-shttp-client: %s", err)
 		}
 		mux.Handle("/", rmux)
 	}
 
 	{
 		// Serve the swagger-ui and swagger file
-		mux.HandleFunc("/swagger.json", serveSwagger)
+		mux.HandleFunc("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
+			http.ServeFile(w, r, "swaggerui/swagger.json")
+		})
 		fs := http.FileServer(http.Dir("swaggerui"))
 		mux.Handle("/swaggerui/", http.StripPrefix("/swaggerui", fs))
 	}
@@ -57,8 +58,4 @@ func (s *server) ListenHttpBlocking(grpcPort string, restPort string) error {
 	}
 
 	return nil
-}
-
-func serveSwagger(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "swaggerui/swagger.json")
 }

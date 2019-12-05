@@ -902,6 +902,24 @@ combine with go routines to execute work in background
 
 #----------------------------------------------
 
+* Cleanup
+
+    func NewGrpcClient(addressPort string) (NotificationClient, func(), error) {
+        // Prepare connection to the server.
+        conn, err := grpc.Dial(addressPort, grpc.WithInsecure(), grpc.WithBlock())
+        if err != nil {
+            return nil, func() {}, fmt.Errorf("Error creating notifapi-grpc-client: %v", err)
+        }
+        cleanup := func() {
+            if conn != nil {
+                conn.Close()
+            }
+        }
+        return NewNotificationClient(conn), cleanup, nil
+    }
+
+#----------------------------------------------
+
 * Overridable functions <emailapi>
 - Interfaces more suitable for overriding however you might encounter this
 
@@ -1193,11 +1211,11 @@ https://bettercodehub.com/docs/faq
 
 #----------------------------------------------
 
-* Parsing go
+* How are these tools created?
+- By parsing go
+- Stdlib provides apis to parse: go/ast, go/parser
 
-Stdlib provides apis to parse: go/ast, go/parser
-
-Examples:
+Other examples:
 - Extract documentation from code
 - Create boiler-plate code
 

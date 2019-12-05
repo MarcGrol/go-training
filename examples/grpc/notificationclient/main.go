@@ -1,37 +1,36 @@
-
 package main
 
 import (
 	"context"
 	"fmt"
-	"github.com/MarcGrol/go-training/examples/grpc/notifapi"
 	"log"
 	"time"
+
+	"github.com/MarcGrol/go-training/examples/grpc/notifapi"
 )
 
 const (
-	address     = "localhost:50051"
-	reps = 10
+	address = "localhost:50051"
+	reps    = 10
 )
 
 func main() {
-	client := notifapi.New()
-	err := client.Open(address)
+	client, cleanup, err := notifapi.NewGrpcClient(address)
 	if err != nil {
-		log.Fatalf("*** Error opening client: %v", err)
+		log.Fatalf("*** Error ccreating client: %v", err)
 	}
-	defer client.Close()
+	defer cleanup()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	for idx:=0;idx<reps ; idx++ {
-		uid, err := client.SendEmail(ctx, "mgrol@xebia.com",  fmt.Sprintf("My subject %d", idx), "My body")
+	for idx := 0; idx < reps; idx++ {
+		uid, err := sendEmail(ctx, client, "mgrol@xebia.com", fmt.Sprintf("My subject %d", idx), "My body")
 		if err != nil {
 			log.Printf("*** Error sending email: %v", err)
 		} else {
 			log.Printf("SendEmail-response: %+v", uid)
-			status, err := client.GetStatus(ctx, uid)
+			status, err := getStatus(ctx, client, uid)
 			if err != nil {
 				log.Printf("*** Error getting status of sms: %v", err)
 			} else {
@@ -40,14 +39,14 @@ func main() {
 		}
 	}
 
-	for idx:=0;idx<reps ; idx++ {
-		uid, err := client.SendSms(ctx, "+31648928856", fmt.Sprintf("My body %d", idx))
+	for idx := 0; idx < reps; idx++ {
+		uid, err := sendSms(ctx, client, "+31648928856", fmt.Sprintf("My body %d", idx))
 		if err != nil {
 			log.Printf("*** Error sending sms: %v", err)
 		} else {
 			log.Printf("SendSms-response: %+v", uid)
 
-			status, err := client.GetStatus(ctx, uid)
+			status, err := getStatus(ctx, client, uid)
 			if err != nil {
 				log.Printf("*** Error getting status of sms: %v", err)
 			} else {
@@ -55,4 +54,54 @@ func main() {
 			}
 		}
 	}
+}
+
+func sendEmail(ctx context.Context, c notifapi.NotificationClient, recipientEmailAddress, subject, body string) (string, error) {
+	response, err := c.SendEmail(ctx, &notifapi.SendEmailRequest{
+		Email: &notifapi.EmailMessage{
+			RecipientEmailAddress: recipientEmailAddress,
+			Subject:               subject,
+			Body:                  body,
+		},
+	})
+	if err != nil {
+		return "", fmt.Errorf("Could not send email: %v", err)
+	}
+
+	if response.Error != nil {
+		return "", fmt.Errorf("Error sending email: %+v", response.Error)
+	}
+
+	return response.GetNotificationUid(), nil
+}
+
+func sendSms(ctx context.Context, c notifapi.NotificationClient, recipientPhoneNumber, body string) (string, error) {
+	response, err := c.SendSms(ctx, &notifapi.SendSmsRequest{
+		Sms: &notifapi.SmsMessage{
+			RecipientPhoneNumber: recipientPhoneNumber,
+			Body:                 body,
+		},
+	})
+	if err != nil {
+		return "", fmt.Errorf("Could not send sms: %v", err)
+	}
+
+	if response.Error != nil {
+		return "", fmt.Errorf("Error sending sms: %+v", response.Error)
+	}
+	return response.GetNotificationUid(), nil
+}
+
+func getStatus(ctx context.Context, c notifapi.NotificationClient, msgUID string) (notifapi.NotificationStatus, error) {
+	response, err := c.GetNotificationStatus(ctx, &notifapi.GetNotificationStatusRequest{
+		NotificationUid: msgUID,
+	})
+	if err != nil {
+		log.Fatalf("Error getting status: %v", err)
+	}
+
+	if response.Error != nil {
+		return notifapi.NotificationStatus_UNKNOWN, fmt.Errorf("Error getting sms: %+v", response.Error)
+	}
+	return response.GetStatus(), nil
 }
