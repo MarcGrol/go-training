@@ -5,19 +5,32 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"strings"
 
 	pb "github.com/MarcGrol/go-training/solutions/hospital/notifications/notificationapi"
 	"google.golang.org/grpc"
 )
 
+type EmailSender interface {
+	Send(recipientEmail, subject, emailBody string) error
+}
+
+type SmsSender interface {
+	Send(recipientPhoneNumber, messageBody string) error
+}
+
 type server struct {
 	listener net.Listener
 	pb.UnimplementedNotificationServer
+
+	emailSender EmailSender
+	smsSender   SmsSender
 }
 
-func newServer() *server {
-	return &server{}
+func newServer(emailSender EmailSender, smsSender SmsSender) *server {
+	return &server{
+		emailSender: emailSender,
+		smsSender:   smsSender,
+	}
 }
 
 func (s *server) GRPCListenBlocking(port string) error {
@@ -49,19 +62,18 @@ func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.Se
 		}, nil
 	}
 
-	// TODO call sendgrid or like
-	log.Printf("Sent email to '%s' with subject '%s'", in.GetEmail().GetRecipientEmailAddress(), in.GetEmail().GetSubject())
-
-	// Simulate error
-	if strings.Contains(in.GetEmail().GetSubject(), "5") {
+	err := s.emailSender.Send(in.GetEmail().GetRecipientEmailAddress(), in.GetEmail().GetSubject(), in.GetEmail().GetBody())
+	if err != nil {
 		return &pb.SendEmailReply{
 			Status: pb.DeliveryStatus_FAILED,
 			Error: &pb.Error{
 				Code:    500,
-				Message: "Internal error sending email",
+				Message: "Error sending out email",
+				Details: err.Error(),
 			},
 		}, nil
 	}
+	log.Printf("Sent email to '%s' with subject '%s'", in.GetEmail().GetRecipientEmailAddress(), in.GetEmail().GetSubject())
 
 	return &pb.SendEmailReply{Status: pb.DeliveryStatus_DELIVERED}, nil
 }
@@ -77,8 +89,18 @@ func (s *server) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendSm
 		}, nil
 	}
 
-	// TODO call twilio or like
-	log.Printf("Sent sms to '%s' with subject '%s'", in.GetSms().GetRecipientPhoneNumber(), in.GetSms().GetBody())
+	err := s.smsSender.Send(in.GetSms().GetRecipientPhoneNumber(), in.GetSms().GetBody())
+	if err != nil {
+		return &pb.SendSmsReply{
+			Status: pb.DeliveryStatus_FAILED,
+			Error: &pb.Error{
+				Code:    500,
+				Message: "Error sending out sms",
+				Details: err.Error(),
+			},
+		}, nil
+	}
+	log.Printf("Sent sms to '%s' with body '%s'", in.GetSms().GetRecipientPhoneNumber(), in.GetSms().GetBody())
 
 	return &pb.SendSmsReply{Status: pb.DeliveryStatus_DELIVERED}, nil
 }
