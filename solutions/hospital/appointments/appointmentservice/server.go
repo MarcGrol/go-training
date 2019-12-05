@@ -18,14 +18,16 @@ type server struct {
 	pb.UnimplementedAppointmentExternalServer
 	pb.UnimplementedAppointmentInternalServer
 
-	appointmentStore    AppointmentStore
-	patientInfoService  patientinfoapi.PatientInfoServer
-	notificationService notificationapi.NotificationServer
+	appointmentStore   AppointmentStore
+	patientInfoClient  patientinfoapi.PatientInfoClient
+	notificationClient notificationapi.NotificationClient
 }
 
-func newServer(store AppointmentStore) *server {
+func newServer(store AppointmentStore, patientInfoClient patientinfoapi.PatientInfoClient, notificationClient notificationapi.NotificationClient) *server {
 	return &server{
-		appointmentStore: store,
+		appointmentStore:   store,
+		patientInfoClient:  patientInfoClient,
+		notificationClient: notificationClient,
 	}
 }
 
@@ -40,7 +42,7 @@ func (s *server) GRPCListenBlocking(port string) error {
 	pb.RegisterAppointmentExternalServer(grpcServer, s)
 	pb.RegisterAppointmentInternalServer(grpcServer, s)
 
-	log.Println("GRPPC server starts listening...")
+	log.Printf("GRPPC server starts listening at port %s...", port)
 	err = grpcServer.Serve(s.listener)
 	if err != nil {
 		return fmt.Errorf("failed to serve: %v", err)
@@ -111,15 +113,17 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 	// Perform lookup
 	internalAppointment, found, err := s.appointmentStore.GetAppointmentOnUid(in.AppointmentUid)
 	if err != nil {
+		log.Printf("Error getting appointment %s: %s", in.AppointmentUid, err)
 		return &pb.AppointmentReply{
 			Error: &pb.Error{
 				Code:    500,
-				Message: "Error persisting new appointment",
+				Message: "Error getting appointment",
 				Details: err.Error(),
 			},
 		}, nil
 	}
 	if !found {
+		log.Printf("Appointment %s not found", in.AppointmentUid)
 		return &pb.AppointmentReply{
 			Error: &pb.Error{
 				Code:    404,
@@ -127,9 +131,10 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 			},
 		}, nil
 	}
+	log.Printf("Got appointment:%+v", internalAppointment)
 
 	// Fetch patient details
-	resp, err := s.patientInfoService.GetPatientOnUid(c, &patientinfoapi.GetPatientOnUidRequest{PatientUid: internalAppointment.UserUID})
+	resp, err := s.patientInfoClient.GetPatientOnUid(c, &patientinfoapi.GetPatientOnUidRequest{PatientUid: internalAppointment.UserUID})
 	if err != nil {
 		return &pb.AppointmentReply{
 			Error: &pb.Error{
@@ -149,17 +154,20 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 		}, nil
 	}
 
+	log.Printf("Got patient:%+v", resp.Patient)
+
 	// Send out sms
-	_, _ = s.notificationService.SendSms(c, &notificationapi.SendSmsRequest{
+	_, _ = s.notificationClient.SendSms(c, &notificationapi.SendSmsRequest{
 		Sms: &notificationapi.SmsMessage{
 			RecipientPhoneNumber: resp.Patient.PhoneNumber,
 			Body:                 "Appointment confirmed", // TODO use template
 		},
 	})
 	// TODO error checking
+	log.Printf("Send sms:")
 
 	// Send out email
-	_, _ = s.notificationService.SendEmail(c, &notificationapi.SendEmailRequest{
+	_, _ = s.notificationClient.SendEmail(c, &notificationapi.SendEmailRequest{
 		Email: &notificationapi.EmailMessage{
 			RecipientEmailAddress: resp.Patient.PhoneNumber,
 			Subject:               "Appointment confirmed",              // TODO use template
@@ -167,17 +175,21 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 		},
 	})
 	// TODO error checking
+	log.Printf("Send email:")
 
 	// Adjust datastore
 	internalAppointment.Status = AppointmentStatusConfirmed
 	appointmentAdjusted, err := s.appointmentStore.PutAppointment(internalAppointment)
-	return &pb.AppointmentReply{
-		Error: &pb.Error{
-			Code:    500,
-			Message: "Error persisting modified appointment",
-			Details: resp.Error.Details,
-		},
-	}, nil
+	if err != nil {
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
+				Code:    500,
+				Message: "Error persisting modified appointment",
+				Details: resp.Error.Details,
+			},
+		}, nil
+	}
+	log.Printf("Persisted adjusted appointment")
 
 	return returnSingleAppointment(appointmentAdjusted), nil
 }

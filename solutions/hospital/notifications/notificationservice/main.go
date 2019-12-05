@@ -9,12 +9,14 @@ import (
 type fakeEmailSender struct{}
 
 func (es fakeEmailSender) Send(recipientEmail, subject, emailBody string) error {
+	log.Printf("Fake send email to %s: %s", recipientEmail, subject)
 	return nil
 }
 
 type fakeSmsSender struct{}
 
 func (ss fakeSmsSender) Send(recipientPhoneNumber, messageBody string) error {
+	log.Printf("Fake send sms to %s: %s", recipientPhoneNumber, messageBody)
 	return nil
 }
 

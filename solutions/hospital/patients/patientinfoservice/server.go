@@ -33,7 +33,7 @@ func (s *server) GRPCListenBlocking(port string) error {
 	grpcServer := grpc.NewServer()
 	pb.RegisterPatientInfoServer(grpcServer, s)
 
-	log.Println("GRPPC server starts listening...")
+	log.Printf("GRPPC server starts listening at port %s...", port)
 	err = grpcServer.Serve(s.listener)
 	if err != nil {
 		return fmt.Errorf("failed to serve: %v", err)
@@ -72,7 +72,7 @@ func (s *server) GetPatientOnUid(ctx context.Context, in *pb.GetPatientOnUidRequ
 		}, nil
 	}
 
-	log.Printf("Patient with uid %s found: %_v", in.PatientUid, patient)
+	log.Printf("Patient with uid %s found: %+v", in.PatientUid, patient)
 
 	// return response
 	return &pb.GetPatientOnUidReply{
