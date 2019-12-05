@@ -13,11 +13,11 @@ import (
 type server struct {
 }
 
-func New() *server{
+func New() *server {
 	return &server{}
 }
 
-func (s *server)ListenHttpBlocking(grpcPort string, restPort string) error {
+func (s *server) ListenHttpBlocking(grpcPort string, restPort string) error {
 
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
@@ -26,7 +26,7 @@ func (s *server)ListenHttpBlocking(grpcPort string, restPort string) error {
 	mux := http.NewServeMux()
 
 	{
-		// Connect to the just created GRPC server
+		// Prepare connector that forwards towards GRPC server
 		conn, err := grpc.Dial(grpcPort, grpc.WithInsecure())
 		if err != nil {
 			return fmt.Errorf("fail to dial: %v", err)
