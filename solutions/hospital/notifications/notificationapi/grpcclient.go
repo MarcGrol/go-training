@@ -12,7 +12,7 @@ const (
 
 func NewGrpcClient(addressPort string) (NotificationClient, func(), error) {
 	// Prepare connection to the server.
-	conn, err := grpc.Dial(addressPort, grpc.WithInsecure(), grpc.WithBlock())
+	conn, err := grpc.Dial(addressPort, grpc.WithInsecure()) //, grpc.WithBlock())
 	if err != nil {
 		return nil, func() {}, fmt.Errorf("Error creating notification-api-grpc-client: %v", err)
 	}

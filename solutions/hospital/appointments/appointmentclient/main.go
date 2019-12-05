@@ -18,7 +18,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	if mode == "internal" {
+	if mode == "external" {
 		client, cleanup, err := appointmentapi.NewExternalGrpcClient(appointmentapi.DefaultPort)
 		if err != nil {
 			log.Fatalf("*** Error creating external-appointment-client: %v", err)
@@ -56,7 +56,7 @@ func main() {
 			log.Printf("requested appointment:%+v", resp.Appointment)
 		}
 
-	} else if mode == "external" {
+	} else if mode == "internal" {
 		client, cleanup, err := appointmentapi.NewInternalGrpcClient(appointmentapi.DefaultPort)
 		if err != nil {
 			log.Fatalf("*** Error creating external-appointment-client: %v", err)

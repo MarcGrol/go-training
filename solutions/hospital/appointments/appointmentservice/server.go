@@ -95,6 +95,7 @@ func (s *server) RequestAppointment(c context.Context, in *pb.RequestAppointment
 	// Adjust datastore
 	appointmentCreated, err := s.appointmentStore.PutAppointment(convertIntoInternal(*in.Appointment))
 	if err != nil {
+		log.Printf("Error creating appointment %+v: %s", *in.Appointment, err)
 		return &pb.AppointmentReply{
 			Error: &pb.Error{
 				Code:    500,
@@ -103,6 +104,8 @@ func (s *server) RequestAppointment(c context.Context, in *pb.RequestAppointment
 			},
 		}, nil
 	}
+	log.Printf("Persisted new appointment")
+
 	return returnSingleAppointment(appointmentCreated), nil
 }
 
@@ -136,6 +139,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 	// Fetch patient details
 	resp, err := s.patientInfoClient.GetPatientOnUid(c, &patientinfoapi.GetPatientOnUidRequest{PatientUid: internalAppointment.UserUID})
 	if err != nil {
+		log.Printf("Error getting patient %s on uid: %s", internalAppointment.UserUID, err)
 		return &pb.AppointmentReply{
 			Error: &pb.Error{
 				Code:    500,
@@ -145,6 +149,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 		}, nil
 	}
 	if resp.Error != nil {
+		log.Printf("Error getting patient %s on uid: %+v", internalAppointment.UserUID, resp.Error)
 		return &pb.AppointmentReply{
 			Error: &pb.Error{
 				Code:    resp.Error.Code,
