@@ -157,6 +157,9 @@
         },
         "message": {
           "type": "string"
+        },
+        "details": {
+          "type": "string"
         }
       }
     },

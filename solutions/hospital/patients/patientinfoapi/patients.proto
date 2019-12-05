@@ -17,7 +17,8 @@ message GetPatientOnUidRequest {
 }
 
 message GetPatientOnUidReply {
-    repeated Patient patientInfo = 1;
+    Error error = 1;
+    Patient patient = 2;
 }
 
 message Patient {
@@ -31,4 +32,5 @@ message Patient {
 message Error {
     int32 code = 1;
     string message = 2;
+    string details = 3;
 }

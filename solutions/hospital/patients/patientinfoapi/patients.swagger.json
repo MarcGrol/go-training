@@ -37,14 +37,29 @@
     }
   },
   "definitions": {
+    "patientinfoapiError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "string"
+        }
+      }
+    },
     "patientinfoapiGetPatientOnUidReply": {
       "type": "object",
       "properties": {
-        "patientInfo": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/patientinfoapiPatient"
-          }
+        "error": {
+          "$ref": "#/definitions/patientinfoapiError"
+        },
+        "patient": {
+          "$ref": "#/definitions/patientinfoapiPatient"
         }
       }
     },

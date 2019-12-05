@@ -12,6 +12,13 @@ service Notification {
 
         };
     }
+    rpc SendSms (SendSmsRequest) returns (SendSmsReply) {
+        option (google.api.http) = {
+            post: "/api/notification/sms",
+            body: "sms"
+
+        };
+    }
 }
 
 message SendEmailRequest {
@@ -19,9 +26,9 @@ message SendEmailRequest {
 }
 
 message SendEmailReply {
-    Error error = 1;
+    DeliveryStatus status = 1;
+    Error error = 2;
 }
-
 
 message EmailMessage {
     string recipientEmailAddress = 1;
@@ -29,7 +36,29 @@ message EmailMessage {
     string body = 3;
 }
 
+message SendSmsRequest {
+    SmsMessage sms = 1;
+}
+
+message SendSmsReply {
+    DeliveryStatus status = 1;
+    Error error = 2;
+}
+
+message SmsMessage {
+    string recipientPhoneNumber = 1;
+    string body = 3;
+}
+
+enum DeliveryStatus {
+    UNKNOWN = 0;
+    DELIVERED = 1;
+    PENDING = 2;
+    FAILED = 3;
+}
+
 message Error {
     int32 code = 1;
     string message = 2;
+    string details = 3;
 }
