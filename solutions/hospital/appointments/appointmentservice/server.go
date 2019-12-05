@@ -6,17 +6,17 @@ import (
 	"log"
 	"net"
 
-	"github.com/MarcGrol/go-training/solutions/hospital/appointments/appointmentapi"
+	"google.golang.org/grpc"
 
+	pb "github.com/MarcGrol/go-training/solutions/hospital/appointments/appointmentapi"
 	"github.com/MarcGrol/go-training/solutions/hospital/notifications/notificationapi"
 	"github.com/MarcGrol/go-training/solutions/hospital/patients/patientinfoapi"
-	"google.golang.org/grpc"
 )
 
 type server struct {
 	listener net.Listener
-	appointmentapi.UnimplementedAppointmentExternalServer
-	appointmentapi.UnimplementedAppointmentInternalServer
+	pb.UnimplementedAppointmentExternalServer
+	pb.UnimplementedAppointmentInternalServer
 
 	appointmentStore    AppointmentStore
 	patientInfoService  patientinfoapi.PatientInfoServer
@@ -37,8 +37,8 @@ func (s *server) GRPCListenBlocking(port string) error {
 	}
 
 	grpcServer := grpc.NewServer()
-	appointmentapi.RegisterAppointmentExternalServer(grpcServer, newServer())
-	appointmentapi.RegisterAppointmentInternalServer(grpcServer, newServer())
+	pb.RegisterAppointmentExternalServer(grpcServer, newServer(s.appointmentStore))
+	pb.RegisterAppointmentInternalServer(grpcServer, newServer(s.appointmentStore))
 
 	log.Println("GRPPC server starts listening...")
 	err = grpcServer.Serve(s.listener)
@@ -48,15 +48,15 @@ func (s *server) GRPCListenBlocking(port string) error {
 	return nil
 }
 
-func (s *server) GetAppointmentsOnUser(c context.Context, in *appointmentapi.GetAppointmentsOnUserRequest) (*appointmentapi.GetAppointmentsReply, error) {
+func (s *server) GetAppointmentsOnUser(c context.Context, in *pb.GetAppointmentsOnUserRequest) (*pb.GetAppointmentsReply, error) {
 	// Validate input
 	// TODO
 
 	// Perform lookup
 	internalAppointments, err := s.appointmentStore.GetAppointmentsOnUserUid(in.UserUid)
 	if err != nil {
-		return &appointmentapi.GetAppointmentsReply{
-			Error: &appointmentapi.Error{
+		return &pb.GetAppointmentsReply{
+			Error: &pb.Error{
 				Code:    500,
 				Message: "Technical error fetching appointments on user",
 				Details: err.Error(),
@@ -64,18 +64,18 @@ func (s *server) GetAppointmentsOnUser(c context.Context, in *appointmentapi.Get
 		}, nil
 	}
 
-	return returnAppointments(internalAppointments), nil
+	return returnAppointmentList(internalAppointments), nil
 }
 
-func (s *server) GetAppointmentsOnStatus(c context.Context, in *appointmentapi.GetAppointmentsOnStatusRequest) (*appointmentapi.GetAppointmentsReply, error) {
+func (s *server) GetAppointmentsOnStatus(c context.Context, in *pb.GetAppointmentsOnStatusRequest) (*pb.GetAppointmentsReply, error) {
 	// Validate input
 	// TODO
 
 	// Perform lookup
 	internalAppointments, err := s.appointmentStore.GetAppointmentsOnStatus(AppointmentStatus(in.Status))
 	if err != nil {
-		return &appointmentapi.GetAppointmentsReply{
-			Error: &appointmentapi.Error{
+		return &pb.GetAppointmentsReply{
+			Error: &pb.Error{
 				Code:    500,
 				Message: "Technical error fetching appointments on user",
 				Details: err.Error(),
@@ -83,45 +83,45 @@ func (s *server) GetAppointmentsOnStatus(c context.Context, in *appointmentapi.G
 		}, nil
 	}
 
-	return returnAppointments(internalAppointments), nil
+	return returnAppointmentList(internalAppointments), nil
 }
 
-func (s *server) RequestAppointment(c context.Context, in *appointmentapi.RequestAppointmentRequest) (*appointmentapi.AppointmentReply, error) {
+func (s *server) RequestAppointment(c context.Context, in *pb.RequestAppointmentRequest) (*pb.AppointmentReply, error) {
 	// Validate input
 	// TODO
 
 	// Adjust datastore
 	appointmentCreated, err := s.appointmentStore.PutAppointment(convertIntoInternal(*in.Appointment))
 	if err != nil {
-		return &appointmentapi.AppointmentReply{
-			Error: &appointmentapi.Error{
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
 				Code:    500,
 				Message: "Technical error creating appointment",
 				Details: err.Error(),
 			},
 		}, nil
 	}
-	return returnAppointment(appointmentCreated), nil
+	return returnSingleAppointment(appointmentCreated), nil
 }
 
-func (s *server) ModifyAppointmentStatus(c context.Context, in *appointmentapi.ModifyAppointmentStatusRequest) (*appointmentapi.AppointmentReply, error) {
+func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppointmentStatusRequest) (*pb.AppointmentReply, error) {
 	// Validate input
 	// TODO
 
 	// Perform lookup
 	internalAppointment, found, err := s.appointmentStore.GetAppointmentOnUid(in.AppointmentUid)
 	if err != nil {
-		return &appointmentapi.AppointmentReply{
-			Error: &appointmentapi.Error{
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
 				Code:    500,
-				Message: "Technical error fetching appointments on user",
+				Message: "Error persisting new appointment",
 				Details: err.Error(),
 			},
 		}, nil
 	}
 	if !found {
-		return &appointmentapi.AppointmentReply{
-			Error: &appointmentapi.Error{
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
 				Code:    404,
 				Message: "Appointment with uid not found",
 			},
@@ -131,8 +131,8 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *appointmentapi.M
 	// Fetch patient details
 	resp, err := s.patientInfoService.GetPatientOnUid(c, &patientinfoapi.GetPatientOnUidRequest{PatientUid: internalAppointment.UserUID})
 	if err != nil {
-		return &appointmentapi.AppointmentReply{
-			Error: &appointmentapi.Error{
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
 				Code:    500,
 				Message: "Technical error finding patient on uid",
 				Details: err.Error(),
@@ -140,10 +140,10 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *appointmentapi.M
 		}, nil
 	}
 	if resp.Error != nil {
-		return &appointmentapi.AppointmentReply{
-			Error: &appointmentapi.Error{
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
 				Code:    resp.Error.Code,
-				Message: resp.Error.Message,
+				Message: fmt.Sprintf("Error getting patient on uid:%s", resp.Error.Message),
 				Details: resp.Error.Details,
 			},
 		}, nil
@@ -171,48 +171,45 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *appointmentapi.M
 	// Adjust datastore
 	internalAppointment.Status = AppointmentStatusConfirmed
 	appointmentAdjusted, err := s.appointmentStore.PutAppointment(internalAppointment)
-	return &appointmentapi.AppointmentReply{
-		Error: &appointmentapi.Error{
+	return &pb.AppointmentReply{
+		Error: &pb.Error{
 			Code:    500,
-			Message: "Error modifying apppointment",
+			Message: "Error persisting modified appointment",
 			Details: resp.Error.Details,
 		},
 	}, nil
 
-	return returnAppointment(appointmentAdjusted), nil
+	return returnSingleAppointment(appointmentAdjusted), nil
 }
 
-func returnAppointments(internalAppointments []Appointment) *appointmentapi.GetAppointmentsReply {
-
-	response := &appointmentapi.GetAppointmentsReply{
-		Appointments: []*appointmentapi.Appointment{},
-	}
+func returnAppointmentList(internalAppointments []Appointment) *pb.GetAppointmentsReply {
+	externalAppointments := []*pb.Appointment{}
 	for _, a := range internalAppointments {
-		response.Appointments = append(response.Appointments, convertIntoExternal(a))
+		externalAppointments = append(externalAppointments, convertIntoExternal(a))
 	}
-	return response
+	return &pb.GetAppointmentsReply{
+		Appointments: externalAppointments,
+	}
 }
 
-func returnAppointment(internalAppointmnent Appointment) *appointmentapi.AppointmentReply {
-	response := &appointmentapi.AppointmentReply{
+func returnSingleAppointment(internalAppointmnent Appointment) *pb.AppointmentReply {
+	return &pb.AppointmentReply{
 		Appointment: convertIntoExternal(internalAppointmnent),
 	}
-
-	return response
 }
 
-func convertIntoExternal(a Appointment) *appointmentapi.Appointment {
-	return &appointmentapi.Appointment{
+func convertIntoExternal(a Appointment) *pb.Appointment {
+	return &pb.Appointment{
 		AppointmentUid: a.AppointmentUID,
 		UserUid:        a.UserUID,
 		DateTime:       a.DateTime,
 		Location:       a.Location,
 		Topic:          a.Topic,
-		Status:         appointmentapi.AppointmentStatus(a.Status),
+		Status:         pb.AppointmentStatus(a.Status),
 	}
 }
 
-func convertIntoInternal(a appointmentapi.Appointment) Appointment {
+func convertIntoInternal(a pb.Appointment) Appointment {
 	return Appointment{
 		AppointmentUID: a.AppointmentUid,
 		UserUID:        a.UserUid,
