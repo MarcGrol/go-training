@@ -30,7 +30,7 @@ func (s *server) GRPCListenBlocking(port string) error {
 	}
 
 	grpcServer := grpc.NewServer()
-	pb.RegisterPatientInfoServer(grpcServer, newServer())
+	pb.RegisterPatientInfoServer(grpcServer, newServer(s.patientStore))
 
 	log.Println("GRPPC server starts listening...")
 	err = grpcServer.Serve(s.listener)

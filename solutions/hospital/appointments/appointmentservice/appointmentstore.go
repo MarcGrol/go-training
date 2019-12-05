@@ -2,8 +2,6 @@ package main
 
 import (
 	"sync"
-
-	"github.com/google/uuid"
 )
 
 type AppointmentStatus int
@@ -30,13 +28,19 @@ type AppointmentStore interface {
 	GetAppointmentsOnStatus(status AppointmentStatus) ([]Appointment, error)
 }
 
+type Uider interface {
+	Create() string
+}
+
 type appointmentStore struct {
 	sync.Mutex
+	uider        Uider
 	appointments map[string]Appointment
 }
 
-func newAppointmentStore() AppointmentStore {
+func newAppointmentStore(uider Uider) AppointmentStore {
 	return &appointmentStore{
+		uider: uider,
 		appointments: map[string]Appointment{
 			"a": {AppointmentUID: "a", UserUID: "1", Location: "Leuven", Topic: "onderzoek", Status: AppointmentStatusRequested},
 			"b": {AppointmentUID: "b", UserUID: "2", Location: "Leuven", Topic: "scan", Status: AppointmentStatusConfirmed},
@@ -49,7 +53,7 @@ func (as *appointmentStore) PutAppointment(appointment Appointment) (Appointment
 	defer as.Unlock()
 
 	if appointment.AppointmentUID == "" {
-		appointment.AppointmentUID = uuid.New().String() // TODO Mock
+		appointment.AppointmentUID = as.uider.Create()
 	}
 	as.appointments[appointment.AppointmentUID] = appointment
 	return appointment, nil
