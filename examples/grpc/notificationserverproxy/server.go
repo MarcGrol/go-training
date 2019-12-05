@@ -31,7 +31,7 @@ func (s *server) ListenHttpBlocking(grpcPort string, restPort string) error {
 		if err != nil {
 			return fmt.Errorf("fail to dial: %v", err)
 		}
-		defer conn.Close()
+		defer conn.Close() // assume this function blocks
 
 		// Register REST gateway that proxies rest to grpc and back
 		client := pb.NewNotificationClient(conn)
