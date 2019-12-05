@@ -2,7 +2,7 @@
 package main
 
 import (
-	_ "github.com/MarcGrol/go-training/examples/grpc/spec"
+	_ "github.com/MarcGrol/go-training/examples/grpc/notifapi"
 	"log"
 )
 

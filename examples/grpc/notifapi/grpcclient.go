@@ -1,44 +1,42 @@
 
-package main
+package notifapi
 
 import (
 	"context"
 	"fmt"
 	"log"
 
-	pb "github.com/MarcGrol/go-training/examples/grpc/spec"
 	"google.golang.org/grpc"
 )
 
-
-type Client struct {
+type client struct {
 	conn   *grpc.ClientConn
-	client pb.NotificationClient
+	client NotificationClient
 }
 
-func New() (*Client) {
-	return &Client{}
+func New() (Notifier) {
+	return &client{}
 }
 
-func (c *Client)Open(addressPort string) error {
+func (c *client)Open(addressPort string) error {
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(addressPort, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
 		return fmt.Errorf("Error connecting: %v", err)
 	}
-	c.client = pb.NewNotificationClient(conn)
+	c.client = NewNotificationClient(conn)
 	return nil
 }
 
-func (c *Client)Close(){
+func (c *client)Close(){
 	if c.conn != nil {
 		defer c.conn.Close()
 	}
 }
 
-func (c *Client)SendEmail(ctx context.Context, recipientEmailAddress, subject, body string) (string,error){
-	response, err := c.client.SendEmail(ctx, &pb.SendEmailRequest{
-		Email:&pb.EmailMessage{
+func (c *client)SendEmail(ctx context.Context, recipientEmailAddress, subject, body string) (string,error){
+	response, err := c.client.SendEmail(ctx, &SendEmailRequest{
+		Email:&EmailMessage{
 			RecipientEmailAddress: recipientEmailAddress,
 			Subject:               subject,
 			Body:                  body,
@@ -55,9 +53,9 @@ func (c *Client)SendEmail(ctx context.Context, recipientEmailAddress, subject, b
 	return response.GetNotificationUid() , nil
 }
 
-func (c *Client)SendSms(ctx context.Context, recipientPhoneNumber, body string) (string,error){
-	response, err := c.client.SendSms(ctx, &pb.SendSmsRequest{
-		Sms:&pb.SmsMessage{
+func (c *client)SendSms(ctx context.Context, recipientPhoneNumber, body string) (string,error){
+	response, err := c.client.SendSms(ctx, &SendSmsRequest{
+		Sms:&SmsMessage{
 			RecipientPhoneNumber: recipientPhoneNumber,
 			Body:                 body,
 		},
@@ -72,8 +70,8 @@ func (c *Client)SendSms(ctx context.Context, recipientPhoneNumber, body string) 
 	return response.GetNotificationUid() , nil
 }
 
-func (c *Client)GetStatus(ctx context.Context, msgUID string) (pb.NotificationStatus,error) {
-	response, err := c.client.GetNotificationStatus(ctx, &pb.GetNotificationStatusRequest{
+func (c *client)GetStatus(ctx context.Context, msgUID string) (NotificationStatus,error) {
+	response, err := c.client.GetNotificationStatus(ctx, &GetNotificationStatusRequest{
 		NotificationUid: msgUID,
 	})
 	if err != nil {
@@ -81,7 +79,7 @@ func (c *Client)GetStatus(ctx context.Context, msgUID string) (pb.NotificationSt
 	}
 
 	if response.Error != nil {
-		return pb.NotificationStatus_UNKNOWN, fmt.Errorf("Error getting sms: %+v", response.Error)
+		return NotificationStatus_UNKNOWN, fmt.Errorf("Error getting sms: %+v", response.Error)
 	}
 	return  response.GetStatus(), nil
 }

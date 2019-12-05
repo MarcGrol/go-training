@@ -4,6 +4,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/MarcGrol/go-training/examples/grpc/notifapi"
 	"log"
 	"time"
 )
@@ -14,13 +15,12 @@ const (
 )
 
 func main() {
-	client := New()
+	client := notifapi.New()
 	err := client.Open(address)
 	if err != nil {
 		log.Fatalf("*** Error opening client: %v", err)
 	}
 	defer client.Close()
-
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
