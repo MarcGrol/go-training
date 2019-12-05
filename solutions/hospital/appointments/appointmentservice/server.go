@@ -37,8 +37,8 @@ func (s *server) GRPCListenBlocking(port string) error {
 	}
 
 	grpcServer := grpc.NewServer()
-	pb.RegisterAppointmentExternalServer(grpcServer, newServer(s.appointmentStore))
-	pb.RegisterAppointmentInternalServer(grpcServer, newServer(s.appointmentStore))
+	pb.RegisterAppointmentExternalServer(grpcServer, s)
+	pb.RegisterAppointmentInternalServer(grpcServer, s)
 
 	log.Println("GRPPC server starts listening...")
 	err = grpcServer.Serve(s.listener)

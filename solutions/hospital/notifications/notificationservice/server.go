@@ -6,8 +6,9 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/MarcGrol/go-training/solutions/hospital/notifications/notificationapi"
 	"google.golang.org/grpc"
+
+	pb "github.com/MarcGrol/go-training/solutions/hospital/notifications/notificationapi"
 )
 
 type EmailSender interface {
@@ -41,7 +42,7 @@ func (s *server) GRPCListenBlocking(port string) error {
 	}
 
 	grpcServer := grpc.NewServer()
-	pb.RegisterNotificationServer(grpcServer, newServer())
+	pb.RegisterNotificationServer(grpcServer, s)
 
 	log.Println("GRPPC server starts listening...")
 	err = grpcServer.Serve(s.listener)

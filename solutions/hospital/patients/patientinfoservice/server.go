@@ -6,8 +6,9 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/MarcGrol/go-training/solutions/hospital/patients/patientinfoapi"
 	"google.golang.org/grpc"
+
+	pb "github.com/MarcGrol/go-training/solutions/hospital/patients/patientinfoapi"
 )
 
 type server struct {
@@ -30,7 +31,7 @@ func (s *server) GRPCListenBlocking(port string) error {
 	}
 
 	grpcServer := grpc.NewServer()
-	pb.RegisterPatientInfoServer(grpcServer, newServer(s.patientStore))
+	pb.RegisterPatientInfoServer(grpcServer, s)
 
 	log.Println("GRPPC server starts listening...")
 	err = grpcServer.Serve(s.listener)

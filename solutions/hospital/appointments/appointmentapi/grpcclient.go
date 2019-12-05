@@ -6,6 +6,10 @@ import (
 	"google.golang.org/grpc"
 )
 
+const (
+	DefaultPort = ":60001"
+)
+
 func NewExternalGrpcClient(addressPort string) (AppointmentExternalClient, func(), error) {
 	// Prepare connection to the server.
 	conn, err := grpc.Dial(addressPort, grpc.WithInsecure(), grpc.WithBlock())
