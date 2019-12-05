@@ -50,6 +50,7 @@ func (s *server) GRPCListenBlocking(port string) error {
 
 func (s *server) GetAppointmentsOnUser(c context.Context, in *appointmentapi.GetAppointmentsOnUserRequest) (*appointmentapi.GetAppointmentsReply, error) {
 	// Validate input
+	// TODO
 
 	// Perform lookup
 	internalAppointments, err := s.appointmentStore.GetAppointmentsOnUserUid(in.UserUid)
@@ -68,6 +69,7 @@ func (s *server) GetAppointmentsOnUser(c context.Context, in *appointmentapi.Get
 
 func (s *server) GetAppointmentsOnStatus(c context.Context, in *appointmentapi.GetAppointmentsOnStatusRequest) (*appointmentapi.GetAppointmentsReply, error) {
 	// Validate input
+	// TODO
 
 	// Perform lookup
 	internalAppointments, err := s.appointmentStore.GetAppointmentsOnStatus(AppointmentStatus(in.Status))
@@ -107,8 +109,6 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *appointmentapi.M
 	// TODO
 
 	// Perform lookup
-
-	// Perform lookup
 	internalAppointment, found, err := s.appointmentStore.GetAppointmentOnUid(in.AppointmentUid)
 	if err != nil {
 		return &appointmentapi.AppointmentReply{
@@ -127,6 +127,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *appointmentapi.M
 			},
 		}, nil
 	}
+
 	// Fetch patient details
 	resp, err := s.patientInfoService.GetPatientOnUid(c, &patientinfoapi.GetPatientOnUidRequest{PatientUid: internalAppointment.UserUID})
 	if err != nil {
