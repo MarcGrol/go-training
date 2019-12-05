@@ -18,7 +18,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/appointmentapiRequestAppointmentReply"
+              "$ref": "#/definitions/appointmentapiAppointmentReply"
             }
           }
         },
@@ -44,7 +44,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/appointmentapiGetAppointmentsOnStatusReply"
+              "$ref": "#/definitions/appointmentapiGetAppointmentsReply"
             }
           }
         },
@@ -73,7 +73,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/appointmentapiGetAppointmentsOnUserReply"
+              "$ref": "#/definitions/appointmentapiGetAppointmentsReply"
             }
           }
         },
@@ -97,7 +97,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/appointmentapiModifyAppointmentStatusReply"
+              "$ref": "#/definitions/appointmentapiAppointmentReply"
             }
           }
         },
@@ -139,6 +139,17 @@
         }
       }
     },
+    "appointmentapiAppointmentReply": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/appointmentapiError"
+        },
+        "appointment": {
+          "$ref": "#/definitions/appointmentapiAppointment"
+        }
+      }
+    },
     "appointmentapiAppointmentStatus": {
       "type": "string",
       "enum": [
@@ -163,7 +174,7 @@
         }
       }
     },
-    "appointmentapiGetAppointmentsOnStatusReply": {
+    "appointmentapiGetAppointmentsReply": {
       "type": "object",
       "properties": {
         "error": {
@@ -174,42 +185,6 @@
           "items": {
             "$ref": "#/definitions/appointmentapiAppointment"
           }
-        }
-      }
-    },
-    "appointmentapiGetAppointmentsOnUserReply": {
-      "type": "object",
-      "properties": {
-        "error": {
-          "$ref": "#/definitions/appointmentapiError"
-        },
-        "appointments": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/appointmentapiAppointment"
-          }
-        }
-      }
-    },
-    "appointmentapiModifyAppointmentStatusReply": {
-      "type": "object",
-      "properties": {
-        "error": {
-          "$ref": "#/definitions/appointmentapiError"
-        },
-        "appointment": {
-          "$ref": "#/definitions/appointmentapiAppointment"
-        }
-      }
-    },
-    "appointmentapiRequestAppointmentReply": {
-      "type": "object",
-      "properties": {
-        "error": {
-          "$ref": "#/definitions/appointmentapiError"
-        },
-        "appointment": {
-          "$ref": "#/definitions/appointmentapiAppointment"
         }
       }
     }

@@ -5,12 +5,12 @@ package appointmentapi;
 import "google/api/annotations.proto";
 
 service AppointmentInternal {
-    rpc GetAppointmentsOnStatus (GetAppointmentsOnStatusRequest) returns (GetAppointmentsOnStatusReply) {
+    rpc GetAppointmentsOnStatus (GetAppointmentsOnStatusRequest) returns (GetAppointmentsReply) {
         option (google.api.http) = {
             get: "/api/appointment/status/{status}"
         };
     }
-    rpc ModifyAppointmentStatus (ModifyAppointmentStatusRequest) returns (ModifyAppointmentStatusReply) {
+    rpc ModifyAppointmentStatus (ModifyAppointmentStatusRequest) returns (AppointmentReply) {
         option (google.api.http) = {
             put: "/api/appointment/{appointmentUid}/status",
         };
@@ -21,28 +21,23 @@ message GetAppointmentsOnStatusRequest{
     AppointmentStatus status = 1;
 }
 
-message GetAppointmentsOnStatusReply{
-    Error error = 1;
-    repeated Appointment appointments  = 2;
-}
-
 message ModifyAppointmentStatusRequest{
     string appointmentUid = 1;
     AppointmentStatus status = 2;
 }
 
-message ModifyAppointmentStatusReply{
+message AppointmentReply{
     Error error = 1;
     Appointment appointment = 2;
 }
 
 service AppointmentExternal {
-    rpc GetAppointmentsOnUser (GetAppointmentsOnUserRequest) returns (GetAppointmentsOnUserReply) {
+    rpc GetAppointmentsOnUser (GetAppointmentsOnUserRequest) returns (GetAppointmentsReply) {
         option (google.api.http) = {
             get: "/api/appointment/user/{userUid}"
         };
     }
-    rpc RequestAppointment (RequestAppointmentRequest) returns (RequestAppointmentReply) {
+    rpc RequestAppointment (RequestAppointmentRequest) returns (AppointmentReply) {
         option (google.api.http) = {
             post: "/api/appointment",
             body: "appointment"
@@ -55,16 +50,11 @@ message RequestAppointmentRequest{
     Appointment appointment = 1;
 }
 
-message RequestAppointmentReply{
-    Error error = 1;
-    Appointment appointment = 2;
-}
-
 message GetAppointmentsOnUserRequest{
     string userUid = 1;
 }
 
-message GetAppointmentsOnUserReply{
+message GetAppointmentsReply{
     Error error = 1;
     repeated Appointment appointments  = 2;
 }

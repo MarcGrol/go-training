@@ -92,53 +92,6 @@ func (m *GetAppointmentsOnStatusRequest) GetStatus() AppointmentStatus {
 	return AppointmentStatus_UNKNOWN
 }
 
-type GetAppointmentsOnStatusReply struct {
-	Error                *Error         `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
-	Appointments         []*Appointment `protobuf:"bytes,2,rep,name=appointments,proto3" json:"appointments,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
-	XXX_unrecognized     []byte         `json:"-"`
-	XXX_sizecache        int32          `json:"-"`
-}
-
-func (m *GetAppointmentsOnStatusReply) Reset()         { *m = GetAppointmentsOnStatusReply{} }
-func (m *GetAppointmentsOnStatusReply) String() string { return proto.CompactTextString(m) }
-func (*GetAppointmentsOnStatusReply) ProtoMessage()    {}
-func (*GetAppointmentsOnStatusReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c5f4e3616349cb11, []int{1}
-}
-
-func (m *GetAppointmentsOnStatusReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetAppointmentsOnStatusReply.Unmarshal(m, b)
-}
-func (m *GetAppointmentsOnStatusReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetAppointmentsOnStatusReply.Marshal(b, m, deterministic)
-}
-func (m *GetAppointmentsOnStatusReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetAppointmentsOnStatusReply.Merge(m, src)
-}
-func (m *GetAppointmentsOnStatusReply) XXX_Size() int {
-	return xxx_messageInfo_GetAppointmentsOnStatusReply.Size(m)
-}
-func (m *GetAppointmentsOnStatusReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetAppointmentsOnStatusReply.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetAppointmentsOnStatusReply proto.InternalMessageInfo
-
-func (m *GetAppointmentsOnStatusReply) GetError() *Error {
-	if m != nil {
-		return m.Error
-	}
-	return nil
-}
-
-func (m *GetAppointmentsOnStatusReply) GetAppointments() []*Appointment {
-	if m != nil {
-		return m.Appointments
-	}
-	return nil
-}
-
 type ModifyAppointmentStatusRequest struct {
 	AppointmentUid       string            `protobuf:"bytes,1,opt,name=appointmentUid,proto3" json:"appointmentUid,omitempty"`
 	Status               AppointmentStatus `protobuf:"varint,2,opt,name=status,proto3,enum=appointmentapi.AppointmentStatus" json:"status,omitempty"`
@@ -151,7 +104,7 @@ func (m *ModifyAppointmentStatusRequest) Reset()         { *m = ModifyAppointmen
 func (m *ModifyAppointmentStatusRequest) String() string { return proto.CompactTextString(m) }
 func (*ModifyAppointmentStatusRequest) ProtoMessage()    {}
 func (*ModifyAppointmentStatusRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c5f4e3616349cb11, []int{2}
+	return fileDescriptor_c5f4e3616349cb11, []int{1}
 }
 
 func (m *ModifyAppointmentStatusRequest) XXX_Unmarshal(b []byte) error {
@@ -186,7 +139,7 @@ func (m *ModifyAppointmentStatusRequest) GetStatus() AppointmentStatus {
 	return AppointmentStatus_UNKNOWN
 }
 
-type ModifyAppointmentStatusReply struct {
+type AppointmentReply struct {
 	Error                *Error       `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
 	Appointment          *Appointment `protobuf:"bytes,2,opt,name=appointment,proto3" json:"appointment,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
@@ -194,39 +147,39 @@ type ModifyAppointmentStatusReply struct {
 	XXX_sizecache        int32        `json:"-"`
 }
 
-func (m *ModifyAppointmentStatusReply) Reset()         { *m = ModifyAppointmentStatusReply{} }
-func (m *ModifyAppointmentStatusReply) String() string { return proto.CompactTextString(m) }
-func (*ModifyAppointmentStatusReply) ProtoMessage()    {}
-func (*ModifyAppointmentStatusReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c5f4e3616349cb11, []int{3}
+func (m *AppointmentReply) Reset()         { *m = AppointmentReply{} }
+func (m *AppointmentReply) String() string { return proto.CompactTextString(m) }
+func (*AppointmentReply) ProtoMessage()    {}
+func (*AppointmentReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c5f4e3616349cb11, []int{2}
 }
 
-func (m *ModifyAppointmentStatusReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ModifyAppointmentStatusReply.Unmarshal(m, b)
+func (m *AppointmentReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AppointmentReply.Unmarshal(m, b)
 }
-func (m *ModifyAppointmentStatusReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ModifyAppointmentStatusReply.Marshal(b, m, deterministic)
+func (m *AppointmentReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AppointmentReply.Marshal(b, m, deterministic)
 }
-func (m *ModifyAppointmentStatusReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ModifyAppointmentStatusReply.Merge(m, src)
+func (m *AppointmentReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AppointmentReply.Merge(m, src)
 }
-func (m *ModifyAppointmentStatusReply) XXX_Size() int {
-	return xxx_messageInfo_ModifyAppointmentStatusReply.Size(m)
+func (m *AppointmentReply) XXX_Size() int {
+	return xxx_messageInfo_AppointmentReply.Size(m)
 }
-func (m *ModifyAppointmentStatusReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_ModifyAppointmentStatusReply.DiscardUnknown(m)
+func (m *AppointmentReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_AppointmentReply.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ModifyAppointmentStatusReply proto.InternalMessageInfo
+var xxx_messageInfo_AppointmentReply proto.InternalMessageInfo
 
-func (m *ModifyAppointmentStatusReply) GetError() *Error {
+func (m *AppointmentReply) GetError() *Error {
 	if m != nil {
 		return m.Error
 	}
 	return nil
 }
 
-func (m *ModifyAppointmentStatusReply) GetAppointment() *Appointment {
+func (m *AppointmentReply) GetAppointment() *Appointment {
 	if m != nil {
 		return m.Appointment
 	}
@@ -244,7 +197,7 @@ func (m *RequestAppointmentRequest) Reset()         { *m = RequestAppointmentReq
 func (m *RequestAppointmentRequest) String() string { return proto.CompactTextString(m) }
 func (*RequestAppointmentRequest) ProtoMessage()    {}
 func (*RequestAppointmentRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c5f4e3616349cb11, []int{4}
+	return fileDescriptor_c5f4e3616349cb11, []int{3}
 }
 
 func (m *RequestAppointmentRequest) XXX_Unmarshal(b []byte) error {
@@ -272,53 +225,6 @@ func (m *RequestAppointmentRequest) GetAppointment() *Appointment {
 	return nil
 }
 
-type RequestAppointmentReply struct {
-	Error                *Error       `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
-	Appointment          *Appointment `protobuf:"bytes,2,opt,name=appointment,proto3" json:"appointment,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
-	XXX_unrecognized     []byte       `json:"-"`
-	XXX_sizecache        int32        `json:"-"`
-}
-
-func (m *RequestAppointmentReply) Reset()         { *m = RequestAppointmentReply{} }
-func (m *RequestAppointmentReply) String() string { return proto.CompactTextString(m) }
-func (*RequestAppointmentReply) ProtoMessage()    {}
-func (*RequestAppointmentReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c5f4e3616349cb11, []int{5}
-}
-
-func (m *RequestAppointmentReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_RequestAppointmentReply.Unmarshal(m, b)
-}
-func (m *RequestAppointmentReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_RequestAppointmentReply.Marshal(b, m, deterministic)
-}
-func (m *RequestAppointmentReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RequestAppointmentReply.Merge(m, src)
-}
-func (m *RequestAppointmentReply) XXX_Size() int {
-	return xxx_messageInfo_RequestAppointmentReply.Size(m)
-}
-func (m *RequestAppointmentReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_RequestAppointmentReply.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_RequestAppointmentReply proto.InternalMessageInfo
-
-func (m *RequestAppointmentReply) GetError() *Error {
-	if m != nil {
-		return m.Error
-	}
-	return nil
-}
-
-func (m *RequestAppointmentReply) GetAppointment() *Appointment {
-	if m != nil {
-		return m.Appointment
-	}
-	return nil
-}
-
 type GetAppointmentsOnUserRequest struct {
 	UserUid              string   `protobuf:"bytes,1,opt,name=userUid,proto3" json:"userUid,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -330,7 +236,7 @@ func (m *GetAppointmentsOnUserRequest) Reset()         { *m = GetAppointmentsOnU
 func (m *GetAppointmentsOnUserRequest) String() string { return proto.CompactTextString(m) }
 func (*GetAppointmentsOnUserRequest) ProtoMessage()    {}
 func (*GetAppointmentsOnUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c5f4e3616349cb11, []int{6}
+	return fileDescriptor_c5f4e3616349cb11, []int{4}
 }
 
 func (m *GetAppointmentsOnUserRequest) XXX_Unmarshal(b []byte) error {
@@ -358,7 +264,7 @@ func (m *GetAppointmentsOnUserRequest) GetUserUid() string {
 	return ""
 }
 
-type GetAppointmentsOnUserReply struct {
+type GetAppointmentsReply struct {
 	Error                *Error         `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
 	Appointments         []*Appointment `protobuf:"bytes,2,rep,name=appointments,proto3" json:"appointments,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
@@ -366,39 +272,39 @@ type GetAppointmentsOnUserReply struct {
 	XXX_sizecache        int32          `json:"-"`
 }
 
-func (m *GetAppointmentsOnUserReply) Reset()         { *m = GetAppointmentsOnUserReply{} }
-func (m *GetAppointmentsOnUserReply) String() string { return proto.CompactTextString(m) }
-func (*GetAppointmentsOnUserReply) ProtoMessage()    {}
-func (*GetAppointmentsOnUserReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c5f4e3616349cb11, []int{7}
+func (m *GetAppointmentsReply) Reset()         { *m = GetAppointmentsReply{} }
+func (m *GetAppointmentsReply) String() string { return proto.CompactTextString(m) }
+func (*GetAppointmentsReply) ProtoMessage()    {}
+func (*GetAppointmentsReply) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c5f4e3616349cb11, []int{5}
 }
 
-func (m *GetAppointmentsOnUserReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetAppointmentsOnUserReply.Unmarshal(m, b)
+func (m *GetAppointmentsReply) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetAppointmentsReply.Unmarshal(m, b)
 }
-func (m *GetAppointmentsOnUserReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetAppointmentsOnUserReply.Marshal(b, m, deterministic)
+func (m *GetAppointmentsReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetAppointmentsReply.Marshal(b, m, deterministic)
 }
-func (m *GetAppointmentsOnUserReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetAppointmentsOnUserReply.Merge(m, src)
+func (m *GetAppointmentsReply) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetAppointmentsReply.Merge(m, src)
 }
-func (m *GetAppointmentsOnUserReply) XXX_Size() int {
-	return xxx_messageInfo_GetAppointmentsOnUserReply.Size(m)
+func (m *GetAppointmentsReply) XXX_Size() int {
+	return xxx_messageInfo_GetAppointmentsReply.Size(m)
 }
-func (m *GetAppointmentsOnUserReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetAppointmentsOnUserReply.DiscardUnknown(m)
+func (m *GetAppointmentsReply) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetAppointmentsReply.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetAppointmentsOnUserReply proto.InternalMessageInfo
+var xxx_messageInfo_GetAppointmentsReply proto.InternalMessageInfo
 
-func (m *GetAppointmentsOnUserReply) GetError() *Error {
+func (m *GetAppointmentsReply) GetError() *Error {
 	if m != nil {
 		return m.Error
 	}
 	return nil
 }
 
-func (m *GetAppointmentsOnUserReply) GetAppointments() []*Appointment {
+func (m *GetAppointmentsReply) GetAppointments() []*Appointment {
 	if m != nil {
 		return m.Appointments
 	}
@@ -421,7 +327,7 @@ func (m *Appointment) Reset()         { *m = Appointment{} }
 func (m *Appointment) String() string { return proto.CompactTextString(m) }
 func (*Appointment) ProtoMessage()    {}
 func (*Appointment) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c5f4e3616349cb11, []int{8}
+	return fileDescriptor_c5f4e3616349cb11, []int{6}
 }
 
 func (m *Appointment) XXX_Unmarshal(b []byte) error {
@@ -497,7 +403,7 @@ func (m *Error) Reset()         { *m = Error{} }
 func (m *Error) String() string { return proto.CompactTextString(m) }
 func (*Error) ProtoMessage()    {}
 func (*Error) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c5f4e3616349cb11, []int{9}
+	return fileDescriptor_c5f4e3616349cb11, []int{7}
 }
 
 func (m *Error) XXX_Unmarshal(b []byte) error {
@@ -542,13 +448,11 @@ func (m *Error) GetDetails() string {
 func init() {
 	proto.RegisterEnum("appointmentapi.AppointmentStatus", AppointmentStatus_name, AppointmentStatus_value)
 	proto.RegisterType((*GetAppointmentsOnStatusRequest)(nil), "appointmentapi.GetAppointmentsOnStatusRequest")
-	proto.RegisterType((*GetAppointmentsOnStatusReply)(nil), "appointmentapi.GetAppointmentsOnStatusReply")
 	proto.RegisterType((*ModifyAppointmentStatusRequest)(nil), "appointmentapi.ModifyAppointmentStatusRequest")
-	proto.RegisterType((*ModifyAppointmentStatusReply)(nil), "appointmentapi.ModifyAppointmentStatusReply")
+	proto.RegisterType((*AppointmentReply)(nil), "appointmentapi.AppointmentReply")
 	proto.RegisterType((*RequestAppointmentRequest)(nil), "appointmentapi.RequestAppointmentRequest")
-	proto.RegisterType((*RequestAppointmentReply)(nil), "appointmentapi.RequestAppointmentReply")
 	proto.RegisterType((*GetAppointmentsOnUserRequest)(nil), "appointmentapi.GetAppointmentsOnUserRequest")
-	proto.RegisterType((*GetAppointmentsOnUserReply)(nil), "appointmentapi.GetAppointmentsOnUserReply")
+	proto.RegisterType((*GetAppointmentsReply)(nil), "appointmentapi.GetAppointmentsReply")
 	proto.RegisterType((*Appointment)(nil), "appointmentapi.Appointment")
 	proto.RegisterType((*Error)(nil), "appointmentapi.Error")
 }
@@ -556,46 +460,44 @@ func init() {
 func init() { proto.RegisterFile("appointments.proto", fileDescriptor_c5f4e3616349cb11) }
 
 var fileDescriptor_c5f4e3616349cb11 = []byte{
-	// 616 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x95, 0xcd, 0x6e, 0xd3, 0x40,
-	0x10, 0xc7, 0x59, 0xb7, 0x49, 0xe9, 0x04, 0xaa, 0xb0, 0x50, 0xc5, 0x98, 0xa8, 0x4d, 0x2d, 0x41,
-	0x43, 0x40, 0x09, 0x0a, 0x17, 0x40, 0x02, 0x84, 0xa8, 0x41, 0x15, 0x6a, 0x22, 0xdc, 0x46, 0x48,
-	0x70, 0x32, 0xc9, 0x12, 0x59, 0x72, 0xbc, 0xc6, 0xde, 0x48, 0x44, 0x51, 0x2e, 0x20, 0x2e, 0x08,
-	0x89, 0x03, 0x37, 0x6e, 0x1c, 0x79, 0x0f, 0xde, 0x80, 0x0b, 0x0f, 0x00, 0xef, 0x81, 0xbc, 0xde,
-	0xd0, 0xb5, 0x1d, 0xa7, 0xc9, 0xa5, 0xa7, 0x76, 0x76, 0x3e, 0xf6, 0x37, 0x7f, 0xef, 0x4c, 0x00,
-	0x5b, 0x9e, 0x47, 0x6d, 0x97, 0x0d, 0x88, 0xcb, 0x82, 0xba, 0xe7, 0x53, 0x46, 0xf1, 0x86, 0x74,
-	0x66, 0x79, 0xb6, 0x56, 0xee, 0x53, 0xda, 0x77, 0x48, 0xc3, 0xf2, 0xec, 0x86, 0xe5, 0xba, 0x94,
-	0x59, 0xcc, 0xa6, 0xae, 0x88, 0xd6, 0x5f, 0xc1, 0xd6, 0x53, 0xc2, 0x1e, 0x49, 0x65, 0xda, 0xee,
-	0x21, 0xb3, 0xd8, 0x30, 0x30, 0xc9, 0xdb, 0x21, 0x09, 0x18, 0xbe, 0x0b, 0xf9, 0x80, 0x1f, 0xa8,
-	0xa8, 0x82, 0xaa, 0x1b, 0xcd, 0x9d, 0x7a, 0xfc, 0x82, 0xba, 0x94, 0x2c, 0x32, 0x45, 0x82, 0xfe,
-	0x19, 0x41, 0x39, 0xb3, 0xba, 0xe7, 0x8c, 0xf0, 0x0d, 0xc8, 0x11, 0xdf, 0xa7, 0x3e, 0x2f, 0x5d,
-	0x68, 0x6e, 0x26, 0x4b, 0x1b, 0xa1, 0xd3, 0x8c, 0x62, 0xf0, 0x43, 0x38, 0x27, 0xb7, 0xab, 0x2a,
-	0x95, 0x95, 0x6a, 0xa1, 0x79, 0x65, 0x0e, 0x8e, 0x19, 0x4b, 0xd0, 0x3f, 0x20, 0xd8, 0x3a, 0xa0,
-	0x3d, 0xfb, 0xcd, 0x28, 0x8d, 0x2c, 0x9a, 0xbd, 0x06, 0xb2, 0x7c, 0x1d, 0xbb, 0xc7, 0xc9, 0xd6,
-	0xcd, 0xc4, 0xa9, 0x24, 0x8a, 0xb2, 0xac, 0x28, 0x9f, 0x10, 0x94, 0x33, 0x29, 0x96, 0x16, 0xe5,
-	0x3e, 0x14, 0x24, 0x37, 0xa7, 0x39, 0x41, 0x13, 0x39, 0x5e, 0x7f, 0x09, 0x97, 0x45, 0xeb, 0x72,
-	0x88, 0x10, 0x23, 0x51, 0x1b, 0x2d, 0x59, 0xfb, 0x23, 0x82, 0xd2, 0xac, 0xe2, 0xa7, 0xdd, 0xe3,
-	0x9d, 0x19, 0x8f, 0xb0, 0x13, 0x10, 0x7f, 0xda, 0xa6, 0x0a, 0x6b, 0xc3, 0x80, 0xf8, 0xc7, 0x1f,
-	0x7b, 0x6a, 0x86, 0x9f, 0x4a, 0xcb, 0x48, 0x3d, 0xfd, 0xd7, 0xfb, 0x1b, 0x41, 0x41, 0xf2, 0x2e,
-	0xfc, 0x54, 0xa5, 0xf6, 0x94, 0x58, 0x7b, 0x58, 0x83, 0xb3, 0x3d, 0x8b, 0x91, 0x23, 0x7b, 0x40,
-	0xd4, 0x15, 0xee, 0xfa, 0x6f, 0x87, 0x3e, 0x87, 0x76, 0xf9, 0xaa, 0x50, 0x57, 0x23, 0xdf, 0xd4,
-	0xc6, 0x97, 0x20, 0xc7, 0xa8, 0x67, 0x77, 0xd5, 0x1c, 0x77, 0x44, 0x86, 0x34, 0x12, 0xf9, 0x65,
-	0x47, 0xa2, 0x0d, 0x39, 0xae, 0x15, 0xc6, 0xb0, 0xda, 0xa5, 0x3d, 0xc2, 0x3b, 0xc9, 0x99, 0xfc,
-	0xff, 0x90, 0x7f, 0x40, 0x82, 0xc0, 0xea, 0x93, 0x29, 0xbf, 0x30, 0x43, 0x4f, 0x8f, 0x30, 0xcb,
-	0x76, 0x02, 0x81, 0x3f, 0x35, 0x6b, 0x0f, 0xe0, 0x42, 0xea, 0x36, 0x5c, 0x80, 0xb5, 0x4e, 0xeb,
-	0x59, 0xab, 0xfd, 0xa2, 0x55, 0x3c, 0x83, 0xcf, 0xc3, 0xba, 0x69, 0x3c, 0xef, 0x18, 0x87, 0x47,
-	0xc6, 0x5e, 0x11, 0x85, 0xe6, 0xe3, 0x76, 0xeb, 0xc9, 0xbe, 0x79, 0x60, 0xec, 0x15, 0x95, 0xe6,
-	0x5f, 0x05, 0x2e, 0x4a, 0x05, 0xf6, 0x5d, 0x46, 0x7c, 0xd7, 0x72, 0xf0, 0x77, 0x04, 0xa5, 0x8c,
-	0x85, 0x86, 0xeb, 0xc9, 0x7e, 0xe7, 0xef, 0x55, 0xed, 0xe6, 0xc2, 0xf1, 0x9e, 0x33, 0xd2, 0xab,
-	0xef, 0x7f, 0xfd, 0xf9, 0xaa, 0xe8, 0xb8, 0x12, 0xed, 0xf1, 0xe3, 0xb8, 0x46, 0xa4, 0x61, 0x63,
-	0x1c, 0xfd, 0x9d, 0xe0, 0x1f, 0x08, 0x4a, 0x19, 0xfb, 0x25, 0xcd, 0x38, 0x7f, 0x1d, 0xa6, 0x19,
-	0xe7, 0x2d, 0x2e, 0xfd, 0x16, 0x67, 0xac, 0x69, 0xd5, 0x14, 0xe3, 0x38, 0xfe, 0x26, 0x27, 0x02,
-	0xba, 0xf9, 0x33, 0xae, 0xb3, 0xf1, 0x4e, 0xe8, 0xfc, 0x0d, 0xc1, 0xe6, 0xcc, 0xc1, 0xc3, 0x27,
-	0xab, 0x26, 0x8d, 0xb6, 0x56, 0x5b, 0x30, 0x3a, 0xa4, 0xdf, 0xe5, 0xf4, 0x3b, 0x78, 0x3b, 0x45,
-	0x1f, 0xce, 0x4b, 0x63, 0x2c, 0xa6, 0x66, 0x82, 0xbf, 0x20, 0xc0, 0xe9, 0xbd, 0x86, 0xaf, 0x27,
-	0xef, 0xca, 0x5c, 0xac, 0xda, 0xee, 0x22, 0xa1, 0x21, 0xd3, 0x55, 0xce, 0xb4, 0xad, 0x17, 0x93,
-	0x4c, 0xf7, 0xe4, 0x0d, 0xf7, 0x3a, 0xcf, 0x7f, 0xcb, 0x6f, 0xff, 0x0b, 0x00, 0x00, 0xff, 0xff,
-	0xaa, 0xe8, 0x8d, 0x09, 0x0f, 0x08, 0x00, 0x00,
+	// 591 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x95, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0xc7, 0x59, 0xb7, 0x69, 0xe9, 0x04, 0xaa, 0x30, 0xb4, 0xaa, 0x09, 0x55, 0x9b, 0x5a, 0x7c,
+	0x84, 0x82, 0x12, 0x14, 0x2e, 0x80, 0x04, 0x08, 0x51, 0x83, 0x2a, 0xd4, 0x44, 0xb8, 0x8d, 0x90,
+	0xe0, 0xb4, 0x24, 0x4b, 0x64, 0x29, 0xf1, 0x1a, 0x7b, 0x23, 0x51, 0x45, 0xe1, 0x00, 0x1c, 0xb8,
+	0xc3, 0x85, 0x03, 0xcf, 0xc1, 0x73, 0x20, 0x2e, 0x3c, 0x00, 0x0f, 0x82, 0xbc, 0xde, 0xd0, 0xb5,
+	0x4d, 0xbe, 0x38, 0x25, 0xb3, 0xff, 0xdd, 0x99, 0xdf, 0x4c, 0x66, 0x26, 0x80, 0xd4, 0xf7, 0xb9,
+	0xeb, 0x89, 0x1e, 0xf3, 0x44, 0x58, 0xf1, 0x03, 0x2e, 0x38, 0xae, 0x6a, 0x67, 0xd4, 0x77, 0x8b,
+	0x9b, 0x1d, 0xce, 0x3b, 0x5d, 0x56, 0xa5, 0xbe, 0x5b, 0xa5, 0x9e, 0xc7, 0x05, 0x15, 0x2e, 0xf7,
+	0xd4, 0x6d, 0xeb, 0x25, 0x6c, 0x3d, 0x61, 0xe2, 0xa1, 0xe6, 0xa6, 0xe1, 0x1d, 0x0a, 0x2a, 0xfa,
+	0xa1, 0xc3, 0xde, 0xf4, 0x59, 0x28, 0xf0, 0x0e, 0x2c, 0x85, 0xf2, 0xc0, 0x24, 0x25, 0x52, 0x5e,
+	0xad, 0xed, 0x54, 0x92, 0x01, 0x2a, 0xda, 0x63, 0xf5, 0x52, 0x3d, 0xb0, 0x3e, 0x10, 0xd8, 0x3a,
+	0xe0, 0x6d, 0xf7, 0xf5, 0x71, 0xf6, 0x8e, 0xf2, 0x7e, 0x05, 0x74, 0xde, 0xa6, 0xdb, 0x96, 0x51,
+	0x56, 0x9c, 0xd4, 0xa9, 0x46, 0x61, 0xcc, 0x4b, 0xf1, 0x0e, 0x0a, 0x9a, 0xe8, 0x30, 0xbf, 0x7b,
+	0x8c, 0xd7, 0x21, 0xc7, 0x82, 0x80, 0x07, 0x32, 0x5a, 0xbe, 0xb6, 0x9e, 0xf6, 0x66, 0x47, 0xa2,
+	0x13, 0xdf, 0xc1, 0x7b, 0x90, 0xd7, 0x64, 0x09, 0x90, 0xaf, 0x5d, 0x9c, 0x00, 0xe0, 0xe8, 0xf7,
+	0xad, 0x17, 0x70, 0x41, 0x65, 0x9b, 0xc0, 0x88, 0xf3, 0x4f, 0xf9, 0x26, 0x73, 0xfa, 0xbe, 0x0d,
+	0x9b, 0x99, 0x9f, 0xaf, 0x19, 0xb2, 0x60, 0xe4, 0xde, 0x84, 0xe5, 0x7e, 0xc8, 0x82, 0x93, 0xba,
+	0x8e, 0x4c, 0xeb, 0x23, 0x81, 0xb5, 0xd4, 0xd3, 0xff, 0x28, 0xcd, 0x03, 0x38, 0xa3, 0xb7, 0xa0,
+	0x69, 0x94, 0x16, 0xa6, 0xf1, 0x27, 0x1e, 0x58, 0xbf, 0x08, 0xe4, 0x35, 0x75, 0xe6, 0x7e, 0xd0,
+	0x12, 0x33, 0x12, 0x89, 0x61, 0x11, 0x4e, 0xb7, 0xa9, 0x60, 0x47, 0x6e, 0x8f, 0x99, 0x0b, 0x52,
+	0xfa, 0x6b, 0x47, 0x5a, 0x97, 0xb7, 0xe4, 0x00, 0x98, 0x8b, 0xb1, 0x36, 0xb2, 0x71, 0x0d, 0x72,
+	0x82, 0xfb, 0x6e, 0xcb, 0xcc, 0x49, 0x21, 0x36, 0xb4, 0xbe, 0x5b, 0x9a, 0xb7, 0xef, 0x1a, 0x90,
+	0x93, 0xb5, 0x42, 0x84, 0xc5, 0x16, 0x6f, 0x33, 0x99, 0x49, 0xce, 0x91, 0xdf, 0x23, 0xfe, 0x1e,
+	0x0b, 0x43, 0xda, 0x61, 0x23, 0x7e, 0x65, 0x46, 0x4a, 0x9b, 0x09, 0xea, 0x76, 0x43, 0x85, 0x3f,
+	0x32, 0x77, 0xef, 0xc3, 0xb9, 0x4c, 0x34, 0xcc, 0xc3, 0x72, 0xb3, 0xfe, 0xb4, 0xde, 0x78, 0x5e,
+	0x2f, 0x9c, 0xc2, 0xb3, 0xb0, 0xe2, 0xd8, 0xcf, 0x9a, 0xf6, 0xe1, 0x91, 0xbd, 0x57, 0x20, 0x91,
+	0xf9, 0xa8, 0x51, 0x7f, 0xbc, 0xef, 0x1c, 0xd8, 0x7b, 0x05, 0xa3, 0xf6, 0xc3, 0x80, 0xf3, 0x9a,
+	0x83, 0x7d, 0x4f, 0xb0, 0xc0, 0xa3, 0x5d, 0xfc, 0x4a, 0x60, 0x63, 0xcc, 0x12, 0xc0, 0x4a, 0x3a,
+	0xdf, 0xc9, 0xdb, 0xa2, 0x78, 0x69, 0xca, 0x7d, 0xd9, 0x63, 0x56, 0xf9, 0xfd, 0xcf, 0xdf, 0x9f,
+	0x0d, 0x0b, 0x4b, 0xf1, 0x56, 0x3a, 0xd1, 0xab, 0x71, 0xed, 0xaa, 0x83, 0xf8, 0x73, 0x88, 0xdf,
+	0x08, 0x6c, 0x8c, 0x59, 0x21, 0x59, 0xb6, 0xc9, 0xbb, 0xa6, 0x58, 0x9a, 0xd4, 0x96, 0x92, 0xeb,
+	0xa6, 0xe4, 0xda, 0x2d, 0x96, 0x33, 0x5c, 0x83, 0x64, 0xff, 0x0d, 0x15, 0x68, 0xed, 0x7b, 0xb2,
+	0xa6, 0xf6, 0x5b, 0x55, 0xd3, 0x2f, 0x04, 0xd6, 0xff, 0x39, 0x99, 0x78, 0x63, 0x6a, 0x45, 0xb5,
+	0x01, 0x9e, 0xb1, 0x9e, 0x57, 0x25, 0xf7, 0x0e, 0x6e, 0x67, 0xb8, 0xa3, 0xa9, 0xa8, 0x0e, 0xd4,
+	0x6c, 0x0c, 0xf1, 0x13, 0x01, 0xcc, 0x2e, 0x23, 0xbc, 0x96, 0x8e, 0x32, 0x76, 0x61, 0xcd, 0x50,
+	0xc4, 0xcb, 0x12, 0x66, 0xdb, 0x2a, 0xa4, 0x61, 0xee, 0xea, 0xab, 0xeb, 0xd5, 0x92, 0xfc, 0x03,
+	0xba, 0xf5, 0x27, 0x00, 0x00, 0xff, 0xff, 0x34, 0xe8, 0xa8, 0x6d, 0xc4, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -610,8 +512,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type AppointmentInternalClient interface {
-	GetAppointmentsOnStatus(ctx context.Context, in *GetAppointmentsOnStatusRequest, opts ...grpc.CallOption) (*GetAppointmentsOnStatusReply, error)
-	ModifyAppointmentStatus(ctx context.Context, in *ModifyAppointmentStatusRequest, opts ...grpc.CallOption) (*ModifyAppointmentStatusReply, error)
+	GetAppointmentsOnStatus(ctx context.Context, in *GetAppointmentsOnStatusRequest, opts ...grpc.CallOption) (*GetAppointmentsReply, error)
+	ModifyAppointmentStatus(ctx context.Context, in *ModifyAppointmentStatusRequest, opts ...grpc.CallOption) (*AppointmentReply, error)
 }
 
 type appointmentInternalClient struct {
@@ -622,8 +524,8 @@ func NewAppointmentInternalClient(cc *grpc.ClientConn) AppointmentInternalClient
 	return &appointmentInternalClient{cc}
 }
 
-func (c *appointmentInternalClient) GetAppointmentsOnStatus(ctx context.Context, in *GetAppointmentsOnStatusRequest, opts ...grpc.CallOption) (*GetAppointmentsOnStatusReply, error) {
-	out := new(GetAppointmentsOnStatusReply)
+func (c *appointmentInternalClient) GetAppointmentsOnStatus(ctx context.Context, in *GetAppointmentsOnStatusRequest, opts ...grpc.CallOption) (*GetAppointmentsReply, error) {
+	out := new(GetAppointmentsReply)
 	err := c.cc.Invoke(ctx, "/appointmentapi.AppointmentInternal/GetAppointmentsOnStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -631,8 +533,8 @@ func (c *appointmentInternalClient) GetAppointmentsOnStatus(ctx context.Context,
 	return out, nil
 }
 
-func (c *appointmentInternalClient) ModifyAppointmentStatus(ctx context.Context, in *ModifyAppointmentStatusRequest, opts ...grpc.CallOption) (*ModifyAppointmentStatusReply, error) {
-	out := new(ModifyAppointmentStatusReply)
+func (c *appointmentInternalClient) ModifyAppointmentStatus(ctx context.Context, in *ModifyAppointmentStatusRequest, opts ...grpc.CallOption) (*AppointmentReply, error) {
+	out := new(AppointmentReply)
 	err := c.cc.Invoke(ctx, "/appointmentapi.AppointmentInternal/ModifyAppointmentStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -642,18 +544,18 @@ func (c *appointmentInternalClient) ModifyAppointmentStatus(ctx context.Context,
 
 // AppointmentInternalServer is the server API for AppointmentInternal service.
 type AppointmentInternalServer interface {
-	GetAppointmentsOnStatus(context.Context, *GetAppointmentsOnStatusRequest) (*GetAppointmentsOnStatusReply, error)
-	ModifyAppointmentStatus(context.Context, *ModifyAppointmentStatusRequest) (*ModifyAppointmentStatusReply, error)
+	GetAppointmentsOnStatus(context.Context, *GetAppointmentsOnStatusRequest) (*GetAppointmentsReply, error)
+	ModifyAppointmentStatus(context.Context, *ModifyAppointmentStatusRequest) (*AppointmentReply, error)
 }
 
 // UnimplementedAppointmentInternalServer can be embedded to have forward compatible implementations.
 type UnimplementedAppointmentInternalServer struct {
 }
 
-func (*UnimplementedAppointmentInternalServer) GetAppointmentsOnStatus(ctx context.Context, req *GetAppointmentsOnStatusRequest) (*GetAppointmentsOnStatusReply, error) {
+func (*UnimplementedAppointmentInternalServer) GetAppointmentsOnStatus(ctx context.Context, req *GetAppointmentsOnStatusRequest) (*GetAppointmentsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAppointmentsOnStatus not implemented")
 }
-func (*UnimplementedAppointmentInternalServer) ModifyAppointmentStatus(ctx context.Context, req *ModifyAppointmentStatusRequest) (*ModifyAppointmentStatusReply, error) {
+func (*UnimplementedAppointmentInternalServer) ModifyAppointmentStatus(ctx context.Context, req *ModifyAppointmentStatusRequest) (*AppointmentReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModifyAppointmentStatus not implemented")
 }
 
@@ -718,8 +620,8 @@ var _AppointmentInternal_serviceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type AppointmentExternalClient interface {
-	GetAppointmentsOnUser(ctx context.Context, in *GetAppointmentsOnUserRequest, opts ...grpc.CallOption) (*GetAppointmentsOnUserReply, error)
-	RequestAppointment(ctx context.Context, in *RequestAppointmentRequest, opts ...grpc.CallOption) (*RequestAppointmentReply, error)
+	GetAppointmentsOnUser(ctx context.Context, in *GetAppointmentsOnUserRequest, opts ...grpc.CallOption) (*GetAppointmentsReply, error)
+	RequestAppointment(ctx context.Context, in *RequestAppointmentRequest, opts ...grpc.CallOption) (*AppointmentReply, error)
 }
 
 type appointmentExternalClient struct {
@@ -730,8 +632,8 @@ func NewAppointmentExternalClient(cc *grpc.ClientConn) AppointmentExternalClient
 	return &appointmentExternalClient{cc}
 }
 
-func (c *appointmentExternalClient) GetAppointmentsOnUser(ctx context.Context, in *GetAppointmentsOnUserRequest, opts ...grpc.CallOption) (*GetAppointmentsOnUserReply, error) {
-	out := new(GetAppointmentsOnUserReply)
+func (c *appointmentExternalClient) GetAppointmentsOnUser(ctx context.Context, in *GetAppointmentsOnUserRequest, opts ...grpc.CallOption) (*GetAppointmentsReply, error) {
+	out := new(GetAppointmentsReply)
 	err := c.cc.Invoke(ctx, "/appointmentapi.AppointmentExternal/GetAppointmentsOnUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -739,8 +641,8 @@ func (c *appointmentExternalClient) GetAppointmentsOnUser(ctx context.Context, i
 	return out, nil
 }
 
-func (c *appointmentExternalClient) RequestAppointment(ctx context.Context, in *RequestAppointmentRequest, opts ...grpc.CallOption) (*RequestAppointmentReply, error) {
-	out := new(RequestAppointmentReply)
+func (c *appointmentExternalClient) RequestAppointment(ctx context.Context, in *RequestAppointmentRequest, opts ...grpc.CallOption) (*AppointmentReply, error) {
+	out := new(AppointmentReply)
 	err := c.cc.Invoke(ctx, "/appointmentapi.AppointmentExternal/RequestAppointment", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -750,18 +652,18 @@ func (c *appointmentExternalClient) RequestAppointment(ctx context.Context, in *
 
 // AppointmentExternalServer is the server API for AppointmentExternal service.
 type AppointmentExternalServer interface {
-	GetAppointmentsOnUser(context.Context, *GetAppointmentsOnUserRequest) (*GetAppointmentsOnUserReply, error)
-	RequestAppointment(context.Context, *RequestAppointmentRequest) (*RequestAppointmentReply, error)
+	GetAppointmentsOnUser(context.Context, *GetAppointmentsOnUserRequest) (*GetAppointmentsReply, error)
+	RequestAppointment(context.Context, *RequestAppointmentRequest) (*AppointmentReply, error)
 }
 
 // UnimplementedAppointmentExternalServer can be embedded to have forward compatible implementations.
 type UnimplementedAppointmentExternalServer struct {
 }
 
-func (*UnimplementedAppointmentExternalServer) GetAppointmentsOnUser(ctx context.Context, req *GetAppointmentsOnUserRequest) (*GetAppointmentsOnUserReply, error) {
+func (*UnimplementedAppointmentExternalServer) GetAppointmentsOnUser(ctx context.Context, req *GetAppointmentsOnUserRequest) (*GetAppointmentsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAppointmentsOnUser not implemented")
 }
-func (*UnimplementedAppointmentExternalServer) RequestAppointment(ctx context.Context, req *RequestAppointmentRequest) (*RequestAppointmentReply, error) {
+func (*UnimplementedAppointmentExternalServer) RequestAppointment(ctx context.Context, req *RequestAppointmentRequest) (*AppointmentReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RequestAppointment not implemented")
 }
 
