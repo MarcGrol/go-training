@@ -13,6 +13,7 @@ func main() {
 	if len(os.Args) != 2 {
 		log.Fatalf("Usage: %s patient-uid", os.Args[0])
 	}
+	patientUid := os.Args[1]
 	client, cleanup, err := patientinfoapi.NewGrpcClient(patientinfoapi.DefaultPort)
 	if err != nil {
 		log.Fatalf("*** Error creating patient-info-client: %v", err)
@@ -23,7 +24,7 @@ func main() {
 	defer cancel()
 
 	resp, err := client.GetPatientOnUid(ctx, &patientinfoapi.GetPatientOnUidRequest{
-		PatientUid: os.Args[1],
+		PatientUid: patientUid,
 	})
 	if err != nil {
 		log.Fatalf("Error fetching client: %s", err)
