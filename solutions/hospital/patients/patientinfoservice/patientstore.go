@@ -1,5 +1,7 @@
 package main
 
+import "sync"
+
 type Patient struct {
 	UID          string
 	FullName     string
@@ -13,7 +15,8 @@ type PatientStore interface {
 }
 
 type patientStore struct {
-	patients map[string]Patient
+	sync.Mutex // be prepared when this service starts supporting modifications
+	patients   map[string]Patient
 }
 
 func newPatientStore() PatientStore {
@@ -26,6 +29,9 @@ func newPatientStore() PatientStore {
 }
 
 func (ps *patientStore) GetPatientOnUid(uid string) (Patient, bool, error) {
+	ps.Lock()
+	defer ps.Unlock()
+
 	patient, found := ps.patients[uid]
 	return patient, found, nil
 }
