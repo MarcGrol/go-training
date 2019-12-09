@@ -92,6 +92,29 @@ func (s *server) RequestAppointment(c context.Context, in *pb.RequestAppointment
 	// Validate input
 	// TODO
 
+	// Check if patient exists
+	getPatientResponse, err := s.patientInfoClient.GetPatientOnUid(c, &patientinfoapi.GetPatientOnUidRequest{PatientUid: in.Appointment.UserUid})
+	if err != nil {
+		log.Printf("Error getting patient %s on uid: %s", in.Appointment.UserUid, err)
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
+				Code:    500,
+				Message: "Technical error finding patient on uid",
+				Details: err.Error(),
+			},
+		}, nil
+	}
+	if getPatientResponse.Error != nil {
+		log.Printf("Error getting patient %s on uid: %+v", in.Appointment.UserUid, getPatientResponse.Error)
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
+				Code:    getPatientResponse.Error.Code,
+				Message: fmt.Sprintf("Error getting patient on uid:%s", getPatientResponse.Error.Message),
+				Details: getPatientResponse.Error.Details,
+			},
+		}, nil
+	}
+
 	// Adjust datastore
 	appointmentCreated, err := s.appointmentStore.PutAppointment(convertIntoInternal(*in.Appointment))
 	if err != nil {
