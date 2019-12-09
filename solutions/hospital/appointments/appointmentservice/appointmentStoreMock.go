@@ -15,9 +15,21 @@ func NewErrorMockAppointmentStore(err error) AppointmentStore {
 	}
 }
 
+func NewNotFoundMockAppointmentStore() AppointmentStore {
+	return &mockAppointmentStore{
+		err:         nil,
+		exists:      false,
+		appointment: exampleAppointment,
+		appointments: []Appointment{
+			exampleAppointment,
+		},
+	}
+}
+
 func NewsSuccesMockAppointmentStore() AppointmentStore {
 	return &mockAppointmentStore{
 		err:         nil,
+		exists:      true,
 		appointment: exampleAppointment,
 		appointments: []Appointment{
 			exampleAppointment,

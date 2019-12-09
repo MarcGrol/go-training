@@ -50,10 +50,11 @@ func TestGetAppointmentsOnUser(t *testing.T) {
 			},
 		},
 	}
+
+	c := context.TODO()
 	for idx, tc := range testCases {
 		tcName := fmt.Sprintf("Testcase: %d (%s)", idx, tc.description)
 		t.Run(tcName, func(t *testing.T) {
-			c := context.TODO()
 			service := newServer(tc.appointmentStore, nil, nil)
 			response, _ := service.GetAppointmentsOnUser(c, tc.request)
 			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
@@ -142,10 +143,11 @@ func TestRequestAppointment(t *testing.T) {
 			},
 		},
 	}
+
+	c := context.TODO()
 	for idx, tc := range testCases {
 		tcName := fmt.Sprintf("Testcase: %d (%s)", idx, tc.description)
 		t.Run(tcName, func(t *testing.T) {
-			c := context.TODO()
 			service := newServer(tc.appointmentStore, tc.patientService, nil)
 			response, _ := service.RequestAppointment(c, tc.request)
 			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
@@ -193,10 +195,11 @@ func TestGetAppointmentsOnStatus(t *testing.T) {
 			},
 		},
 	}
+
+	c := context.TODO()
 	for idx, tc := range testCases {
 		tcName := fmt.Sprintf("Testcase: %d (%s)", idx, tc.description)
 		t.Run(fmt.Sprintf("Testcase: %d", idx), func(t *testing.T) {
-			c := context.TODO()
 			service := newServer(tc.appointmentStore, nil, nil)
 			response, _ := service.GetAppointmentsOnStatus(c, tc.request)
 			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
@@ -207,7 +210,7 @@ func TestGetAppointmentsOnStatus(t *testing.T) {
 	}
 }
 
-func TesConfirmAppointment(t *testing.T) {
+func TestConfirmAppointment(t *testing.T) {
 	testCases := []struct {
 		description        string
 		appointmentStore   AppointmentStore
@@ -217,34 +220,178 @@ func TesConfirmAppointment(t *testing.T) {
 		expectedResponse   *appointmentapi.AppointmentReply
 	}{
 		{
-			description: "Error fetching appointment",
+			description:        "Error fetching appointment",
+			appointmentStore:   NewErrorMockAppointmentStore(errors.New("c")),
+			patientService:     nil,
+			notificationClient: nil,
+			request: &appointmentapi.ModifyAppointmentStatusRequest{
+				AppointmentUid: "myAppointmentUid",
+				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    500,
+					Message: "Error getting appointment on uid",
+					Details: "c",
+				},
+			},
 		},
 		{
-			description: "Appointment not found",
+			description:        "Appointment not found",
+			appointmentStore:   NewNotFoundMockAppointmentStore(),
+			patientService:     nil,
+			notificationClient: nil,
+			request: &appointmentapi.ModifyAppointmentStatusRequest{
+				AppointmentUid: "myAppointmentUid",
+				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    404,
+					Message: "Appointment with uid not found",
+				},
+			},
 		},
 		{
-			description: "Error fetching patient",
+			description:      "Error fetching patient",
+			appointmentStore: NewsSuccesMockAppointmentStore(),
+			patientService: NewPatientClientMock(&patientinfoapi.GetPatientOnUidReply{
+				Error: &patientinfoapi.Error{
+					Code:    500,
+					Message: "yyy",
+					Details: "d",
+				},
+			}),
+			notificationClient: nil,
+			request: &appointmentapi.ModifyAppointmentStatusRequest{
+				AppointmentUid: "myAppointmentUid",
+				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    500,
+					Message: "Error getting patient on uid:yyy",
+					Details: "d",
+				},
+			}},
+		{
+			description:      "Patient not found",
+			appointmentStore: NewsSuccesMockAppointmentStore(),
+			patientService: NewPatientClientMock(&patientinfoapi.GetPatientOnUidReply{
+				Error: &patientinfoapi.Error{
+					Code:    404,
+					Message: "yyy",
+				},
+			}),
+			notificationClient: nil,
+			request: &appointmentapi.ModifyAppointmentStatusRequest{
+				AppointmentUid: "myAppointmentUid",
+				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    404,
+					Message: "Error getting patient on uid:yyy",
+				},
+			},
 		},
 		{
-			description: "Patient not found",
+			description:      "Error notifying email",
+			appointmentStore: NewsSuccesMockAppointmentStore(),
+			patientService: NewPatientClientMock(&patientinfoapi.GetPatientOnUidReply{
+				Patient: &examplePatient,
+			}),
+			notificationClient: NewNotificationClientMock(
+				&notificationapi.SendEmailReply{
+					Error: &notificationapi.Error{
+						Code:    500,
+						Message: "sss",
+						Details: "ttt",
+					},
+				},
+				nil,
+			),
+			request: &appointmentapi.ModifyAppointmentStatusRequest{
+				AppointmentUid: "myAppointmentUid",
+				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    500,
+					Message: "sss",
+					Details: "ttt",
+				},
+			},
 		},
 		{
-			description: "Error notifying email",
+			description:      "Error notifying sms",
+			appointmentStore: NewsSuccesMockAppointmentStore(),
+			patientService: NewPatientClientMock(&patientinfoapi.GetPatientOnUidReply{
+				Patient: &examplePatient,
+			}),
+			notificationClient: NewNotificationClientMock(
+				&notificationapi.SendEmailReply{
+					Status: notificationapi.DeliveryStatus_DELIVERED,
+				},
+				&notificationapi.SendSmsReply{
+					Error: &notificationapi.Error{
+						Code:    500,
+						Message: "xxx",
+						Details: "yyy",
+					},
+				},
+			),
+			request: &appointmentapi.ModifyAppointmentStatusRequest{
+				AppointmentUid: "myAppointmentUid",
+				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    500,
+					Message: "xxx",
+					Details: "yyy",
+				},
+			},
 		},
+		//{
+		//	description: "Error storing confirmed appointment",
+		//	// TODO
+		//},
 		{
-			description: "Error notifying sms",
-		},
-		{
-			description: "Error storing confirmed appointment",
-		},
-		{
-			description: "Success confirming appointment",
+			description:      "Success confirming appointment",
+			appointmentStore: NewsSuccesMockAppointmentStore(),
+			patientService: NewPatientClientMock(&patientinfoapi.GetPatientOnUidReply{
+				Patient: &examplePatient,
+			}),
+			notificationClient: NewNotificationClientMock(
+				&notificationapi.SendEmailReply{
+					Status: notificationapi.DeliveryStatus_DELIVERED,
+				},
+				&notificationapi.SendSmsReply{
+					Status: notificationapi.DeliveryStatus_DELIVERED,
+				},
+			),
+			request: &appointmentapi.ModifyAppointmentStatusRequest{
+				AppointmentUid: "myAppointmentUid",
+				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Appointment: &appointmentapi.Appointment{
+					AppointmentUid: exampleAppointment.AppointmentUID,
+					UserUid:        exampleAppointment.UserUID,
+					DateTime:       exampleAppointment.DateTime,
+					Location:       exampleAppointment.Location,
+					Topic:          exampleAppointment.Topic,
+					Status:         appointmentapi.AppointmentStatus(exampleAppointment.Status),
+				},
+			},
 		},
 	}
+
+	c := context.TODO()
 	for idx, tc := range testCases {
 		tcName := fmt.Sprintf("Testcase: %d (%s)", idx, tc.description)
 		t.Run(fmt.Sprintf("Testcase: %d", idx), func(t *testing.T) {
-			c := context.TODO()
 			service := newServer(tc.appointmentStore, tc.patientService, tc.notificationClient)
 			response, _ := service.ModifyAppointmentStatus(c, tc.request)
 			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)

@@ -143,7 +143,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 		return &pb.AppointmentReply{
 			Error: &pb.Error{
 				Code:    500,
-				Message: "Error getting appointment",
+				Message: "Error getting appointment on uid",
 				Details: err.Error(),
 			},
 		}, nil
@@ -184,26 +184,64 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 
 	log.Printf("Got patient:%+v", resp.Patient)
 
-	// Send out sms
-	_, _ = s.notificationClient.SendSms(c, &notificationapi.SendSmsRequest{
-		Sms: &notificationapi.SmsMessage{
-			RecipientPhoneNumber: resp.Patient.PhoneNumber,
-			Body:                 "Appointment confirmed", // TODO use template
-		},
-	})
-	// TODO error checking
-	log.Printf("Send sms:")
-
 	// Send out email
-	_, _ = s.notificationClient.SendEmail(c, &notificationapi.SendEmailRequest{
+	sendEmailResponse, err := s.notificationClient.SendEmail(c, &notificationapi.SendEmailRequest{
 		Email: &notificationapi.EmailMessage{
 			RecipientEmailAddress: resp.Patient.PhoneNumber,
 			Subject:               "Appointment confirmed",              // TODO use template
 			Body:                  "Appointment confirmed with details", // TODO use template
 		},
 	})
-	// TODO error checking
+	if err != nil {
+		log.Printf("Error sending sms: %s", err)
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
+				Code:    500,
+				Message: "Technical error sending sms",
+				Details: err.Error(),
+			},
+		}, nil
+	}
+	if sendEmailResponse.Error != nil {
+		log.Printf("Error sending sms: %+v", sendEmailResponse.Error)
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
+				Code:    sendEmailResponse.Error.Code,
+				Message: sendEmailResponse.Error.Message,
+				Details: sendEmailResponse.Error.Details,
+			},
+		}, nil
+	}
 	log.Printf("Send email:")
+
+	// Send out sms
+	sendSmsResponse, err := s.notificationClient.SendSms(c, &notificationapi.SendSmsRequest{
+		Sms: &notificationapi.SmsMessage{
+			RecipientPhoneNumber: resp.Patient.PhoneNumber,
+			Body:                 "Appointment confirmed", // TODO use template
+		},
+	})
+	if err != nil {
+		log.Printf("Error sending sms: %s", err)
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
+				Code:    500,
+				Message: "Technical error sending sms",
+				Details: err.Error(),
+			},
+		}, nil
+	}
+	if sendSmsResponse.Error != nil {
+		log.Printf("Error sending sms: %+v", sendSmsResponse.Error)
+		return &pb.AppointmentReply{
+			Error: &pb.Error{
+				Code:    sendSmsResponse.Error.Code,
+				Message: sendSmsResponse.Error.Message,
+				Details: sendSmsResponse.Error.Details,
+			},
+		}, nil
+	}
+	log.Printf("Send sms:")
 
 	// Adjust datastore
 	internalAppointment.Status = AppointmentStatusConfirmed
