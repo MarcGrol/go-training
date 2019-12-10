@@ -61,7 +61,7 @@ func (s *server) GetAppointmentsOnUser(c context.Context, in *pb.GetAppointments
 	}
 
 	// Perform lookup
-	internalAppointments, err := s.appointmentStore.GetAppointmentsOnUserUid(in.UserUid)
+	internalAppointments, err := s.appointmentStore.GetAppointmentsOnUserUid(c, in.UserUid)
 	if err != nil {
 		return &pb.GetAppointmentsReply{
 			Error: convertTechnicalError("Technical error fetching appointments on user", err),
@@ -80,7 +80,7 @@ func (s *server) GetAppointmentsOnStatus(c context.Context, in *pb.GetAppointmen
 	}
 
 	// Perform lookup
-	internalAppointments, err := s.appointmentStore.GetAppointmentsOnStatus(appointmentstore.AppointmentStatus(in.Status))
+	internalAppointments, err := s.appointmentStore.GetAppointmentsOnStatus(c, appointmentstore.AppointmentStatus(in.Status))
 	if err != nil {
 		return &pb.GetAppointmentsReply{
 			Error: convertTechnicalError("Technical error fetching appointments on status", err),
@@ -134,7 +134,7 @@ func (s *server) RequestAppointment(c context.Context, in *pb.RequestAppointment
 	}
 
 	// Adjust datastore
-	appointmentCreated, err := s.appointmentStore.PutAppointment(convertIntoInternal(*in.Appointment))
+	appointmentCreated, err := s.appointmentStore.PutAppointment(c, convertIntoInternal(*in.Appointment))
 	if err != nil {
 		return &pb.AppointmentReply{
 			Error: convertTechnicalError("Technical error creating appointment", err),
@@ -166,7 +166,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 	}
 
 	// Perform lookup
-	internalAppointment, found, err := s.appointmentStore.GetAppointmentOnUid(in.AppointmentUid)
+	internalAppointment, found, err := s.appointmentStore.GetAppointmentOnUid(c, in.AppointmentUid)
 	if err != nil {
 		return &pb.AppointmentReply{
 			Error: convertTechnicalError("Error fetching appointment on uid", err),
@@ -242,7 +242,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 
 	// Adjust datastore
 	internalAppointment.Status = appointmentstore.AppointmentStatusConfirmed
-	appointmentAdjusted, err := s.appointmentStore.PutAppointment(internalAppointment)
+	appointmentAdjusted, err := s.appointmentStore.PutAppointment(c, internalAppointment)
 	if err != nil {
 		return &pb.AppointmentReply{
 			Error: convertTechnicalError("Error persisting modified appointment", err),

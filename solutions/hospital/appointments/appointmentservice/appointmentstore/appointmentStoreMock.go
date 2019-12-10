@@ -5,6 +5,7 @@
 package appointmentstore
 
 import (
+	context "context"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )
@@ -33,24 +34,24 @@ func (m *MockAppointmentStore) EXPECT() *MockAppointmentStoreMockRecorder {
 }
 
 // PutAppointment mocks base method
-func (m *MockAppointmentStore) PutAppointment(appointment Appointment) (Appointment, error) {
+func (m *MockAppointmentStore) PutAppointment(ctx context.Context, appointment Appointment) (Appointment, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PutAppointment", appointment)
+	ret := m.ctrl.Call(m, "PutAppointment", ctx, appointment)
 	ret0, _ := ret[0].(Appointment)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // PutAppointment indicates an expected call of PutAppointment
-func (mr *MockAppointmentStoreMockRecorder) PutAppointment(appointment interface{}) *gomock.Call {
+func (mr *MockAppointmentStoreMockRecorder) PutAppointment(ctx, appointment interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PutAppointment", reflect.TypeOf((*MockAppointmentStore)(nil).PutAppointment), appointment)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PutAppointment", reflect.TypeOf((*MockAppointmentStore)(nil).PutAppointment), ctx, appointment)
 }
 
 // GetAppointmentOnUid mocks base method
-func (m *MockAppointmentStore) GetAppointmentOnUid(appointmentUID string) (Appointment, bool, error) {
+func (m *MockAppointmentStore) GetAppointmentOnUid(ctx context.Context, appointmentUID string) (Appointment, bool, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAppointmentOnUid", appointmentUID)
+	ret := m.ctrl.Call(m, "GetAppointmentOnUid", ctx, appointmentUID)
 	ret0, _ := ret[0].(Appointment)
 	ret1, _ := ret[1].(bool)
 	ret2, _ := ret[2].(error)
@@ -58,37 +59,37 @@ func (m *MockAppointmentStore) GetAppointmentOnUid(appointmentUID string) (Appoi
 }
 
 // GetAppointmentOnUid indicates an expected call of GetAppointmentOnUid
-func (mr *MockAppointmentStoreMockRecorder) GetAppointmentOnUid(appointmentUID interface{}) *gomock.Call {
+func (mr *MockAppointmentStoreMockRecorder) GetAppointmentOnUid(ctx, appointmentUID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentOnUid", reflect.TypeOf((*MockAppointmentStore)(nil).GetAppointmentOnUid), appointmentUID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentOnUid", reflect.TypeOf((*MockAppointmentStore)(nil).GetAppointmentOnUid), ctx, appointmentUID)
 }
 
 // GetAppointmentsOnUserUid mocks base method
-func (m *MockAppointmentStore) GetAppointmentsOnUserUid(userUID string) ([]Appointment, error) {
+func (m *MockAppointmentStore) GetAppointmentsOnUserUid(ctx context.Context, userUID string) ([]Appointment, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAppointmentsOnUserUid", userUID)
+	ret := m.ctrl.Call(m, "GetAppointmentsOnUserUid", ctx, userUID)
 	ret0, _ := ret[0].([]Appointment)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetAppointmentsOnUserUid indicates an expected call of GetAppointmentsOnUserUid
-func (mr *MockAppointmentStoreMockRecorder) GetAppointmentsOnUserUid(userUID interface{}) *gomock.Call {
+func (mr *MockAppointmentStoreMockRecorder) GetAppointmentsOnUserUid(ctx, userUID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentsOnUserUid", reflect.TypeOf((*MockAppointmentStore)(nil).GetAppointmentsOnUserUid), userUID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentsOnUserUid", reflect.TypeOf((*MockAppointmentStore)(nil).GetAppointmentsOnUserUid), ctx, userUID)
 }
 
 // GetAppointmentsOnStatus mocks base method
-func (m *MockAppointmentStore) GetAppointmentsOnStatus(status AppointmentStatus) ([]Appointment, error) {
+func (m *MockAppointmentStore) GetAppointmentsOnStatus(ctx context.Context, status AppointmentStatus) ([]Appointment, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAppointmentsOnStatus", status)
+	ret := m.ctrl.Call(m, "GetAppointmentsOnStatus", ctx, status)
 	ret0, _ := ret[0].([]Appointment)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetAppointmentsOnStatus indicates an expected call of GetAppointmentsOnStatus
-func (mr *MockAppointmentStoreMockRecorder) GetAppointmentsOnStatus(status interface{}) *gomock.Call {
+func (mr *MockAppointmentStoreMockRecorder) GetAppointmentsOnStatus(ctx, status interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentsOnStatus", reflect.TypeOf((*MockAppointmentStore)(nil).GetAppointmentsOnStatus), status)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentsOnStatus", reflect.TypeOf((*MockAppointmentStore)(nil).GetAppointmentsOnStatus), ctx, status)
 }

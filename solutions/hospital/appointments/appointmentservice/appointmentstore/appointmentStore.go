@@ -1,6 +1,7 @@
 package appointmentstore
 
 import (
+	"context"
 	"sync"
 )
 
@@ -24,10 +25,10 @@ type Appointment struct {
 //go:generate mockgen -source=appointmentStore.go -destination=appointmentStoreMock.go -package=appointmentstore AppointmentStore
 
 type AppointmentStore interface {
-	PutAppointment(appointment Appointment) (Appointment, error)
-	GetAppointmentOnUid(appointmentUID string) (Appointment, bool, error)
-	GetAppointmentsOnUserUid(userUID string) ([]Appointment, error)
-	GetAppointmentsOnStatus(status AppointmentStatus) ([]Appointment, error)
+	PutAppointment(ctx context.Context, appointment Appointment) (Appointment, error)
+	GetAppointmentOnUid(ctx context.Context, appointmentUID string) (Appointment, bool, error)
+	GetAppointmentsOnUserUid(ctx context.Context, userUID string) ([]Appointment, error)
+	GetAppointmentsOnStatus(ctx context.Context, status AppointmentStatus) ([]Appointment, error)
 }
 
 type appointmentStore struct {
@@ -46,7 +47,7 @@ func NewAppointmentStore(uider Uider) AppointmentStore {
 	}
 }
 
-func (as *appointmentStore) PutAppointment(appointment Appointment) (Appointment, error) {
+func (as *appointmentStore) PutAppointment(ctx context.Context, appointment Appointment) (Appointment, error) {
 	as.Lock()
 	defer as.Unlock()
 
@@ -57,7 +58,7 @@ func (as *appointmentStore) PutAppointment(appointment Appointment) (Appointment
 	return appointment, nil
 }
 
-func (as *appointmentStore) GetAppointmentOnUid(appointmentUID string) (Appointment, bool, error) {
+func (as *appointmentStore) GetAppointmentOnUid(ctx context.Context, appointmentUID string) (Appointment, bool, error) {
 	as.Lock()
 	defer as.Unlock()
 
@@ -65,7 +66,7 @@ func (as *appointmentStore) GetAppointmentOnUid(appointmentUID string) (Appointm
 	return patient, found, nil
 }
 
-func (as *appointmentStore) GetAppointmentsOnUserUid(userUID string) ([]Appointment, error) {
+func (as *appointmentStore) GetAppointmentsOnUserUid(ctx context.Context, userUID string) ([]Appointment, error) {
 	as.Lock()
 	defer as.Unlock()
 
@@ -78,7 +79,7 @@ func (as *appointmentStore) GetAppointmentsOnUserUid(userUID string) ([]Appointm
 	return found, nil
 }
 
-func (as *appointmentStore) GetAppointmentsOnStatus(status AppointmentStatus) ([]Appointment, error) {
+func (as *appointmentStore) GetAppointmentsOnStatus(ctx context.Context, status AppointmentStatus) ([]Appointment, error) {
 	as.Lock()
 	defer as.Unlock()
 
