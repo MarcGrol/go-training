@@ -5,6 +5,13 @@ import (
 	"sync"
 )
 
+type Patient struct {
+	UID         string
+	FullName    string
+	AddressLine string
+	Allergies   []string
+}
+
 type PatientStore interface {
 	Put(ctx context.Context, appointment Patient) (Patient, error)
 	GetOnUid(ctx context.Context, appointmentUID string) (Patient, bool, error)

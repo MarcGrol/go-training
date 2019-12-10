@@ -5,13 +5,6 @@ import (
 	"fmt"
 )
 
-type Patient struct {
-	UID         string
-	FullName    string
-	AddressLine string
-	Allergies   []string
-}
-
 // START OMIT
 
 type patientWebService struct {
