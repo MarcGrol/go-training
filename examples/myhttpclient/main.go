@@ -28,7 +28,7 @@ type GetPatientResponse struct {
 
 func (cl *Client) GetClientOnUid(patientUid string) (*GetPatientResponse, error) {
 	client := http.Client{Timeout: cl.timeout}
-	httpResponse, err := client.Get(fmt.Sprintf("http://abc.com/api/patient/", patientUid))
+	httpResponse, err := client.Get(fmt.Sprintf("http://abc.com/api/patient/%s", patientUid))
 	if err != nil {
 		return nil, fmt.Errorf("Error fetching patient: %s", err)
 	}

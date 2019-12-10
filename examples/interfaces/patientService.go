@@ -25,7 +25,7 @@ func NewPatientService(datastore Datastorer) *PatientService {
 func (ps PatientService) Create(patient Patient) error {
 	err := ps.datastore.Put(patient.UID, patient)
 	if err != nil {
-		return fmt.Errorf("Technical error creating patient with uid:%s", patient.UID, err)
+		return fmt.Errorf("Technical error creating patient with uid:%s", err)
 	}
 	return nil
 }
