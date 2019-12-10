@@ -2,11 +2,11 @@
 // source: notification.proto
 
 /*
-Package notifapi is a reverse proxy.
+Package notificationapi is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package notifapi
+package notificationapi
 
 import (
 	"context"

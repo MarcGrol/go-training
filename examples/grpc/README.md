@@ -14,7 +14,6 @@ explained here: https://github.com/grpc-ecosystem/grpc-gateway
     go generate ./...
     go install ./...
     
-
 ## Start grpc server
 
     notificationserver # listens on port 50051
@@ -26,7 +25,9 @@ explained here: https://github.com/grpc-ecosystem/grpc-gateway
 ## Start rest server that proxies to grpc server
 
     notificationserverproxy # listens on port 8080
-         
+
+NB: must be started from notificationserverproxy-dir to work
+
 ##  Interact with this proxy using rest
 
     curl -vvv -X GET -H 'Accept: application/json' http://localhost:8080/api/notification/status/111222

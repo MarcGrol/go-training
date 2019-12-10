@@ -4,10 +4,6 @@
     "title": "notification.proto",
     "version": "version not set"
   },
-  "schemes": [
-    "http",
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
@@ -22,7 +18,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/notificationSendEmailReply"
+              "$ref": "#/definitions/notificationapiSendEmailReply"
             }
           }
         },
@@ -32,7 +28,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/notificationEmailMessage"
+              "$ref": "#/definitions/notificationapiEmailMessage"
             }
           }
         ],
@@ -48,7 +44,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/notificationSendSmsReply"
+              "$ref": "#/definitions/notificationapiSendSmsReply"
             }
           }
         },
@@ -58,7 +54,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/notificationSmsMessage"
+              "$ref": "#/definitions/notificationapiSmsMessage"
             }
           }
         ],
@@ -74,7 +70,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/notificationGetNotificationStatusReply"
+              "$ref": "#/definitions/notificationapiGetNotificationStatusReply"
             }
           }
         },
@@ -93,7 +89,7 @@
     }
   },
   "definitions": {
-    "notificationEmailMessage": {
+    "notificationapiEmailMessage": {
       "type": "object",
       "properties": {
         "recipientEmailAddress": {
@@ -107,7 +103,7 @@
         }
       }
     },
-    "notificationError": {
+    "notificationapiError": {
       "type": "object",
       "properties": {
         "code": {
@@ -119,18 +115,18 @@
         }
       }
     },
-    "notificationGetNotificationStatusReply": {
+    "notificationapiGetNotificationStatusReply": {
       "type": "object",
       "properties": {
         "status": {
-          "$ref": "#/definitions/notificationNotificationStatus"
+          "$ref": "#/definitions/notificationapiNotificationStatus"
         },
         "error": {
-          "$ref": "#/definitions/notificationError"
+          "$ref": "#/definitions/notificationapiError"
         }
       }
     },
-    "notificationNotificationStatus": {
+    "notificationapiNotificationStatus": {
       "type": "string",
       "enum": [
         "UNKNOWN",
@@ -140,29 +136,29 @@
       ],
       "default": "UNKNOWN"
     },
-    "notificationSendEmailReply": {
+    "notificationapiSendEmailReply": {
       "type": "object",
       "properties": {
         "NotificationUid": {
           "type": "string"
         },
         "error": {
-          "$ref": "#/definitions/notificationError"
+          "$ref": "#/definitions/notificationapiError"
         }
       }
     },
-    "notificationSendSmsReply": {
+    "notificationapiSendSmsReply": {
       "type": "object",
       "properties": {
         "NotificationUid": {
           "type": "string"
         },
         "error": {
-          "$ref": "#/definitions/notificationError"
+          "$ref": "#/definitions/notificationapiError"
         }
       }
     },
-    "notificationSmsMessage": {
+    "notificationapiSmsMessage": {
       "type": "object",
       "properties": {
         "recipientPhoneNumber": {

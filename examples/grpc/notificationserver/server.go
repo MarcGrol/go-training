@@ -3,12 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
-	pb "github.com/MarcGrol/go-training/examples/grpc/notifapi"
-	"github.com/google/uuid"
-	"google.golang.org/grpc"
 	"log"
 	"net"
 	"strings"
+
+	pb "github.com/MarcGrol/go-training/examples/grpc/notificationapi"
+	"github.com/google/uuid"
+	"google.golang.org/grpc"
 )
 
 type server struct {
@@ -17,13 +18,13 @@ type server struct {
 	messages map[string]pb.NotificationStatus
 }
 
-func New() *server{
+func New() *server {
 	return &server{
-		messages:map[string]pb.NotificationStatus{},
+		messages: map[string]pb.NotificationStatus{},
 	}
 }
 
-func (s *server)GRPCListenBlocking(port string) error {
+func (s *server) GRPCListenBlocking(port string) error {
 	var err error
 	s.listener, err = net.Listen("tcp", port)
 	if err != nil {
@@ -33,7 +34,7 @@ func (s *server)GRPCListenBlocking(port string) error {
 	grpcServer := grpc.NewServer()
 	pb.RegisterNotificationServer(grpcServer, New())
 
-	log.Println("GRPPC server starts listening...")
+	log.Printf("GRPPC server starts listening on port %s", port)
 	err = grpcServer.Serve(s.listener)
 	if err != nil {
 		return fmt.Errorf("failed to serve: %v", err)
@@ -46,7 +47,7 @@ func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.Se
 	log.Printf("Send email to '%s' with subject '%s'", in.GetEmail().GetRecipientEmailAddress(), in.GetEmail().GetSubject())
 	if strings.Contains(in.GetEmail().GetSubject(), "5") {
 		return &pb.SendEmailReply{
-			NotificationUid:"",
+			NotificationUid: "",
 			Error: &pb.Error{
 				Code:    500,
 				Message: "Internal error sending email",
@@ -76,8 +77,8 @@ func (s *server) GetNotificationStatus(ctx context.Context, in *pb.GetNotificati
 		return &pb.GetNotificationStatusReply{
 			Status: pb.NotificationStatus_UNKNOWN,
 			Error: &pb.Error{
-				Code:                 404,
-				Message:              "Notification with uid not found",
+				Code:    404,
+				Message: "Notification with uid not found",
 			},
 		}, nil
 	}

@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/MarcGrol/go-training/examples/grpc/notifapi"
+	"github.com/MarcGrol/go-training/examples/grpc/notificationapi"
 )
 
 const (
@@ -15,7 +15,7 @@ const (
 )
 
 func main() {
-	client, cleanup, err := notifapi.NewGrpcClient(address)
+	client, cleanup, err := notificationapi.NewGrpcClient(address)
 	if err != nil {
 		log.Fatalf("*** Error ccreating client: %v", err)
 	}
@@ -56,9 +56,9 @@ func main() {
 	}
 }
 
-func sendEmail(ctx context.Context, c notifapi.NotificationClient, recipientEmailAddress, subject, body string) (string, error) {
-	response, err := c.SendEmail(ctx, &notifapi.SendEmailRequest{
-		Email: &notifapi.EmailMessage{
+func sendEmail(ctx context.Context, c notificationapi.NotificationClient, recipientEmailAddress, subject, body string) (string, error) {
+	response, err := c.SendEmail(ctx, &notificationapi.SendEmailRequest{
+		Email: &notificationapi.EmailMessage{
 			RecipientEmailAddress: recipientEmailAddress,
 			Subject:               subject,
 			Body:                  body,
@@ -75,9 +75,9 @@ func sendEmail(ctx context.Context, c notifapi.NotificationClient, recipientEmai
 	return response.GetNotificationUid(), nil
 }
 
-func sendSms(ctx context.Context, c notifapi.NotificationClient, recipientPhoneNumber, body string) (string, error) {
-	response, err := c.SendSms(ctx, &notifapi.SendSmsRequest{
-		Sms: &notifapi.SmsMessage{
+func sendSms(ctx context.Context, c notificationapi.NotificationClient, recipientPhoneNumber, body string) (string, error) {
+	response, err := c.SendSms(ctx, &notificationapi.SendSmsRequest{
+		Sms: &notificationapi.SmsMessage{
 			RecipientPhoneNumber: recipientPhoneNumber,
 			Body:                 body,
 		},
@@ -92,8 +92,8 @@ func sendSms(ctx context.Context, c notifapi.NotificationClient, recipientPhoneN
 	return response.GetNotificationUid(), nil
 }
 
-func getStatus(ctx context.Context, c notifapi.NotificationClient, msgUID string) (notifapi.NotificationStatus, error) {
-	response, err := c.GetNotificationStatus(ctx, &notifapi.GetNotificationStatusRequest{
+func getStatus(ctx context.Context, c notificationapi.NotificationClient, msgUID string) (notificationapi.NotificationStatus, error) {
+	response, err := c.GetNotificationStatus(ctx, &notificationapi.GetNotificationStatusRequest{
 		NotificationUid: msgUID,
 	})
 	if err != nil {
@@ -101,7 +101,7 @@ func getStatus(ctx context.Context, c notifapi.NotificationClient, msgUID string
 	}
 
 	if response.Error != nil {
-		return notifapi.NotificationStatus_UNKNOWN, fmt.Errorf("Error getting sms: %+v", response.Error)
+		return notificationapi.NotificationStatus_UNKNOWN, fmt.Errorf("Error getting sms: %+v", response.Error)
 	}
 	return response.GetStatus(), nil
 }

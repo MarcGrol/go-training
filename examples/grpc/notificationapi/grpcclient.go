@@ -1,4 +1,4 @@
-package notifapi
+package notificationapi
 
 import (
 	"fmt"

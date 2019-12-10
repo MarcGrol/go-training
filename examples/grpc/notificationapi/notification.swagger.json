@@ -18,7 +18,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/notifapiSendEmailReply"
+              "$ref": "#/definitions/notificationapiSendEmailReply"
             }
           }
         },
@@ -28,7 +28,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/notifapiEmailMessage"
+              "$ref": "#/definitions/notificationapiEmailMessage"
             }
           }
         ],
@@ -44,7 +44,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/notifapiSendSmsReply"
+              "$ref": "#/definitions/notificationapiSendSmsReply"
             }
           }
         },
@@ -54,7 +54,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/notifapiSmsMessage"
+              "$ref": "#/definitions/notificationapiSmsMessage"
             }
           }
         ],
@@ -70,7 +70,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/notifapiGetNotificationStatusReply"
+              "$ref": "#/definitions/notificationapiGetNotificationStatusReply"
             }
           }
         },
@@ -89,7 +89,7 @@
     }
   },
   "definitions": {
-    "notifapiEmailMessage": {
+    "notificationapiEmailMessage": {
       "type": "object",
       "properties": {
         "recipientEmailAddress": {
@@ -103,7 +103,7 @@
         }
       }
     },
-    "notifapiError": {
+    "notificationapiError": {
       "type": "object",
       "properties": {
         "code": {
@@ -115,18 +115,18 @@
         }
       }
     },
-    "notifapiGetNotificationStatusReply": {
+    "notificationapiGetNotificationStatusReply": {
       "type": "object",
       "properties": {
         "status": {
-          "$ref": "#/definitions/notifapiNotificationStatus"
+          "$ref": "#/definitions/notificationapiNotificationStatus"
         },
         "error": {
-          "$ref": "#/definitions/notifapiError"
+          "$ref": "#/definitions/notificationapiError"
         }
       }
     },
-    "notifapiNotificationStatus": {
+    "notificationapiNotificationStatus": {
       "type": "string",
       "enum": [
         "UNKNOWN",
@@ -136,29 +136,29 @@
       ],
       "default": "UNKNOWN"
     },
-    "notifapiSendEmailReply": {
+    "notificationapiSendEmailReply": {
       "type": "object",
       "properties": {
         "NotificationUid": {
           "type": "string"
         },
         "error": {
-          "$ref": "#/definitions/notifapiError"
+          "$ref": "#/definitions/notificationapiError"
         }
       }
     },
-    "notifapiSendSmsReply": {
+    "notificationapiSendSmsReply": {
       "type": "object",
       "properties": {
         "NotificationUid": {
           "type": "string"
         },
         "error": {
-          "$ref": "#/definitions/notifapiError"
+          "$ref": "#/definitions/notificationapiError"
         }
       }
     },
-    "notifapiSmsMessage": {
+    "notificationapiSmsMessage": {
       "type": "object",
       "properties": {
         "recipientPhoneNumber": {

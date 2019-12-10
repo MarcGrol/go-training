@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	pb "github.com/MarcGrol/go-training/examples/grpc/notifapi"
+	pb "github.com/MarcGrol/go-training/examples/grpc/notificationapi"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
@@ -25,34 +25,30 @@ func (s *server) ListenHttpBlocking(grpcPort string, restPort string) error {
 
 	mux := http.NewServeMux()
 
-	{
-		// create a regular grpc-client
-		grpcClient, cleanup, err := pb.NewGrpcClient(grpcPort)
-		if err != nil {
-			return err
-		}
-		defer cleanup()
-
-		// create a rest-endpoint that uses the regular grpc-client to forward to the real grpc server
-		rmux := runtime.NewServeMux()
-		err = pb.RegisterNotificationHandlerClient(ctx, rmux, grpcClient)
-		if err != nil {
-			return fmt.Errorf("Error registering notif-shttp-client: %s", err)
-		}
-		mux.Handle("/", rmux)
+	// create a regular grpc-client
+	grpcClient, cleanup, err := pb.NewGrpcClient(grpcPort)
+	if err != nil {
+		return err
 	}
+	defer cleanup()
 
-	{
-		// Serve the swagger-ui and swagger file
-		mux.HandleFunc("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "swaggerui/swagger.json")
-		})
-		fs := http.FileServer(http.Dir("swaggerui"))
-		mux.Handle("/swaggerui/", http.StripPrefix("/swaggerui", fs))
+	// create a rest-endpoint that uses the regular grpc-client to forward to the real grpc server
+	rmux := runtime.NewServeMux()
+	err = pb.RegisterNotificationHandlerClient(ctx, rmux, grpcClient)
+	if err != nil {
+		return fmt.Errorf("Error registering notif-http-client: %s", err)
 	}
+	mux.Handle("/", rmux)
 
-	log.Printf("REST server starts listening...\n")
-	err := http.ListenAndServe(restPort, mux)
+	// Serve the swagger-ui and swagger file
+	mux.HandleFunc("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "swaggerui/swagger.json")
+	})
+	fs := http.FileServer(http.Dir("swaggerui"))
+	mux.Handle("/swaggerui/", http.StripPrefix("/swaggerui/", fs))
+
+	log.Printf("REST server starts listening on port %s\n", restPort)
+	err = http.ListenAndServe(restPort, mux)
 	if err != nil {
 		return fmt.Errorf("Error listening on http: %s", err)
 	}
