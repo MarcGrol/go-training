@@ -1118,6 +1118,7 @@ Example with "Alice"
 * Exercise: http server
 
 - Create a HTTP server that supports GET, POST, PUT and DELETE on /api/patient
+- Test it with your previously created HTTP-client
 - Create a unit test in which you simulate client behavior
 
 
