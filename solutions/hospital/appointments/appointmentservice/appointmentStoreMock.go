@@ -1,7 +1,10 @@
 package main
 
+import "errors"
+
 type mockAppointmentStore struct {
 	err          error
+	putError     bool
 	exists       bool
 	appointment  Appointment
 	appointments []Appointment
@@ -10,6 +13,7 @@ type mockAppointmentStore struct {
 func NewErrorMockAppointmentStore(err error) AppointmentStore {
 	return &mockAppointmentStore{
 		err:          err,
+		putError:     false,
 		appointment:  Appointment{},
 		appointments: []Appointment{},
 	}
@@ -26,10 +30,23 @@ func NewNotFoundMockAppointmentStore() AppointmentStore {
 	}
 }
 
+func NewPutErrrorMockAppointmentStore() AppointmentStore {
+	return &mockAppointmentStore{
+		err:         nil,
+		exists:      true,
+		putError:    true,
+		appointment: exampleAppointment,
+		appointments: []Appointment{
+			exampleAppointment,
+		},
+	}
+}
+
 func NewsSuccesMockAppointmentStore() AppointmentStore {
 	return &mockAppointmentStore{
 		err:         nil,
 		exists:      true,
+		putError:    false,
 		appointment: exampleAppointment,
 		appointments: []Appointment{
 			exampleAppointment,
@@ -38,6 +55,9 @@ func NewsSuccesMockAppointmentStore() AppointmentStore {
 }
 
 func (m *mockAppointmentStore) PutAppointment(appointment Appointment) (Appointment, error) {
+	if m.putError {
+		return Appointment{}, errors.New("Error storing appointment")
+	}
 	return m.appointment, m.err
 }
 

@@ -489,10 +489,32 @@ func TestConfirmAppointment(t *testing.T) {
 				},
 			},
 		},
-		//{
-		//	description: "Error storing confirmed appointment",
-		//	// TODO
-		//},
+		{
+			description:      "Error storing confirmed appointment",
+			appointmentStore: NewPutErrrorMockAppointmentStore(),
+			patientService: NewPatientClientMock(&patientinfoapi.GetPatientOnUidReply{
+				Patient: &examplePatient,
+			}),
+			notificationClient: NewNotificationClientMock(
+				&notificationapi.SendReply{
+					Status: notificationapi.DeliveryStatus_DELIVERED,
+				},
+				&notificationapi.SendReply{
+					Status: notificationapi.DeliveryStatus_DELIVERED,
+				},
+			),
+			request: &appointmentapi.ModifyAppointmentStatusRequest{
+				AppointmentUid: "myAppointmentUid",
+				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    500,
+					Message: "Error persisting modified appointment",
+					Details: "Error storing appointment",
+				},
+			},
+		},
 		{
 			description:      "Success confirming appointment",
 			appointmentStore: NewsSuccesMockAppointmentStore(),
