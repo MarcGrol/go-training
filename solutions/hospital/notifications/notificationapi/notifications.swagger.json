@@ -18,7 +18,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/notificationapiSendEmailReply"
+              "$ref": "#/definitions/notificationapiSendReply"
             }
           }
         },
@@ -44,7 +44,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/notificationapiSendSmsReply"
+              "$ref": "#/definitions/notificationapiSendReply"
             }
           }
         },
@@ -104,18 +104,7 @@
         }
       }
     },
-    "notificationapiSendEmailReply": {
-      "type": "object",
-      "properties": {
-        "status": {
-          "$ref": "#/definitions/notificationapiDeliveryStatus"
-        },
-        "error": {
-          "$ref": "#/definitions/notificationapiError"
-        }
-      }
-    },
-    "notificationapiSendSmsReply": {
+    "notificationapiSendReply": {
       "type": "object",
       "properties": {
         "status": {

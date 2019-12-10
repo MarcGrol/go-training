@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func NewNotificationClientMock(emailResponse *notificationapi.SendEmailReply, smsResponse *notificationapi.SendSmsReply) notificationapi.NotificationClient {
+func NewNotificationClientMock(emailResponse *notificationapi.SendReply, smsResponse *notificationapi.SendReply) notificationapi.NotificationClient {
 	return &mockNotificationClient{
 		emailResponse: emailResponse,
 		smsResponse:   smsResponse,
@@ -16,14 +16,14 @@ func NewNotificationClientMock(emailResponse *notificationapi.SendEmailReply, sm
 }
 
 type mockNotificationClient struct {
-	emailResponse *notificationapi.SendEmailReply
-	smsResponse   *notificationapi.SendSmsReply
+	emailResponse *notificationapi.SendReply
+	smsResponse   *notificationapi.SendReply
 }
 
-func (m *mockNotificationClient) SendEmail(ctx context.Context, in *notificationapi.SendEmailRequest, opts ...grpc.CallOption) (*notificationapi.SendEmailReply, error) {
+func (m *mockNotificationClient) SendEmail(ctx context.Context, in *notificationapi.SendEmailRequest, opts ...grpc.CallOption) (*notificationapi.SendReply, error) {
 	return m.emailResponse, nil
 
 }
-func (m *mockNotificationClient) SendSms(ctx context.Context, in *notificationapi.SendSmsRequest, opts ...grpc.CallOption) (*notificationapi.SendSmsReply, error) {
+func (m *mockNotificationClient) SendSms(ctx context.Context, in *notificationapi.SendSmsRequest, opts ...grpc.CallOption) (*notificationapi.SendReply, error) {
 	return m.smsResponse, nil
 }

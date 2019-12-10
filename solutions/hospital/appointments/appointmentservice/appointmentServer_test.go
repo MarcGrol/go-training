@@ -21,6 +21,17 @@ func TestGetAppointmentsOnUser(t *testing.T) {
 		expectedResponse *appointmentapi.GetAppointmentsReply
 	}{
 		{
+			description: "Invalid input: missing userUid",
+			request:     &appointmentapi.GetAppointmentsOnUserRequest{},
+			expectedResponse: &appointmentapi.GetAppointmentsReply{
+				Error: &appointmentapi.Error{
+					Code:    400,
+					Message: "Invalid input",
+					Details: "userUid",
+				},
+			},
+		},
+		{
 			description:      "Error fetching appointments on user",
 			appointmentStore: NewErrorMockAppointmentStore(errors.New("a")),
 			request:          &appointmentapi.GetAppointmentsOnUserRequest{UserUid: "myUserid"},
@@ -66,13 +77,92 @@ func TestGetAppointmentsOnUser(t *testing.T) {
 }
 
 func TestRequestAppointment(t *testing.T) {
-	testCases := []struct {
+	testCases := [...]struct {
 		description      string
 		appointmentStore AppointmentStore
 		patientService   patientinfoapi.PatientInfoClient
 		request          *appointmentapi.RequestAppointmentRequest
 		expectedResponse *appointmentapi.AppointmentReply
 	}{
+		{
+			description: "Invalid input: Missing appointment",
+			request: &appointmentapi.RequestAppointmentRequest{
+				Appointment: nil,
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    400,
+					Message: "Invalid input",
+					Details: "appointment",
+				},
+			},
+		},
+		{
+			description: "Invalid input: Missing userUid",
+			request: &appointmentapi.RequestAppointmentRequest{
+				Appointment: &appointmentapi.Appointment{ /* empty request */ },
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    400,
+					Message: "Invalid input",
+					Details: "userUid",
+				},
+			},
+		},
+		{
+			description: "Invalid input: Missing dateTime",
+			request: &appointmentapi.RequestAppointmentRequest{
+				Appointment: &appointmentapi.Appointment{
+					UserUid:  exampleAppointment.UserUID,
+					DateTime: "", // should not be empty
+					Location: exampleAppointment.Location,
+					Topic:    exampleAppointment.Topic,
+				},
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    400,
+					Message: "Invalid input",
+					Details: "dateTime",
+				},
+			},
+		}, {
+			description: "Invalid input: Missing location",
+			request: &appointmentapi.RequestAppointmentRequest{
+				Appointment: &appointmentapi.Appointment{
+					UserUid:  exampleAppointment.UserUID,
+					DateTime: exampleAppointment.DateTime,
+					Location: "", // should not be empty
+					Topic:    exampleAppointment.Topic,
+				},
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    400,
+					Message: "Invalid input",
+					Details: "location",
+				},
+			},
+		},
+		{
+			description: "Invalid input: Missing topic",
+			request: &appointmentapi.RequestAppointmentRequest{
+				Appointment: &appointmentapi.Appointment{
+					UserUid:  exampleAppointment.UserUID,
+					DateTime: exampleAppointment.DateTime,
+					Location: exampleAppointment.Location,
+					Topic:    "", // should not be empty
+				},
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    400,
+					Message: "Invalid input",
+					Details: "topic",
+				},
+			},
+		},
 		{
 			description: "Error fetching patient",
 			patientService: NewPatientClientMock(&patientinfoapi.GetPatientOnUidReply{
@@ -85,14 +175,17 @@ func TestRequestAppointment(t *testing.T) {
 			appointmentStore: nil,
 			request: &appointmentapi.RequestAppointmentRequest{
 				Appointment: &appointmentapi.Appointment{
-					UserUid: exampleAppointment.UserUID,
+					UserUid:  exampleAppointment.UserUID,
+					DateTime: exampleAppointment.DateTime,
+					Location: exampleAppointment.Location,
+					Topic:    exampleAppointment.Topic,
 				},
 			},
 			expectedResponse: &appointmentapi.AppointmentReply{
 				Error: &appointmentapi.Error{
 					Code:    500,
-					Message: "Error getting patient on uid:xxx",
-					Details: "a",
+					Message: "Error fetching patient on uid",
+					Details: "500: xxx (a)",
 				},
 			},
 		},
@@ -104,7 +197,10 @@ func TestRequestAppointment(t *testing.T) {
 			appointmentStore: NewErrorMockAppointmentStore(errors.New("b")),
 			request: &appointmentapi.RequestAppointmentRequest{
 				Appointment: &appointmentapi.Appointment{
-					UserUid: exampleAppointment.UserUID,
+					UserUid:  exampleAppointment.UserUID,
+					DateTime: exampleAppointment.DateTime,
+					Location: exampleAppointment.Location,
+					Topic:    exampleAppointment.Topic,
 				},
 			},
 			expectedResponse: &appointmentapi.AppointmentReply{
@@ -166,13 +262,24 @@ func TestGetAppointmentsOnStatus(t *testing.T) {
 		expectedResponse *appointmentapi.GetAppointmentsReply
 	}{
 		{
+			description: "Invalid input: invalid status",
+			request:     &appointmentapi.GetAppointmentsOnStatusRequest{Status: appointmentapi.AppointmentStatus_UNKNOWN},
+			expectedResponse: &appointmentapi.GetAppointmentsReply{
+				Error: &appointmentapi.Error{
+					Code:    400,
+					Message: "Invalid input",
+					Details: "status",
+				},
+			},
+		},
+		{
 			description:      "Error fetching appointments on status",
 			appointmentStore: NewErrorMockAppointmentStore(errors.New("a")),
 			request:          &appointmentapi.GetAppointmentsOnStatusRequest{Status: appointmentapi.AppointmentStatus_REQUESTED},
 			expectedResponse: &appointmentapi.GetAppointmentsReply{
 				Error: &appointmentapi.Error{
 					Code:    500,
-					Message: "Technical error fetching appointments on user",
+					Message: "Technical error fetching appointments on status",
 					Details: "a",
 				},
 			},
@@ -220,6 +327,34 @@ func TestConfirmAppointment(t *testing.T) {
 		expectedResponse   *appointmentapi.AppointmentReply
 	}{
 		{
+			description: "Invalid input: appointmentUid",
+			request: &appointmentapi.ModifyAppointmentStatusRequest{
+				AppointmentUid: "", // should not be empty
+				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    400,
+					Message: "Invalid input",
+					Details: "appointmentUid",
+				},
+			},
+		},
+		{
+			description: "Invalid input: status",
+			request: &appointmentapi.ModifyAppointmentStatusRequest{
+				AppointmentUid: "myAppointmentUid",
+				Status:         appointmentapi.AppointmentStatus_UNKNOWN, // should not be unknown
+			},
+			expectedResponse: &appointmentapi.AppointmentReply{
+				Error: &appointmentapi.Error{
+					Code:    400,
+					Message: "Invalid input",
+					Details: "status",
+				},
+			},
+		},
+		{
 			description:        "Error fetching appointment",
 			appointmentStore:   NewErrorMockAppointmentStore(errors.New("c")),
 			patientService:     nil,
@@ -231,7 +366,7 @@ func TestConfirmAppointment(t *testing.T) {
 			expectedResponse: &appointmentapi.AppointmentReply{
 				Error: &appointmentapi.Error{
 					Code:    500,
-					Message: "Error getting appointment on uid",
+					Message: "Error fetching appointment on uid",
 					Details: "c",
 				},
 			},
@@ -270,8 +405,8 @@ func TestConfirmAppointment(t *testing.T) {
 			expectedResponse: &appointmentapi.AppointmentReply{
 				Error: &appointmentapi.Error{
 					Code:    500,
-					Message: "Error getting patient on uid:yyy",
-					Details: "d",
+					Message: "Error fetching patient on uid",
+					Details: "500: yyy (d)",
 				},
 			}},
 		{
@@ -291,22 +426,23 @@ func TestConfirmAppointment(t *testing.T) {
 			expectedResponse: &appointmentapi.AppointmentReply{
 				Error: &appointmentapi.Error{
 					Code:    404,
-					Message: "Error getting patient on uid:yyy",
+					Message: "Error fetching patient on uid",
+					Details: "404: yyy ()",
 				},
 			},
 		},
 		{
-			description:      "Error notifying email",
+			description:      "Error notifying via email",
 			appointmentStore: NewsSuccesMockAppointmentStore(),
 			patientService: NewPatientClientMock(&patientinfoapi.GetPatientOnUidReply{
 				Patient: &examplePatient,
 			}),
 			notificationClient: NewNotificationClientMock(
-				&notificationapi.SendEmailReply{
+				&notificationapi.SendReply{
 					Error: &notificationapi.Error{
 						Code:    500,
-						Message: "sss",
-						Details: "ttt",
+						Message: "xxx",
+						Details: "yyy",
 					},
 				},
 				nil,
@@ -318,26 +454,26 @@ func TestConfirmAppointment(t *testing.T) {
 			expectedResponse: &appointmentapi.AppointmentReply{
 				Error: &appointmentapi.Error{
 					Code:    500,
-					Message: "sss",
-					Details: "ttt",
+					Message: "Error sending email",
+					Details: "500: xxx (yyy)",
 				},
 			},
 		},
 		{
-			description:      "Error notifying sms",
+			description:      "Error notifying via sms",
 			appointmentStore: NewsSuccesMockAppointmentStore(),
 			patientService: NewPatientClientMock(&patientinfoapi.GetPatientOnUidReply{
 				Patient: &examplePatient,
 			}),
 			notificationClient: NewNotificationClientMock(
-				&notificationapi.SendEmailReply{
+				&notificationapi.SendReply{
 					Status: notificationapi.DeliveryStatus_DELIVERED,
 				},
-				&notificationapi.SendSmsReply{
+				&notificationapi.SendReply{
 					Error: &notificationapi.Error{
 						Code:    500,
-						Message: "xxx",
-						Details: "yyy",
+						Message: "aaa",
+						Details: "bbb",
 					},
 				},
 			),
@@ -348,8 +484,8 @@ func TestConfirmAppointment(t *testing.T) {
 			expectedResponse: &appointmentapi.AppointmentReply{
 				Error: &appointmentapi.Error{
 					Code:    500,
-					Message: "xxx",
-					Details: "yyy",
+					Message: "Error sending sms",
+					Details: "500: aaa (bbb)",
 				},
 			},
 		},
@@ -364,10 +500,10 @@ func TestConfirmAppointment(t *testing.T) {
 				Patient: &examplePatient,
 			}),
 			notificationClient: NewNotificationClientMock(
-				&notificationapi.SendEmailReply{
+				&notificationapi.SendReply{
 					Status: notificationapi.DeliveryStatus_DELIVERED,
 				},
-				&notificationapi.SendSmsReply{
+				&notificationapi.SendReply{
 					Status: notificationapi.DeliveryStatus_DELIVERED,
 				},
 			),

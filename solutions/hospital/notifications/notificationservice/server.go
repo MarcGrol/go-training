@@ -52,9 +52,9 @@ func (s *server) GRPCListenBlocking(port string) error {
 	return nil
 }
 
-func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.SendEmailReply, error) {
+func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.SendReply, error) {
 	if in == nil || in.GetEmail() == nil || in.GetEmail().GetRecipientEmailAddress() == "" || in.GetEmail().GetSubject() == "" {
-		return &pb.SendEmailReply{
+		return &pb.SendReply{
 			Status: pb.DeliveryStatus_FAILED,
 			Error: &pb.Error{
 				Code:    400,
@@ -65,7 +65,7 @@ func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.Se
 
 	err := s.emailSender.Send(in.GetEmail().GetRecipientEmailAddress(), in.GetEmail().GetSubject(), in.GetEmail().GetBody())
 	if err != nil {
-		return &pb.SendEmailReply{
+		return &pb.SendReply{
 			Status: pb.DeliveryStatus_FAILED,
 			Error: &pb.Error{
 				Code:    500,
@@ -76,12 +76,12 @@ func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.Se
 	}
 	log.Printf("Sent email to '%s' with subject '%s'", in.GetEmail().GetRecipientEmailAddress(), in.GetEmail().GetSubject())
 
-	return &pb.SendEmailReply{Status: pb.DeliveryStatus_DELIVERED}, nil
+	return &pb.SendReply{Status: pb.DeliveryStatus_DELIVERED}, nil
 }
 
-func (s *server) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendSmsReply, error) {
+func (s *server) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendReply, error) {
 	if in == nil || in.GetSms() == nil || in.GetSms().GetRecipientPhoneNumber() == "" || in.GetSms().GetBody() == "" {
-		return &pb.SendSmsReply{
+		return &pb.SendReply{
 			Status: pb.DeliveryStatus_FAILED,
 			Error: &pb.Error{
 				Code:    400,
@@ -92,7 +92,7 @@ func (s *server) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendSm
 
 	err := s.smsSender.Send(in.GetSms().GetRecipientPhoneNumber(), in.GetSms().GetBody())
 	if err != nil {
-		return &pb.SendSmsReply{
+		return &pb.SendReply{
 			Status: pb.DeliveryStatus_FAILED,
 			Error: &pb.Error{
 				Code:    500,
@@ -103,5 +103,5 @@ func (s *server) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendSm
 	}
 	log.Printf("Sent sms to '%s' with body '%s'", in.GetSms().GetRecipientPhoneNumber(), in.GetSms().GetBody())
 
-	return &pb.SendSmsReply{Status: pb.DeliveryStatus_DELIVERED}, nil
+	return &pb.SendReply{Status: pb.DeliveryStatus_DELIVERED}, nil
 }
