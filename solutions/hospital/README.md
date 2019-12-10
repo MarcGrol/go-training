@@ -8,6 +8,6 @@
     
 ## Building
 
-    gpo generate ./...
+    go generate ./...
     
     
