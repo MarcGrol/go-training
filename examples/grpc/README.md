@@ -31,7 +31,7 @@ NB: must be started from notificationserverproxy-dir to work
 ##  Interact with this proxy using rest
 
     curl -vvv -X GET -H 'Accept: application/json' http://localhost:8080/api/notification/status/111222
-    curl -vvv -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' --data '{"recipientPhoneNumber":"31648928856", "body":"my body"}' http://localhost:8080/api/notification/sms
+    curl -vvv -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' --data '{"recipientPhoneNumber":"+31648928856", "body":"my body"}' http://localhost:8080/api/notification/sms
     curl -vvv -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' --data '{"recipientEmailAddress":"mgrol@xebia.com", "subject": "my subject", "body":"my body"}' http://localhost:8080/api/notification/email
 
 ## The rest proxy also serves a interactive swagger-ui
@@ -39,6 +39,4 @@ NB: must be started from notificationserverproxy-dir to work
 Swagger ui available at: http://localhost:8080/swaggerui/
 
 go generate creates file "spec/notification.swagger.json"
-
-    cp spec/notification.swagger.json notificationserverproxy/swaggerui/swagger.json
     

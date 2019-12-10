@@ -40,10 +40,11 @@ func (s *server) ListenHttpBlocking(grpcPort string, restPort string) error {
 	}
 	mux.Handle("/", rmux)
 
-	// Serve the swagger-ui and swagger file
+	// Serve the swagger file
 	mux.HandleFunc("/swagger.json", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "swaggerui/swagger.json")
+		http.ServeFile(w, r, "../notificationapi/notification.swagger.json")
 	})
+	// Serve the swagger-ui
 	fs := http.FileServer(http.Dir("swaggerui"))
 	mux.Handle("/swaggerui/", http.StripPrefix("/swaggerui/", fs))
 
