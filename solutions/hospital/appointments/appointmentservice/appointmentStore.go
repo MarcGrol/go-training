@@ -28,10 +28,6 @@ type AppointmentStore interface {
 	GetAppointmentsOnStatus(status AppointmentStatus) ([]Appointment, error)
 }
 
-type Uider interface {
-	Create() string
-}
-
 type appointmentStore struct {
 	sync.Mutex
 	uider        Uider

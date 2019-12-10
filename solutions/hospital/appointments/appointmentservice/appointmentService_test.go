@@ -255,7 +255,7 @@ func TestRequestAppointment(t *testing.T) {
 }
 
 func TestGetAppointmentsOnStatus(t *testing.T) {
-	testCases := []struct {
+	testCases := [...]struct {
 		description      string
 		appointmentStore AppointmentStore
 		request          *appointmentapi.GetAppointmentsOnStatusRequest
@@ -318,7 +318,7 @@ func TestGetAppointmentsOnStatus(t *testing.T) {
 }
 
 func TestConfirmAppointment(t *testing.T) {
-	testCases := []struct {
+	testCases := [...]struct {
 		description        string
 		appointmentStore   AppointmentStore
 		patientService     patientinfoapi.PatientInfoClient
