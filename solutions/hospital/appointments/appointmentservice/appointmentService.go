@@ -198,7 +198,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 	{ // Send out email
 		sendEmailResponse, err := s.notificationClient.SendEmail(c, &notificationapi.SendEmailRequest{
 			Email: &notificationapi.EmailMessage{
-				RecipientEmailAddress: getPatientOnUidResp.Patient.PhoneNumber,
+				RecipientEmailAddress: getPatientOnUidResp.Patient.EmailAddress,
 				Subject:               "Appointment confirmed",              // TODO use template
 				Body:                  "Appointment confirmed with details", // TODO use template
 			},

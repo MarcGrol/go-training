@@ -5,6 +5,10 @@ import (
 	"fmt"
 	"testing"
 
+	"google.golang.org/grpc"
+
+	"github.com/magiconair/properties/assert"
+
 	"github.com/go-test/deep"
 	"github.com/golang/mock/gomock"
 
@@ -53,8 +57,11 @@ func TestMockgenBasedGetAppointmentsOnUser(t *testing.T) {
 			description: "Success fetching appointments on user",
 			createAppointmentStore: func(ctlr *gomock.Controller) appointmentstore.AppointmentStore {
 				mock := appointmentstore.NewMockAppointmentStore(ctlr)
-				mock.EXPECT().GetAppointmentsOnUserUid("myUserUid").
-					Return([]appointmentstore.Appointment{exampleAppointment}, nil)
+				mock.EXPECT().GetAppointmentsOnUserUid(gomock.Any()).
+					Return([]appointmentstore.Appointment{exampleAppointment}, nil).
+					Do(func(userUID string) {
+						assert.Equal(t, userUID, "myUserUid")
+					})
 				return mock
 			},
 			request: &appointmentapi.GetAppointmentsOnUserRequest{UserUid: "myUserUid"},
@@ -246,13 +253,24 @@ func TestMockgenBasedRequestAppointment(t *testing.T) {
 				mock.EXPECT().GetPatientOnUid(gomock.Any(), gomock.Any()).
 					Return(&patientinfoapi.GetPatientOnUidReply{
 						Patient: &examplePatient,
-					}, nil)
+					}, nil).
+					Do(func(ctx context.Context, in *patientinfoapi.GetPatientOnUidRequest, opts ...grpc.CallOption) {
+						assert.Equal(t, in.PatientUid, "myUserUid")
+					})
+
 				return mock
 			},
 			createAppointmentStore: func(ctlr *gomock.Controller) appointmentstore.AppointmentStore {
 				mock := appointmentstore.NewMockAppointmentStore(ctlr)
 				mock.EXPECT().PutAppointment(gomock.Any()).
-					Return(exampleAppointment, nil)
+					Return(exampleAppointment, nil).
+					Do(func(in appointmentstore.Appointment) {
+						assert.Equal(t, in.AppointmentUID, exampleAppointment.AppointmentUID)
+						assert.Equal(t, in.UserUID, exampleAppointment.UserUID)
+						assert.Equal(t, in.DateTime, exampleAppointment.DateTime)
+						assert.Equal(t, in.Location, exampleAppointment.Location)
+						assert.Equal(t, in.Topic, exampleAppointment.Topic)
+					})
 				return mock
 			},
 			request: &appointmentapi.RequestAppointmentRequest{
@@ -639,9 +657,19 @@ func TestMockgenBasedConfirmAppointment(t *testing.T) {
 			createAppointmentStore: func(ctlr *gomock.Controller) appointmentstore.AppointmentStore {
 				mock := appointmentstore.NewMockAppointmentStore(ctlr)
 				mock.EXPECT().GetAppointmentOnUid("myAppointmentUid").
-					Return(exampleAppointment, true, nil)
+					Return(exampleAppointment, true, nil).
+					Do(func(uid string) {
+						assert.Equal(t, uid, exampleAppointment.AppointmentUID)
+					})
 				mock.EXPECT().PutAppointment(gomock.Any()).
-					Return(exampleAppointment, nil)
+					Return(exampleAppointment, nil).
+					Do(func(in appointmentstore.Appointment) {
+						assert.Equal(t, in.UserUID, exampleAppointment.UserUID)
+						assert.Equal(t, in.AppointmentUID, exampleAppointment.AppointmentUID)
+						assert.Equal(t, in.Topic, exampleAppointment.Topic)
+						assert.Equal(t, in.Location, exampleAppointment.Location)
+						assert.Equal(t, in.DateTime, exampleAppointment.DateTime)
+					})
 				return mock
 			},
 			createPatientServiceClient: func(ctlr *gomock.Controller) patientinfoapi.PatientInfoClient {
@@ -649,18 +677,30 @@ func TestMockgenBasedConfirmAppointment(t *testing.T) {
 				mock.EXPECT().GetPatientOnUid(gomock.Any(), gomock.Any()).
 					Return(&patientinfoapi.GetPatientOnUidReply{
 						Patient: &examplePatient,
-					}, nil)
+					}, nil).
+					Do(func(ctx context.Context, in *patientinfoapi.GetPatientOnUidRequest, opts ...grpc.CallOption) {
+						assert.Equal(t, in.PatientUid, exampleAppointment.UserUID)
+					})
 				return mock
 			},
 			createNotificationServiceClient: func(ctlr *gomock.Controller) notificationapi.NotificationClient {
 				mock := notificationapi.NewMockNotificationClient(ctlr)
 				mock.EXPECT().SendEmail(gomock.Any(), gomock.Any()).
 					Return(&notificationapi.SendReply{
-						Status: notificationapi.DeliveryStatus_DELIVERED}, nil)
+						Status: notificationapi.DeliveryStatus_DELIVERED}, nil).
+					Do(func(ctx context.Context, in *notificationapi.SendEmailRequest, opts ...grpc.CallOption) {
+						assert.Equal(t, in.Email.RecipientEmailAddress, "myEmailAddress")
+						assert.Equal(t, in.Email.Subject, "Appointment confirmed")
+						assert.Equal(t, in.Email.Body, "Appointment confirmed with details")
+					})
+
 				mock.EXPECT().SendSms(gomock.Any(), gomock.Any()).
 					Return(&notificationapi.SendReply{
-						Status: notificationapi.DeliveryStatus_DELIVERED}, nil)
-
+						Status: notificationapi.DeliveryStatus_DELIVERED}, nil).
+					Do(func(ctx context.Context, in *notificationapi.SendSmsRequest, opts ...grpc.CallOption) {
+						assert.Equal(t, in.Sms.RecipientPhoneNumber, "myPhoneNumber")
+						assert.Equal(t, in.Sms.Body, "Appointment confirmed")
+					})
 				return mock
 			},
 			request: &appointmentapi.ModifyAppointmentStatusRequest{
