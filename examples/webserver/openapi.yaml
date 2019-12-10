@@ -1,0 +1,108 @@
+swagger: '2.0'
+info:
+  title: Patient service
+  description: Service to manage patients
+  version: 1.0.0
+host: gotrainingxebia.appspot.com
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+x-google-backend:
+  address: https://gotrainingxebia.appspot.com
+paths:
+  /api/patient:
+    post:
+      summary: Create a patient
+      operationId: createPatient
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            "$ref": "#/definitions/patient"
+      parameters:
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/patient"
+  /api/patient/{patientUid}:
+    get:
+      summary: Get the details of a patient
+      operationId: getPatientOnUid
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            "$ref": "#/definitions/patient"
+      parameters:
+        - name: patientUid
+          in: path
+          type: string
+          required: true
+          description: The patient ID.
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/patient"
+    put:
+      summary: Modify patient
+      operationId: modifyPatient
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            "$ref": "#/definitions/patient"
+      parameters:
+        - name: patientUid
+          in: path
+          type: string
+          required: true
+          description: The patient ID.
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/patient"
+    delete:
+      summary: Delete patient
+      operationId: deletePatient
+      responses:
+        '200':
+          description: A successful response
+      parameters:
+        - name: patientUid
+          in: path
+          type: string
+          required: true
+          description: The patient ID.
+
+definitions:
+  patient:
+    type: object
+    properties:
+      patientUid:
+        type: string
+      fullName:
+        type: string
+      addressLine:
+        type: string
+      allergies:
+        type: array
+        items:
+          type: string
+    required:
+      - fullName
+      - addressLine
+      - allergies
+
+securityDefinitions:
+  api_key_auth:
+    type: apiKey
+    in: query
+    name: key
+security:
+  - api_key_auth: []
