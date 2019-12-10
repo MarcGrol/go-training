@@ -718,8 +718,7 @@ Service must internally create uuid's:
 
     package uniqueid
 
-    //go:generate mockgen -source=api.go -destination=gen_GeneratorMock.go -package=uniqueid \
-       github.com/MarcGrol/forwardhttp/uniqueid Generator
+    //go:generate mockgen -source=api.go -destination=uidGeneratorMock.go -package=uniqueid Generator
 
     type Generator interface {
     	Generate() string
@@ -751,9 +750,8 @@ Trigger generation:
 
 * Exercise: tests
 
-- Write a unit test for the previous "slices and maps"-exercise
 - Write a table driven test for validating email-addresses
-- Create test cases for a component that writes the current-time to a file with uuid as filename
+- Make the 'nontestable'-package testable
 - Run the benchmark and find out at what 'size' by value and by reference have equal performance
 
 #----------------------------------------------
