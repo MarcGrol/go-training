@@ -1020,7 +1020,7 @@ Standard library provides API
 #----------------------------------------------
 
 * Exercise: http client
-- Create a HTTP client that fetches and creates a patient
+- Create a HTTP client that fetches and creates a patient. Use https://gotrainingxebia.appspot.com/api/patient/ as target.
 - Create a unit test in which you simulate server behavior
 
     GET /api/patient/123
