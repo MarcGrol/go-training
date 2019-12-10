@@ -1,44 +1,58 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"github.com/google/uuid"
 )
 
 type Patient struct {
-	UID string
-	FullName string
+	UID         string
+	FullName    string
 	AddressLine string
-	Allergies []string
+	Allergies   []string
 }
 
 // START OMIT
 
 type patientWebService struct {
+	patientStore PatientStore
 }
 
-func (s *patientWebService)getPatientOnUID(patientUID string) (Patient, error) {
-	// Dummy implementation: a real service would use an inject datastore
-	return Patient{
-		UID:patientUID,
-		FullName:"FirstName LastName",
-		AddressLine:"Lindelaan 13, Groenekan",
-		Allergies:[]string{"pinda", "antibiotics"},
-	}, nil
+func NewPatientWebService(patientStore PatientStore) *patientWebService {
+	return &patientWebService{
+		patientStore: patientStore,
+	}
 }
+
+func (s *patientWebService) getPatientOnUID(c context.Context, patientUID string) (Patient, bool, error) {
+	return s.patientStore.GetOnUid(c, patientUID)
+}
+
 // END OMIT
 
-func (s *patientWebService)createPatient(patient Patient) (Patient, error) {
-	patient.UID = uuid.New().String()
-	return patient, nil
+func (s *patientWebService) createPatient(c context.Context, patient Patient) (Patient, error) {
+	patient.UID = ""
+	return s.patientStore.Put(c, patient)
 }
 
-func (s *patientWebService)modifyPatientOnUid(patient Patient) (Patient, error) {
-	return Patient{}, fmt.Errorf("Not implemented")
+func (s *patientWebService) modifyPatientOnUid(c context.Context, patient Patient) (Patient, error) {
+	_, found, err := s.getPatientOnUID(c, patient.UID)
+	if err != nil {
+		return Patient{}, err
+	}
+	if !found {
+		return Patient{}, fmt.Errorf("Not found")
+	}
+	return s.patientStore.Put(c, patient)
 }
 
-func (s *patientWebService)deletePatientOnUid(patient Patient) (error) {
-	return fmt.Errorf("Not implemented")
+func (s *patientWebService) deletePatientOnUid(c context.Context, patientUID string) error {
+	_, found, err := s.getPatientOnUID(c, patientUID)
+	if err != nil {
+		return err
+	}
+	if !found {
+		return fmt.Errorf("Not found")
+	}
+	return s.patientStore.Remove(c, patientUID)
 }
-
-

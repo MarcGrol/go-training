@@ -1,0 +1,10 @@
+runtime: go112
+service: default
+
+handlers:
+  - url: /favicon\.ico
+    static_files: favicon.ico
+    upload: favicon\.ico
+  - url: /.*
+    secure: always
+    script: auto

@@ -12,7 +12,9 @@ import (
 func main() {
 	var router *mux.Router = mux.NewRouter()
 
-	webService := &patientWebService{}
+	uider := NewBasicUuider()
+	patientStore := newPatientStore(uider)
+	webService := NewPatientWebService(patientStore)
 	webService.RegisterEndpoint(router)
 
 	http.Handle("/", router)
