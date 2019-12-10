@@ -4,8 +4,8 @@
 export PATIENT_UID=$(curl -s \
     -X POST \
     -H 'Accept: application/json' -H 'Content-Type: application/json' \
-     --data '{"FullName":"Marc Grol","AddressLine":"Heemstrakwartier 79","Allergies":["gezeik"]}' \
-     https://gotrainingxebia.appspot.com/api/patient | jq --raw-output '.UID')
+     --data '{"fullName":"Marc Grol","addressLine":"Heemstrakwartier 79","allergies":["gezeik"]}' \
+     https://gotrainingxebia.appspot.com/api/patient | jq --raw-output '.uid')
 
 # get
 curl -s \
@@ -17,7 +17,7 @@ curl -s \
 curl -s \
     -X PUT \
     -H 'Accept: application/json' -H 'Content-Type: application/json' \
-     --data '{"FullName":"Marc Grol","AddressLine":"Thuis","Allergies":["gedoe"]}' \
+     --data '{"fullName":"Marc Grol","addressLine":"Thuis","allergies":["gedoe"]}' \
      https://gotrainingxebia.appspot.com/api/patient/${PATIENT_UID}
 
 # get

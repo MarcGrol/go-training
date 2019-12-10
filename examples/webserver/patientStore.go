@@ -6,10 +6,10 @@ import (
 )
 
 type Patient struct {
-	UID         string
-	FullName    string
-	AddressLine string
-	Allergies   []string
+	UID         string   `json:"uid"`
+	FullName    string   `json:"fullName"`
+	AddressLine string   `json:"addressLine"`
+	Allergies   []string `json:"allergies"`
 }
 
 type PatientStore interface {
