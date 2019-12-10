@@ -84,10 +84,9 @@ func TestGetAppointmentsOnUser(t *testing.T) {
 		t.Run(tcName, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
-			var appointmentStore appointmentstore.AppointmentStore
-			if tc.constructAppointmentStore != nil {
-				appointmentStore = tc.constructAppointmentStore(ctrl)
-			}
+
+			appointmentStore := appointmentStoreOrNil(ctrl, tc.constructAppointmentStore)
+
 			service := newServer(appointmentStore, nil, nil)
 			response, _ := service.GetAppointmentsOnUser(c, tc.request)
 			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
@@ -302,14 +301,9 @@ func TestRequestAppointment(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 
-			var appointmentStore appointmentstore.AppointmentStore
-			if tc.constructAppointmentStore != nil {
-				appointmentStore = tc.constructAppointmentStore(ctrl)
-			}
-			var patientServiceClient patientinfoapi.PatientInfoClient
-			if tc.constructPatientServiceClient != nil {
-				patientServiceClient = tc.constructPatientServiceClient(ctrl)
-			}
+			appointmentStore := appointmentStoreOrNil(ctrl, tc.constructAppointmentStore)
+			patientServiceClient := patientInfoClientOrNil(ctrl, tc.constructPatientServiceClient)
+
 			service := newServer(appointmentStore, patientServiceClient, nil)
 			response, _ := service.RequestAppointment(c, tc.request)
 			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
@@ -385,10 +379,9 @@ func TestGetAppointmentsOnStatus(t *testing.T) {
 		t.Run(fmt.Sprintf("Testcase: %d", idx), func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
-			var appointmentStore appointmentstore.AppointmentStore
-			if tc.constructAppointmentStore != nil {
-				appointmentStore = tc.constructAppointmentStore(ctrl)
-			}
+
+			appointmentStore := appointmentStoreOrNil(ctrl, tc.constructAppointmentStore)
+
 			service := newServer(appointmentStore, nil, nil)
 			response, _ := service.GetAppointmentsOnStatus(c, tc.request)
 			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
@@ -727,18 +720,10 @@ func TestConfirmAppointment(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 
-			var appointmentStore appointmentstore.AppointmentStore
-			if tc.constructAppointmentStore != nil {
-				appointmentStore = tc.constructAppointmentStore(ctrl)
-			}
-			var patientServiceClient patientinfoapi.PatientInfoClient
-			if tc.constructPatientServiceClient != nil {
-				patientServiceClient = tc.constructPatientServiceClient(ctrl)
-			}
-			var notificationServiceClient notificationapi.NotificationClient
-			if tc.constructNotificationServiceClient != nil {
-				notificationServiceClient = tc.constructNotificationServiceClient(ctrl)
-			}
+			appointmentStore := appointmentStoreOrNil(ctrl, tc.constructAppointmentStore)
+			patientServiceClient := patientInfoClientOrNil(ctrl, tc.constructPatientServiceClient)
+			notificationServiceClient := notificationClientOrNil(ctrl, tc.constructNotificationServiceClient)
+
 			service := newServer(appointmentStore, patientServiceClient, notificationServiceClient)
 			response, _ := service.ModifyAppointmentStatus(c, tc.request)
 			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
@@ -747,6 +732,27 @@ func TestConfirmAppointment(t *testing.T) {
 			}
 		})
 	}
+}
+
+func appointmentStoreOrNil(ctlr *gomock.Controller, constructor func(ctlr *gomock.Controller) appointmentstore.AppointmentStore) appointmentstore.AppointmentStore {
+	if constructor == nil {
+		return nil
+	}
+	return constructor(ctlr)
+}
+
+func patientInfoClientOrNil(ctlr *gomock.Controller, constructor func(ctlr *gomock.Controller) patientinfoapi.PatientInfoClient) patientinfoapi.PatientInfoClient {
+	if constructor == nil {
+		return nil
+	}
+	return constructor(ctlr)
+}
+
+func notificationClientOrNil(ctlr *gomock.Controller, constructor func(ctlr *gomock.Controller) notificationapi.NotificationClient) notificationapi.NotificationClient {
+	if constructor == nil {
+		return nil
+	}
+	return constructor(ctlr)
 }
 
 var exampleAppointment = appointmentstore.Appointment{
