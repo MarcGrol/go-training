@@ -1,4 +1,4 @@
-package main
+package appointmentstore
 
 import (
 	"sync"
@@ -21,6 +21,8 @@ type Appointment struct {
 	Status         AppointmentStatus
 }
 
+//go:generate mockgen -source=appointmentStore.go -destination=appointmentStoreMock.go -package=appointmentstore AppointmentStore
+
 type AppointmentStore interface {
 	PutAppointment(appointment Appointment) (Appointment, error)
 	GetAppointmentOnUid(appointmentUID string) (Appointment, bool, error)
@@ -34,7 +36,7 @@ type appointmentStore struct {
 	appointments map[string]Appointment
 }
 
-func newAppointmentStore(uider Uider) AppointmentStore {
+func NewAppointmentStore(uider Uider) AppointmentStore {
 	return &appointmentStore{
 		uider: uider,
 		appointments: map[string]Appointment{

@@ -1,83 +1,87 @@
 package main
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/MarcGrol/go-training/solutions/hospital/appointments/appointmentservice/appointmentstore"
+)
 
 type mockAppointmentStore struct {
 	err          error
 	putError     bool
 	exists       bool
-	appointment  Appointment
-	appointments []Appointment
+	appointment  appointmentstore.Appointment
+	appointments []appointmentstore.Appointment
 }
 
-func NewErrorMockAppointmentStore(err error) AppointmentStore {
+func NewErrorMockAppointmentStore(err error) appointmentstore.AppointmentStore {
 	return &mockAppointmentStore{
 		err:          err,
 		putError:     false,
-		appointment:  Appointment{},
-		appointments: []Appointment{},
+		appointment:  appointmentstore.Appointment{},
+		appointments: []appointmentstore.Appointment{},
 	}
 }
 
-func NewNotFoundMockAppointmentStore() AppointmentStore {
+func NewNotFoundMockAppointmentStore() appointmentstore.AppointmentStore {
 	return &mockAppointmentStore{
 		err:         nil,
 		exists:      false,
 		appointment: exampleAppointment,
-		appointments: []Appointment{
+		appointments: []appointmentstore.Appointment{
 			exampleAppointment,
 		},
 	}
 }
 
-func NewPutErrrorMockAppointmentStore() AppointmentStore {
+func NewPutErrrorMockAppointmentStore() appointmentstore.AppointmentStore {
 	return &mockAppointmentStore{
 		err:         nil,
 		exists:      true,
 		putError:    true,
 		appointment: exampleAppointment,
-		appointments: []Appointment{
+		appointments: []appointmentstore.Appointment{
 			exampleAppointment,
 		},
 	}
 }
 
-func NewsSuccesMockAppointmentStore() AppointmentStore {
+func NewsSuccesMockAppointmentStore() appointmentstore.AppointmentStore {
 	return &mockAppointmentStore{
 		err:         nil,
 		exists:      true,
 		putError:    false,
 		appointment: exampleAppointment,
-		appointments: []Appointment{
+		appointments: []appointmentstore.Appointment{
 			exampleAppointment,
 		},
 	}
 }
 
-func (m *mockAppointmentStore) PutAppointment(appointment Appointment) (Appointment, error) {
+func (m *mockAppointmentStore) PutAppointment(appointment appointmentstore.Appointment) (appointmentstore.Appointment, error) {
 	if m.putError {
-		return Appointment{}, errors.New("Error storing appointment")
+		return appointmentstore.Appointment{}, errors.New("Error storing appointment")
 	}
 	return m.appointment, m.err
 }
 
-func (m *mockAppointmentStore) GetAppointmentOnUid(appointmentUID string) (Appointment, bool, error) {
+func (m *mockAppointmentStore) GetAppointmentOnUid(appointmentUID string) (appointmentstore.Appointment, bool, error) {
 	return m.appointment, m.exists, m.err
 }
 
-func (m *mockAppointmentStore) GetAppointmentsOnUserUid(userUID string) ([]Appointment, error) {
+func (m *mockAppointmentStore) GetAppointmentsOnUserUid(userUID string) ([]appointmentstore.Appointment, error) {
 	return m.appointments, m.err
 }
 
-func (m *mockAppointmentStore) GetAppointmentsOnStatus(status AppointmentStatus) ([]Appointment, error) {
+func (m *mockAppointmentStore) GetAppointmentsOnStatus(status appointmentstore.AppointmentStatus) ([]appointmentstore.Appointment, error) {
 	return m.appointments, m.err
 }
 
-var exampleAppointment = Appointment{
+var exampleAppointment = appointmentstore.Appointment{
 	AppointmentUID: "myAppointmentUid",
 	UserUID:        "myUserUid",
 	DateTime:       "myDateTime",
 	Location:       "myLocation",
 	Topic:          "myTopic",
-	Status:         AppointmentStatusRequested,
+	Status:         appointmentstore.AppointmentStatusRequested,
 }

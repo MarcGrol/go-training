@@ -1,4 +1,4 @@
-package main
+package appointmentstore
 
 import "github.com/google/uuid"
 

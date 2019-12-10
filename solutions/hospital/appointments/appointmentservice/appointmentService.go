@@ -6,6 +6,8 @@ import (
 	"log"
 	"net"
 
+	"github.com/MarcGrol/go-training/solutions/hospital/appointments/appointmentservice/appointmentstore"
+
 	"google.golang.org/grpc"
 
 	pb "github.com/MarcGrol/go-training/solutions/hospital/appointments/appointmentapi"
@@ -18,12 +20,12 @@ type server struct {
 	pb.UnimplementedAppointmentExternalServer
 	pb.UnimplementedAppointmentInternalServer
 
-	appointmentStore   AppointmentStore
+	appointmentStore   appointmentstore.AppointmentStore
 	patientInfoClient  patientinfoapi.PatientInfoClient
 	notificationClient notificationapi.NotificationClient
 }
 
-func newServer(store AppointmentStore, patientInfoClient patientinfoapi.PatientInfoClient, notificationClient notificationapi.NotificationClient) *server {
+func newServer(store appointmentstore.AppointmentStore, patientInfoClient patientinfoapi.PatientInfoClient, notificationClient notificationapi.NotificationClient) *server {
 	return &server{
 		appointmentStore:   store,
 		patientInfoClient:  patientInfoClient,
@@ -78,7 +80,7 @@ func (s *server) GetAppointmentsOnStatus(c context.Context, in *pb.GetAppointmen
 	}
 
 	// Perform lookup
-	internalAppointments, err := s.appointmentStore.GetAppointmentsOnStatus(AppointmentStatus(in.Status))
+	internalAppointments, err := s.appointmentStore.GetAppointmentsOnStatus(appointmentstore.AppointmentStatus(in.Status))
 	if err != nil {
 		return &pb.GetAppointmentsReply{
 			Error: convertTechnicalError("Technical error fetching appointments on status", err),
@@ -239,7 +241,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 	}
 
 	// Adjust datastore
-	internalAppointment.Status = AppointmentStatusConfirmed
+	internalAppointment.Status = appointmentstore.AppointmentStatusConfirmed
 	appointmentAdjusted, err := s.appointmentStore.PutAppointment(internalAppointment)
 	if err != nil {
 		return &pb.AppointmentReply{
@@ -251,7 +253,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 	return returnSingleAppointment(appointmentAdjusted), nil
 }
 
-func returnAppointmentList(internalAppointments []Appointment) *pb.GetAppointmentsReply {
+func returnAppointmentList(internalAppointments []appointmentstore.Appointment) *pb.GetAppointmentsReply {
 	externalAppointments := []*pb.Appointment{}
 	for _, a := range internalAppointments {
 		externalAppointments = append(externalAppointments, convertIntoExternal(a))
@@ -261,13 +263,13 @@ func returnAppointmentList(internalAppointments []Appointment) *pb.GetAppointmen
 	}
 }
 
-func returnSingleAppointment(internalAppointmnent Appointment) *pb.AppointmentReply {
+func returnSingleAppointment(internalAppointmnent appointmentstore.Appointment) *pb.AppointmentReply {
 	return &pb.AppointmentReply{
 		Appointment: convertIntoExternal(internalAppointmnent),
 	}
 }
 
-func convertIntoExternal(a Appointment) *pb.Appointment {
+func convertIntoExternal(a appointmentstore.Appointment) *pb.Appointment {
 	return &pb.Appointment{
 		AppointmentUid: a.AppointmentUID,
 		UserUid:        a.UserUID,
@@ -278,14 +280,14 @@ func convertIntoExternal(a Appointment) *pb.Appointment {
 	}
 }
 
-func convertIntoInternal(a pb.Appointment) Appointment {
-	return Appointment{
+func convertIntoInternal(a pb.Appointment) appointmentstore.Appointment {
+	return appointmentstore.Appointment{
 		AppointmentUID: a.AppointmentUid,
 		UserUID:        a.UserUid,
 		DateTime:       a.DateTime,
 		Location:       a.Location,
 		Topic:          a.Topic,
-		Status:         AppointmentStatus(a.Status),
+		Status:         appointmentstore.AppointmentStatus(a.Status),
 	}
 }
 

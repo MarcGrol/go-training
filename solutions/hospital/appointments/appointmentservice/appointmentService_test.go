@@ -6,17 +6,99 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/golang/mock/gomock"
+
 	"github.com/go-test/deep"
 
 	"github.com/MarcGrol/go-training/solutions/hospital/appointments/appointmentapi"
+	"github.com/MarcGrol/go-training/solutions/hospital/appointments/appointmentservice/appointmentstore"
 	"github.com/MarcGrol/go-training/solutions/hospital/notifications/notificationapi"
 	"github.com/MarcGrol/go-training/solutions/hospital/patients/patientinfoapi"
 )
 
+func TestMockgenBasedGetAppointmentsOnUser(t *testing.T) {
+	testCases := [...]struct {
+		description            string
+		createAppointmentStore func(ctlr *gomock.Controller) appointmentstore.AppointmentStore
+		request                *appointmentapi.GetAppointmentsOnUserRequest
+		expectedResponse       *appointmentapi.GetAppointmentsReply
+	}{
+		{
+			description: "Invalid input: missing userUid",
+			request:     &appointmentapi.GetAppointmentsOnUserRequest{},
+			expectedResponse: &appointmentapi.GetAppointmentsReply{
+				Error: &appointmentapi.Error{
+					Code:    400,
+					Message: "Invalid input",
+					Details: "userUid",
+				},
+			},
+		},
+		{
+			description: "Error fetching appointments on user",
+			createAppointmentStore: func(ctlr *gomock.Controller) appointmentstore.AppointmentStore {
+				mock := appointmentstore.NewMockAppointmentStore(ctlr)
+				mock.EXPECT().GetAppointmentsOnUserUid(gomock.Any()).
+					Return([]appointmentstore.Appointment{}, fmt.Errorf("Error fetching appointments on user"))
+				return mock
+			},
+			request: &appointmentapi.GetAppointmentsOnUserRequest{UserUid: "myUserid"},
+			expectedResponse: &appointmentapi.GetAppointmentsReply{
+				Error: &appointmentapi.Error{
+					Code:    500,
+					Message: "Technical error fetching appointments on user",
+					Details: "Error fetching appointments on user",
+				},
+			},
+		},
+		{
+			description: "Success fetching appointments on user",
+			createAppointmentStore: func(ctlr *gomock.Controller) appointmentstore.AppointmentStore {
+				mock := appointmentstore.NewMockAppointmentStore(ctlr)
+				mock.EXPECT().GetAppointmentsOnUserUid(gomock.Any()).
+					Return([]appointmentstore.Appointment{exampleAppointment}, nil)
+				return mock
+			},
+			request: &appointmentapi.GetAppointmentsOnUserRequest{UserUid: "myuserid"},
+			expectedResponse: &appointmentapi.GetAppointmentsReply{
+				Appointments: []*appointmentapi.Appointment{
+					{
+						AppointmentUid: exampleAppointment.AppointmentUID,
+						UserUid:        exampleAppointment.UserUID,
+						DateTime:       exampleAppointment.DateTime,
+						Location:       exampleAppointment.Location,
+						Topic:          exampleAppointment.Topic,
+						Status:         appointmentapi.AppointmentStatus(exampleAppointment.Status),
+					},
+				},
+			},
+		},
+	}
+
+	c := context.TODO()
+	for idx, tc := range testCases {
+		tcName := fmt.Sprintf("Testcase: %d (%s)", idx, tc.description)
+		t.Run(tcName, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			var appointmentStore appointmentstore.AppointmentStore
+			if tc.createAppointmentStore != nil {
+				appointmentStore = tc.createAppointmentStore(ctrl)
+			}
+			service := newServer(appointmentStore, nil, nil)
+			response, _ := service.GetAppointmentsOnUser(c, tc.request)
+			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
+			if diff := deep.Equal(*tc.expectedResponse, *response); diff != nil {
+				t.Error(diff)
+			}
+		})
+	}
+}
+
 func TestGetAppointmentsOnUser(t *testing.T) {
 	testCases := [...]struct {
 		description      string
-		appointmentStore AppointmentStore
+		appointmentStore appointmentstore.AppointmentStore
 		request          *appointmentapi.GetAppointmentsOnUserRequest
 		expectedResponse *appointmentapi.GetAppointmentsReply
 	}{
@@ -79,7 +161,7 @@ func TestGetAppointmentsOnUser(t *testing.T) {
 func TestRequestAppointment(t *testing.T) {
 	testCases := [...]struct {
 		description      string
-		appointmentStore AppointmentStore
+		appointmentStore appointmentstore.AppointmentStore
 		patientService   patientinfoapi.PatientInfoClient
 		request          *appointmentapi.RequestAppointmentRequest
 		expectedResponse *appointmentapi.AppointmentReply
@@ -257,7 +339,7 @@ func TestRequestAppointment(t *testing.T) {
 func TestGetAppointmentsOnStatus(t *testing.T) {
 	testCases := [...]struct {
 		description      string
-		appointmentStore AppointmentStore
+		appointmentStore appointmentstore.AppointmentStore
 		request          *appointmentapi.GetAppointmentsOnStatusRequest
 		expectedResponse *appointmentapi.GetAppointmentsReply
 	}{
@@ -320,7 +402,7 @@ func TestGetAppointmentsOnStatus(t *testing.T) {
 func TestConfirmAppointment(t *testing.T) {
 	testCases := [...]struct {
 		description        string
-		appointmentStore   AppointmentStore
+		appointmentStore   appointmentstore.AppointmentStore
 		patientService     patientinfoapi.PatientInfoClient
 		notificationClient notificationapi.NotificationClient
 		request            *appointmentapi.ModifyAppointmentStatusRequest

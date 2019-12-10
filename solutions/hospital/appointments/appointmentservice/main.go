@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 
+	"github.com/MarcGrol/go-training/solutions/hospital/appointments/appointmentservice/appointmentstore"
+
 	"github.com/MarcGrol/go-training/solutions/hospital/notifications/notificationapi"
 
 	"github.com/MarcGrol/go-training/solutions/hospital/patients/patientinfoapi"
@@ -29,7 +31,7 @@ func main() {
 	log.Printf("Created notification-client")
 
 	log.Printf("Starting appointment server")
-	s := newServer(newAppointmentStore(NewBasicUuider()), patientClient, notificationClient)
+	s := newServer(appointmentstore.NewAppointmentStore(appointmentstore.NewBasicUuider()), patientClient, notificationClient)
 	err = s.GRPCListenBlocking(appointmentapi.DefaultPort)
 	if err != nil {
 		log.Fatalf("Error starting appointment server: %s", err)
