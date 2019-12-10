@@ -127,7 +127,8 @@ func TestRequestAppointment(t *testing.T) {
 					Details: "dateTime",
 				},
 			},
-		}, {
+		},
+		{
 			description: "Invalid input: Missing location",
 			request: &appointmentapi.RequestAppointmentRequest{
 				Appointment: &appointmentapi.Appointment{
@@ -172,7 +173,6 @@ func TestRequestAppointment(t *testing.T) {
 					Details: "a",
 				},
 			}),
-			appointmentStore: nil,
 			request: &appointmentapi.RequestAppointmentRequest{
 				Appointment: &appointmentapi.Appointment{
 					UserUid:  exampleAppointment.UserUID,
@@ -372,10 +372,8 @@ func TestConfirmAppointment(t *testing.T) {
 			},
 		},
 		{
-			description:        "Appointment not found",
-			appointmentStore:   NewNotFoundMockAppointmentStore(),
-			patientService:     nil,
-			notificationClient: nil,
+			description:      "Appointment not found",
+			appointmentStore: NewNotFoundMockAppointmentStore(),
 			request: &appointmentapi.ModifyAppointmentStatusRequest{
 				AppointmentUid: "myAppointmentUid",
 				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
@@ -397,7 +395,6 @@ func TestConfirmAppointment(t *testing.T) {
 					Details: "d",
 				},
 			}),
-			notificationClient: nil,
 			request: &appointmentapi.ModifyAppointmentStatusRequest{
 				AppointmentUid: "myAppointmentUid",
 				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
@@ -418,7 +415,6 @@ func TestConfirmAppointment(t *testing.T) {
 					Message: "yyy",
 				},
 			}),
-			notificationClient: nil,
 			request: &appointmentapi.ModifyAppointmentStatusRequest{
 				AppointmentUid: "myAppointmentUid",
 				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
