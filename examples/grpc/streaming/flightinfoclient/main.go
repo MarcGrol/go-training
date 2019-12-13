@@ -91,7 +91,7 @@ func oneWayStreaming(ctx context.Context, client pb.FlightInfoAsyncClient) error
 }
 
 func twoWayStreaming(ctx context.Context, client pb.FlightInfoAsyncClient) error {
-	stream, err := client.SubscribeToEvents(ctx)
+	stream, err := client.KeepSynchronizing(ctx)
 	if err != nil {
 		log.Printf("Error getting flight-info:%s\n", err)
 		return err
@@ -112,8 +112,11 @@ func twoWayStreaming(ctx context.Context, client pb.FlightInfoAsyncClient) error
 		if pdu.GetHeartbeat() != nil {
 			log.Printf("Got heartbeat\n")
 		} else if pdu.GetFlight() != nil {
+
 			fmt.Printf("\nGet recent flight info:%+s\n", pdu.GetFlight().GetFlightNumber())
-			err = stream.Send(&pb.ReceiptConfirmirmation{
+
+			// ackknowledge receipt back to server
+			err = stream.Send(&pb.Acknowledgement{
 				FlightUid: pdu.GetFlight().FlightUid,
 			})
 			if err != nil {

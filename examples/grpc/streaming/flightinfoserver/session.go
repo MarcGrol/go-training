@@ -18,19 +18,19 @@ const (
 type session struct {
 	uid                 string
 	internalChannel     chan pb.Flight
-	externalChannel     chan pb.ReceiptConfirmirmation
+	externalChannel     chan pb.Acknowledgement
 	quitChannel         chan bool
-	stream              pb.FlightInfoAsync_SubscribeToEventsServer
+	stream              pb.FlightInfoAsync_KeepSynchronizingServer
 	outstanding         map[string]bool
 	maxOutstandingCount int
 	sync.Mutex
 }
 
-func newSession(stream pb.FlightInfoAsync_SubscribeToEventsServer) (*session, func()) {
+func newSession(stream pb.FlightInfoAsync_KeepSynchronizingServer) (*session, func()) {
 	sess := &session{
 		uid:                 uuid.New().String(),
 		internalChannel:     make(chan pb.Flight, maxOutstandingCount),
-		externalChannel:     make(chan pb.ReceiptConfirmirmation, maxOutstandingCount),
+		externalChannel:     make(chan pb.Acknowledgement, maxOutstandingCount),
 		quitChannel:         make(chan bool),
 		stream:              stream,
 		outstanding:         map[string]bool{},

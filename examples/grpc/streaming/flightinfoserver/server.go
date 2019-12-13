@@ -54,6 +54,8 @@ func (s *server) GRPCListenBlocking(port string) error {
 func (s *server) GetInfoOnFlight(ctx context.Context, req *pb.GetInfoOnFlightRequest) (*pb.GetFlightReply, error) {
 	fmt.Printf("\nGetInfoOnFlight: %+v\n", req)
 
+	// TODO fetch from flighstore
+
 	return &pb.GetFlightReply{
 		Flight: &pb.Flight{
 			FlightUid:     uuid.New().String(),
@@ -79,7 +81,7 @@ func (s *server) GetHistory(req *pb.HistoryRequest, stream pb.FlightInfoAsync_Ge
 	return nil // closes grpc session after return
 }
 
-func (s *server) SubscribeToEvents(stream pb.FlightInfoAsync_SubscribeToEventsServer) error {
+func (s *server) KeepSynchronizing(stream pb.FlightInfoAsync_KeepSynchronizingServer) error {
 	session, cleanup := newSession(stream)
 	defer cleanup()
 

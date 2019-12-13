@@ -8,7 +8,7 @@ service FlightInfo {
 
 service FlightInfoAsync {
     rpc GetHistory (HistoryRequest) returns (stream Flight) {}
-    rpc SubscribeToEvents (stream ReceiptConfirmirmation) returns (stream FlightPdu) {}
+    rpc KeepSynchronizing (stream Acknowledgement) returns (stream FlightPdu) {}
 }
 
 message GetInfoOnFlightRequest {
@@ -24,10 +24,6 @@ message GetFlightReply {
 
 message HistoryRequest {
     Date startDate = 1;
-};
-
-message ReceiptConfirmirmation {
-    string flightUid = 1;
 };
 
 message FlightPdu {
@@ -50,6 +46,10 @@ message Flight {
     string destination = 7;
     FlightStatus status = 8;
     Time actualTime = 9;
+};
+
+message Acknowledgement {
+    string flightUid = 1;
 };
 
 message Date {
