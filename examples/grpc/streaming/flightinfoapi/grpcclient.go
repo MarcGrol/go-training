@@ -10,7 +10,7 @@ const (
 	DefaultAddressPort = "localhost:16123"
 )
 
-func NewSyncGrpcClient(addressPort string) (FlightInfoClient, func(), error) {
+func NewSyncGrpcClient(addressPort string) (FlightInfoSyncClient, func(), error) {
 	// Prepare connection to the server.
 	conn, err := grpc.Dial(addressPort, grpc.WithInsecure()) //, grpc.WithBlock())
 	if err != nil {
@@ -21,7 +21,7 @@ func NewSyncGrpcClient(addressPort string) (FlightInfoClient, func(), error) {
 			conn.Close()
 		}
 	}
-	return NewFlightInfoClient(conn), cleanup, nil
+	return NewFlightInfoSyncClient(conn), cleanup, nil
 }
 
 func NewAsyncGrpcClient(addressPort string) (FlightInfoAsyncClient, func(), error) {

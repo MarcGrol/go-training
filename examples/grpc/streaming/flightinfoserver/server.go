@@ -14,7 +14,7 @@ import (
 
 type server struct {
 	listener net.Listener
-	pb.UnimplementedFlightInfoServer
+	pb.UnimplementedFlightInfoSyncServer
 	pb.UnimplementedFlightInfoAsyncServer
 	flightStore  *flightStore
 	sessionStore *sessionStore
@@ -37,7 +37,7 @@ func (s *server) GRPCListenBlocking(port string) error {
 	log.Printf("Started listening on port %s", port)
 
 	grpcServer := grpc.NewServer()
-	pb.RegisterFlightInfoServer(grpcServer, s)
+	pb.RegisterFlightInfoSyncServer(grpcServer, s)
 	pb.RegisterFlightInfoAsyncServer(grpcServer, s)
 
 	// Start background routine that produces new flights that are passed to all connected client

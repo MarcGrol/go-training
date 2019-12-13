@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package flightinfoapi;
 
-service FlightInfo {
+service FlightInfoSync {
     rpc GetInfoOnFlight (GetInfoOnFlightRequest) returns (GetFlightReply) {}
 }
 
