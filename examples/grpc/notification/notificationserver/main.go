@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	_ "github.com/MarcGrol/go-training/examples/grpc/notificationapi"
+	pb "github.com/MarcGrol/go-training/examples/grpc/streaming/flightinfoapi"
 )
 
 const (
@@ -14,7 +14,7 @@ const (
 func main() {
 	s := New()
 	time.Sleep(time.Second * 2)
-	err := s.GRPCListenBlocking(port)
+	err := s.GRPCListenBlocking(pb.DefaultAddressPort)
 	if err != nil {
 		log.Fatalf("Error starting rest-notification server: %s", err)
 	}

@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package flightinfoapi;
+
+service FlightInfo {
+    rpc GetInfoOnFlight (GetInfoOnFlightRequest) returns (GetFlightReply) {}
+}
+
+service FlightInfoAsync {
+    rpc GetHistory (HistoryRequest) returns (stream Flight) {}
+    rpc SubscribeToEvents (stream ReceiptConfirmirmation) returns (stream FlightPdu) {}
+}
+
+message GetInfoOnFlightRequest {
+    Date date = 1;
+    Direction direction = 2;
+    string flightNumber = 3;
+};
+
+message GetFlightReply {
+    Error error = 1;
+    Flight flight = 2;
+};
+
+message HistoryRequest {
+    Date startDate = 1;
+};
+
+message ReceiptConfirmirmation {
+    string flightUid = 1;
+};
+
+message FlightPdu {
+    oneof payload  {
+        Heartbeat heartbeat = 1;
+        Flight flight = 2;
+    };
+};
+
+message Heartbeat{
+};
+
+message Flight {
+    string flightUid = 1;
+    string flightNumber = 2;
+    Direction direction = 3;
+    Date date = 4;
+    Time scheduledTime = 5;
+    string origin = 6;
+    string destination = 7;
+    FlightStatus status = 8;
+    Time actualTime = 9;
+};
+
+message Date {
+    int32 year = 1;
+    int32 month = 2;
+    int32 day = 3;
+}
+message Time {
+    int32 hour = 1;
+    int32 minute = 2;
+    int32 second = 3;
+};
+
+enum Direction {
+    DIRECTION_UNKNOWN = 0;
+    ARRIVAL = 1;
+    DEPARTURE = 2;
+}
+
+enum FlightStatus {
+    FLIGHT_STATUS_UNKNOWN = 0;
+    DEPARTING = 1;
+    DEPARTED = 2;
+    LANDING = 3;
+    LANDED = 4;
+};
+
+message Error {
+    int32 code = 1;
+    string message = 2;
+}

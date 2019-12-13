@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	pb "github.com/MarcGrol/go-training/examples/grpc/notificationapi"
+	pb "github.com/MarcGrol/go-training/examples/grpc/notification/notificationapi"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
