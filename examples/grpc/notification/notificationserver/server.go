@@ -10,6 +10,8 @@ import (
 	pb "github.com/MarcGrol/go-training/examples/grpc/notification/notificationapi"
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type server struct {
@@ -44,16 +46,19 @@ func (s *server) GRPCListenBlocking(port string) error {
 
 func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.SendEmailReply, error) {
 	// TODO check mandatory parameters
-	log.Printf("Send email to '%s' with subject '%s'", in.GetEmail().GetRecipientEmailAddress(), in.GetEmail().GetSubject())
-	if strings.Contains(in.GetEmail().GetSubject(), "5") {
-		return &pb.SendEmailReply{
-			NotificationUid: "",
-			Error: &pb.Error{
-				Code:    500,
-				Message: "Internal error sending email",
-			},
-		}, nil
+	if strings.Contains(in.GetEmail().GetSubject(), "bad request") {
+		return nil, status.Error(codes.InvalidArgument, "Bad request")
 	}
+	if strings.Contains(in.GetEmail().GetSubject(), "not found") {
+		return nil, status.Error(codes.NotFound, "Not found")
+	}
+	if strings.Contains(in.GetEmail().GetSubject(), "internal error") {
+		return nil, status.Error(codes.Internal, "Internal error")
+	}
+	if strings.Contains(in.GetEmail().GetSubject(), "permission denied") {
+		return nil, status.Error(codes.PermissionDenied, "Permission denied")
+	}
+	log.Printf("Send email to '%s' with subject '%s'", in.GetEmail().GetRecipientEmailAddress(), in.GetEmail().GetSubject())
 	msgUID := uuid.New().String()
 	status := pb.NotificationStatus_SENT
 	s.messages[msgUID] = status
@@ -62,6 +67,18 @@ func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.Se
 
 func (s *server) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendSmsReply, error) {
 	// TODO check mandatory parameters
+	if strings.Contains(in.GetSms().GetBody(), "bad request") {
+		return nil, status.Error(codes.InvalidArgument, "Bad request")
+	}
+	if strings.Contains(in.GetSms().GetBody(), "not found") {
+		return nil, status.Error(codes.NotFound, "Not found")
+	}
+	if strings.Contains(in.GetSms().GetBody(), "internal error") {
+		return nil, status.Error(codes.Internal, "Internal error")
+	}
+	if strings.Contains(in.GetSms().GetBody(), "permission denied") {
+		return nil, status.Error(codes.PermissionDenied, "Permission denied")
+	}
 	log.Printf("Send sms to '%s' with body '%s'", in.GetSms().GetRecipientPhoneNumber(), in.GetSms().GetBody())
 	msgUID := uuid.New().String()
 	status := pb.NotificationStatus_PENDING

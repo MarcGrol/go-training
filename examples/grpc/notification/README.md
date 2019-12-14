@@ -34,6 +34,13 @@ NB: must be started from notificationserverproxy-dir to work
     curl -vvv -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' --data '{"recipientPhoneNumber":"+31648928856", "body":"my body"}' http://localhost:8080/api/notification/sms
     curl -vvv -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' --data '{"recipientEmailAddress":"mgrol@xebia.com", "subject": "my subject", "body":"my body"}' http://localhost:8080/api/notification/email
 
+## Restfull errors
+
+    curl -vvv -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' --data '{"recipientEmailAddress":"mgrol@xebia.com", "subject": "my subject", "body":"my body"}' http://localhost:8080/api/notification/email
+    curl -vvv -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' --data '{"recipientEmailAddress":"mgrol@xebia.com", "subject": "not found", "body":"my body"}' http://localhost:8080/api/notification/email
+    curl -vvv -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' --data '{"recipientEmailAddress":"mgrol@xebia.com", "subject": "internal error", "body":"my body"}' http://localhost:8080/api/notification/email
+    curl -vvv -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' --data '{"recipientEmailAddress":"mgrol@xebia.com", "subject": "permission denied", "body":"my body"}' http://localhost:8080/api/notification/email
+
 ## The rest proxy also serves a interactive swagger-ui
 
 Swagger ui available at: http://localhost:8080/swaggerui/
