@@ -214,7 +214,6 @@ https://dave.cheney.net/
 
 * Get the training material
 
-
     $ go get -v github.com/MarcGrol/go-training/...
 
 Everything will end up in:
@@ -423,7 +422,7 @@ Do not use panic and recover
 
 * Exercise: error-handling
 
-File access using the ioutil-package:
+File access using the io/ioutil-package:
 
 - Read a file
 - Capitalize the content of the file
@@ -558,16 +557,16 @@ initialization:
 
 Use maps and slices to group the following people on hobby:
 
-    Julia: voetbal tekenen
+    Julia:  voetbal, tekenen
     Sophie: hockey
-    Mila: tekenen
-    Emma: volleybal, turnen
-    Tess: hardlopen
-    Zoë: kunst, voetbal
-    Noor: voetbal
-    Elin: hockey
-    Sara: voetbal, turnen
-    Yara: tekenen
+    Mila:   tekenen
+    Emma:   volleybal, turnen
+    Tess:   hardlopen
+    Zoë:    kunst, voetbal
+    Noor:   voetbal
+    Elin:   hockey
+    Sara:   voetbal, turnen
+    Yara:   tekenen
 
 #----------------------------------------------
 * Interfaces
@@ -652,7 +651,7 @@ How:
 * Unit testing <testit>
 - Part of toolchain
 - In same package, dedicated file
-- Filename convention: _test.go
+- Filename convention: <lalala>_test.go
 
 .code examples/testit/reverse_test.go /START OMIT/,/END OMIT/
 

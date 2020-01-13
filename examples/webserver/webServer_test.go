@@ -40,7 +40,7 @@ func TestGet(t *testing.T) {
 
 	// then
 	assert.Equal(t, http.StatusOK, recordedResponse.Code)
-	assert.Contains(t, string(recordedResponse.Body.Bytes()), `{"UID":"`)
+	assert.Contains(t, string(recordedResponse.Body.Bytes()), `{"uid":"`)
 }
 
 func TestPost(t *testing.T) {

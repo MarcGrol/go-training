@@ -1,7 +1,7 @@
 package benchmark
 
 type BigStruct struct {
-	data [1024 * 1024]string
+	data [1024 * 100]string
 }
 
 func (bs *BigStruct) DoCalculationByReference() int {

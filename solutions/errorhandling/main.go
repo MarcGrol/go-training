@@ -1,13 +1,13 @@
 package main
 
 import (
-"io/ioutil"
-"log"
-"strings"
+	"bytes"
+	"io/ioutil"
+	"log"
 )
 
 const (
-	filename = "./solutions/errorhandling/main.go"
+	filename       = "./solutions/errorhandling/main.go"
 	filenameInCaps = filename + ".txt"
 )
 
@@ -17,13 +17,11 @@ func main() {
 		log.Fatalf("Error reading file %s: %s", filename, err)
 	}
 
-	inCaps := strings.ToUpper(string(data))
+	inCaps := bytes.ToUpper(data)
 	log.Printf("In caps: %s", inCaps)
 
-	err = ioutil.WriteFile(filenameInCaps, []byte(inCaps), 0644)
+	err = ioutil.WriteFile(filenameInCaps, inCaps, 0644)
 	if err != nil {
 		log.Fatalf("Error writing file %s: %s", filenameInCaps, err)
 	}
 }
-
-
