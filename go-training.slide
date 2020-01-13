@@ -194,7 +194,7 @@ https://dave.cheney.net/
 * Workspace:
 - Contains all go stuff
 
-    ${HOME}/go or c:\Go           # default
+    ${HOME}/go    # default
 
     # otherwise set the "GOPATH" environmental variable: export GOPATH=${HOME}/src/go
 
@@ -244,6 +244,8 @@ TIP:
 
 - Format-on-save: Use "filewatcher"-plugin with "goimports"
 
+    $ go get golang.org/x/tools/cmd/goimports
+
 #----------------------------------------------
 
 * First program <first>
@@ -259,8 +261,8 @@ TIP:
     $ go fmt             # standard formatter (goimports is even better)
 
     $ go run first.go    # compiles and runs right away
-    $ go build first.go  # creates executable "hello" in .
-    $ go install         # creates executable "hello" in ${GOPATH}/bin
+    $ go build           # creates executable "first" or first.exe in .
+    $ go install         # creates executable "first" in ${GOPATH}/bin
 
     $ hello
     Hi everybody!
@@ -1131,32 +1133,69 @@ Example with "Alice"
 
 The old way:
 
-Use GOPATH and go get:
-- Fetch latest and greatest versions of your dependencies
+- based on GOPATH
+
+The new way:
+
+- based on go modules
+
+    https://www.youtube.com/watch?v=aeF3l-zmPsY
+    https://www.youtube.com/watch?v=H_4eRD8aegk
+
+#----------------------------------------------
+* The old way: based on GOPATH:
+
+- Use "go get" to fetch latest and greatest versions of your dependencies
+
+    go get -v -u -t github.com/Duxxie/platform/...
+
+    -v: verbose output
+    -u: use the network to update the named packages and their dependencies
+    -t: also download the packages required to build the tests
+
 - Rely on well behaving citizens: backwards compatility
 - Repair work unpredictable: Upgrade your own code or offer pr on dependency
 - Okay when you test, build and deploy every day
 
-The new way:
+#----------------------------------------------
+* The new way: based on go modules:
 
-Use go modules:
-- Stores versions of dependencies within project to have reproducable builds
-- Repair work more predictable: you decide when and what to upgrade
-- If build broken, downgrade to lower version of dependency or upgrade your own code
+- Stores module-name and versions of dependencies within project to have reproducable builds
 - Depends on semantic versioning:
 
     major.minor.release
     breaking.feature.fix
 
+- Repair work more predictable: you decide when and what to upgrade
+- If build broken, downgrade to lower version of dependency or upgrade your own code
+
+Note:
+- Only works when your project "lives" outside GOPATH
+
+
 #----------------------------------------------
 * Go modules
 
-What is a module?
+Creating a module?
 
 - Collection of Go packages stored in a file tree with a go.mod file at its root
+- Module can consist of multiple packages
 
-Create a module
+Consuming a module:
 
+- Major version-number appears in the import path
+
+    import (
+        "rsc.io/quote"
+        quoteV3 "rsc.io/quote/v3"
+    )
+
+One does not lighty introduce a new major version, because it requires you to maintain multiple trees
+
+#----------------------------------------------
+* Create a module
+
+    // assume you code builds and tests
     go mod init github.com/my/project # creates a new go.mod file
     go build ./... && go test ./...   # adds regular and test dependencies
     go mod tidy                       # add transitive dependencies
@@ -1168,25 +1207,14 @@ Upgrade a module
     go install github.com/my/dependency1
     go install github.com/other/dependency2@v1.0.3
 
-Major version upgrade appears in the import path
-
-    import (
-        "rsc.io/quote"
-        quoteV3 "rsc.io/quote/v3"
-    )
-
-#Backwards compatibilty:
-#- If an old package and a new package have the same import path,
-#  the new package must be backwards compatible with the old package.
-#- One does not lighty introduce a new major version, because it requires you to maintain multiple trees
-
 #----------------------------------------------
 
 * Exercise: add go modules to an existing project
 
-https://www.youtube.com/watch?v=aeF3l-zmPsY
-https://www.youtube.com/watch?v=H_4eRD8aegk
-
+- Create a new module
+- Add a dependency
+- Upgrade dependencies (to hightest minor version)
+- Upgrading a dependency to new major version
 
 #----------------------------------------------
 
