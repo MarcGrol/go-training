@@ -1169,19 +1169,15 @@ The new way:
 - If build broken, downgrade to lower version of dependency or upgrade your own code
 
 Note:
+
 - Only works when your project "lives" outside GOPATH
 
 
 #----------------------------------------------
 * Go modules
 
-Creating a module?
-
 - Collection of Go packages stored in a file tree with a go.mod file at its root
 - Module can consist of multiple packages
-
-Consuming a module:
-
 - Major version-number appears in the import path
 
     import (
@@ -1194,17 +1190,19 @@ One does not lighty introduce a new major version, because it requires you to ma
 #----------------------------------------------
 * Create a module
 
-    // assume you code builds and tests
-    go mod init github.com/my/project # creates a new go.mod file
-    go build ./... && go test ./...   # adds regular and test dependencies
-    go mod tidy                       # add transitive dependencies
+    // assume your code builds and tests
+    go mod init github.com/my/project    # creates a new go.mod and go.sum files
+    go build ./... && go test ./...      # adds regular and test dependencies
     go list -m all
+    go mod tidy                          # removes unused dependencies
+    cat go.mod                           # you should commit this file
+    cat go.sum                           # you should commit this file
 
 Upgrade a module
 
-    go list -m -versions github.com/my/dependency1
-    go install github.com/my/dependency1
-    go install github.com/other/dependency2@v1.0.3
+    go list -m -versions github.com/my/dependency1 # list versions of a module
+    go get github.com/my/dependency1               # latest
+    go get github.com/other/dependency2@v1.0.3     # specfic version
 
 #----------------------------------------------
 
