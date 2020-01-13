@@ -839,6 +839,7 @@ NB:
 
 * Closures <binarysearch>
 
+- Lambda's in Java
 - Alternative to single method interfaces
 
 example: binary search
@@ -898,6 +899,19 @@ combine with go routines to execute work in background
 
 .play -edit examples/fireforget/main.go /START OMIT/,/END OMIT/
 
+#----------------------------------------------
+
+* Multi-line defers
+
+     func doit() {
+        defer func() {
+            // code to
+            //    cleanup
+            //       resource
+            // with error-handling an logging
+        }()
+        ....
+     }
 
 #----------------------------------------------
 
