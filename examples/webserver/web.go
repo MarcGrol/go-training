@@ -51,12 +51,14 @@ func (s *patientWebService) postPatient() http.HandlerFunc {
 		err := json.NewDecoder(r.Body).Decode(&patient)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
+			return
 		}
 
 		// call business logic
 		response, err := s.createPatient(c, patient)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 
 		// write response
@@ -64,6 +66,7 @@ func (s *patientWebService) postPatient() http.HandlerFunc {
 		err = json.NewEncoder(w).Encode(response)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 	}
 }
@@ -77,6 +80,7 @@ func (s *patientWebService) putPatient() http.HandlerFunc {
 		err := json.NewDecoder(r.Body).Decode(&patient)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
+			return
 		}
 
 		// parse url
@@ -87,6 +91,7 @@ func (s *patientWebService) putPatient() http.HandlerFunc {
 		response, err := s.modifyPatientOnUid(c, patient)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 
 		// write response
@@ -94,6 +99,7 @@ func (s *patientWebService) putPatient() http.HandlerFunc {
 		err = json.NewEncoder(w).Encode(response)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 	}
 }
@@ -107,6 +113,7 @@ func (s *patientWebService) deletePatient() http.HandlerFunc {
 		err := s.deletePatientOnUid(c, patientUid)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 	}
 }
