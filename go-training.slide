@@ -1254,6 +1254,7 @@ https://bettercodehub.com/docs/faq
 - Stdlib provides apis to parse: go/ast, go/parser
 
 Other examples:
+
 - Extract documentation from code
 - Create boiler-plate code
 
@@ -1278,6 +1279,17 @@ Other examples:
 #----------------------------------------------
 
 * Exercise: dependency analysis
+
+
+#----------------------------------------------
+
+* Triggering a generator
+
+    go generate ./...
+
+Where a go file contains a comment like this:
+
+    //go:generate golangAnnotations -input-dir .
 
 #----------------------------------------------
 
