@@ -1251,10 +1251,11 @@ https://bettercodehub.com/docs/faq
 #----------------------------------------------
 
 * How are these tools created?
+
 - By parsing go
 - Stdlib provides apis to parse: go/ast, go/parser
 
-Other examples:
+Examples:
 
 - Extract documentation from code
 - Create boiler-plate code
@@ -1263,45 +1264,31 @@ Other examples:
 
 * Exercise: detect problems with static analysis tools
 
-#----------------------------------------------
-
-* Dependency analysis
-
-- Golang does not allow cyclic dependencies :)
-- Standard tooling
-
-    go list -f '{{ .Name }}: {{ .Doc }}' # current package
-    go list -f '{{ join .Imports  "\n" }}' # Nice input for a script
-
-- Try to minimize your dependencies
-- Sometimes a little duplication is better than introducing a huge dependency
-- Duck-typing allows add-hoc interface creation
-
-#----------------------------------------------
-
-* Exercise: dependency analysis
-
 
 #----------------------------------------------
 
 * Triggering a generator
 
-    go generate ./...
+    go generate ./...  # recursively triggers <command> in package
+                       # where a go file contains //go:generate <command>
 
-Where a go file contains a comment like this:
+Example:
 
-    //go:generate golangAnnotations -input-dir .
+- Trigger creation of source-code from grpc spec
+- Create mocks from interface
+
+    _________spec.go ___________________________________
+
+    //go:generate protoc -I/usr/local/include -I  ../.. -I . --go_out=plugins=grpc:. --grpc-gateway_out=logtostderr=true:. --swagger_out=logtostderr=true:. ./notifications.proto
+
+    //go:generate mockgen -source=notifications.pb.go -destination=notificationClientMock.go -package=notificationapi NotificationClient
+
+    func init() {
+    }
+
 
 #----------------------------------------------
 
-* Overridable functions <emailapi>
-- Interfaces more suitable for overriding however you might encounter this
-
-.code -edit examples/emailapi/api.go
-
-- Can be useful in combination with build-tags
-
-#----------------------------------------------
 
 * Extras
 
@@ -1461,24 +1448,6 @@ Where a go file contains a comment like this:
 TODO
 
 
-* Parsing go
-
-- Extract documentation from code
-- Create boiler-plate code
-- stdlib provides apis to parse: go/ast, go/parser
-
-Example: github.com/MarcGrol/golangAnnotations
-
-    // @RestService( path = "/api/caregiver/basket", protected = "true" )
-    type service struct {
-    }
-
-    // @RestOperation( method = "POST", path = "/notification/{role}", roles = "caregiver",
-                       format = "JSON", producesEvents = "Basket.ContactInfoSetForBasket" )
-    func (s *service) setNotificationInfoForBasket(c context.Context, rc request.Context, role string,
-                               req SetContactInfoRequest) (*basketModel.Basket, error) {
-        ...
-    }
 
 - Used in large scale project
 
@@ -1493,4 +1462,34 @@ Example: github.com/MarcGrol/golangAnnotations
 - Just commit and distribute with your package
 
 .link https://github.com/MarcGrol/go-training/blob/master/examples/generate/cyclist_slice.go cyclist_slice.go
+#----------------------------------------------
+
+
+* Dependency analysis
+
+- Golang does not allow cyclic dependencies :)
+- Standard tooling
+
+    go list -f '{{ .Name }}: {{ .Doc }}' # current package
+    go list -f '{{ join .Imports  "\n" }}' # Nice input for a script
+
+- Try to minimize your dependencies
+- Sometimes a little duplication is better than introducing a huge dependency
+- Duck-typing allows add-hoc interface creation
+
+#----------------------------------------------
+
+* Exercise: dependency analysis
+
+
+#----------------------------------------------
+
+
+* Overridable functions <emailapi>
+- Interfaces more suitable for overriding however you might encounter this
+
+.code -edit examples/emailapi/api.go
+
+- Can be useful in combination with build-tags
+
 #----------------------------------------------
