@@ -1336,13 +1336,16 @@ Target technologies:
 
 Outside:
 
-- Simple, primitive, widely understood
+- Simple and widely understood
 - Easy to pass through firewalls
--> REST
+-> REST?
 
 Inside:
 
-- Something more powerful (like Grpc)
+- Easy to use
+- Something more powerful
+- Something you base your "conventions" on.
+-> GRPC?
 
 #----------------------------------------------
 * GRPC request/response
