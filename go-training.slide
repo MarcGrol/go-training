@@ -1322,14 +1322,16 @@ Target technologies:
 - Golang
 - Python
 - Javascript
+- ...
 
 #----------------------------------------------
 * When to use what?
 
 Outside:
 
-- simple, primitive
-- easy to pass through firewalls (like REST)
+- Simple, primitive, widely understood
+- Easy to pass through firewalls
+-> REST
 
 Inside:
 
@@ -1379,7 +1381,7 @@ Example fragment
 #----------------------------------------------
 * More GRPC
 
-Convert contract to go code:
+Convert contract to go code to base your server and client on:
 
     //go:generate protoc -I  ../.. -I . \
             --go_out=plugins=grpc:. \
