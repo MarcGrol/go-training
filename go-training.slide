@@ -1295,11 +1295,106 @@ Example:
 #----------------------------------------------
 
 * Contract based interfaces
-- Swagger/OpenApi spec
-- GRPC (Protocol buffers)
-- (WSDL/XSD)
+
+Why:
+
+- Describe exchange of info for both sides on the line
+- Not just for communication with external parties
+
+How:
+
+- IDL (=interface definition language)
+- Technology independent
+
 
 #----------------------------------------------
+
+* IDL examples
+
+- (WSDL/XSD)
+- Swagger/OpenApi spec
+- GRPC (Protocol buffers)
+
+
+Target technologies:
+
+- Java
+- Golang
+- Python
+- Javascript
+
+#----------------------------------------------
+* When to use what?
+
+Outside:
+
+- simple, primitive
+- easy to pass through firewalls (like REST)
+
+Inside:
+
+- Something more powerful (like Grpc)
+
+#----------------------------------------------
+* GRPC request/response
+
+Example fragment
+
+    ...
+    service PatientInfo {
+        rpc GetPatientOnUid (GetPatientOnUidRequest) returns (GetPatientOnUidReply) {
+            option (google.api.http) = {
+                post: "/api/patient/{patientUid}",
+            };
+        }
+    }
+
+    message GetPatientOnUidRequest {
+        string patientUid = 1;
+    }
+
+    message GetPatientOnUidReply {
+        Error error = 1;
+        Patient patient = 2;
+    }
+    ...
+
+#----------------------------------------------
+* GRPC streaming
+
+- From client
+- To client
+- Bi-directional
+
+Example fragment
+
+    ...
+    service FlightInfoAsync {
+        rpc GetHistory (HistoryRequest) returns (stream Flight) {} // one-way
+        rpc KeepSynchronizing (stream Acknowledgement) returns (stream FlightPdu) {} // two-ways
+    }
+    ...
+
+
+#----------------------------------------------
+* More GRPC
+
+Convert contract to go code:
+
+    //go:generate protoc -I  ../.. -I . \
+            --go_out=plugins=grpc:. \
+            --grpc-gateway_out=logtostderr=true:. \
+            ./patients.proto
+
+Create mocks, so consumers can easily unit test their own software without access to a real service.
+
+    //go:generate mockgen -source=patients.pb.go -destination=patientinfoClientMock.go -package=patientinfoapi PatientInfoClient
+
+The resulting golang-api (for consumers of the contract) is a good candidate for semantic version using go modules
+
+
+#----------------------------------------------
+
 
 * Templating <template>
 
