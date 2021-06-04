@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	err := New().ListenHttpBlocking(":50051", ":8080")
+	err := New().ListenHttpBlocking(":50051", ":8082")
 	if err != nil {
 		log.Fatalf("Error starting rest-notification server: %s", err)
 	}

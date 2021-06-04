@@ -9,14 +9,12 @@ service Notification {
         option (google.api.http) = {
             post: "/api/notification/email",
             body: "email"
-
         };
     }
     rpc SendSms (SendSmsRequest) returns (SendReply) {
         option (google.api.http) = {
             post: "/api/notification/sms",
             body: "sms"
-
         };
     }
 }

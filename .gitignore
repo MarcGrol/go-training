@@ -1,2 +1,4 @@
 .idea
 /exercises/
+*.iml
+.DS_Store

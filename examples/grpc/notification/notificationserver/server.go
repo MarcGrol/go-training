@@ -14,37 +14,35 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type server struct {
+type service struct {
 	listener net.Listener
 	pb.UnimplementedNotificationServer
 	messages map[string]pb.NotificationStatus
 }
 
-func New() *server {
-	return &server{
+func New(port string) (*service, error) {
+	notifServer := &service{
 		messages: map[string]pb.NotificationStatus{},
 	}
-}
 
-func (s *server) GRPCListenBlocking(port string) error {
 	var err error
-	s.listener, err = net.Listen("tcp", port)
+	notifServer.listener, err = net.Listen("tcp", port)
 	if err != nil {
-		return fmt.Errorf("failed to listen at port %s: %v", port, err)
+		return nil, fmt.Errorf("failed to listen at port %s: %v", port, err)
 	}
 
 	grpcServer := grpc.NewServer()
-	pb.RegisterNotificationServer(grpcServer, New())
+	pb.RegisterNotificationServer(grpcServer, notifServer)
 
-	log.Printf("GRPPC server starts listening on port %s", port)
-	err = grpcServer.Serve(s.listener)
+	log.Printf("GRPPC service starts listening on port %s", port)
+	err = grpcServer.Serve(notifServer.listener)
 	if err != nil {
-		return fmt.Errorf("failed to serve: %v", err)
+		return nil, fmt.Errorf("failed to serve: %v", err)
 	}
-	return nil
+	return notifServer, nil
 }
 
-func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.SendEmailReply, error) {
+func (s *service) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.SendEmailReply, error) {
 	// TODO check mandatory parameters
 	if strings.Contains(in.GetEmail().GetSubject(), "bad request") {
 		return nil, status.Error(codes.InvalidArgument, "Bad request")
@@ -65,7 +63,7 @@ func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.Se
 	return &pb.SendEmailReply{NotificationUid: msgUID}, nil
 }
 
-func (s *server) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendSmsReply, error) {
+func (s *service) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendSmsReply, error) {
 	// TODO check mandatory parameters
 	if strings.Contains(in.GetSms().GetBody(), "bad request") {
 		return nil, status.Error(codes.InvalidArgument, "Bad request")
@@ -86,7 +84,7 @@ func (s *server) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendSm
 	return &pb.SendSmsReply{NotificationUid: msgUID}, nil
 }
 
-func (s *server) GetNotificationStatus(ctx context.Context, in *pb.GetNotificationStatusRequest) (*pb.GetNotificationStatusReply, error) {
+func (s *service) GetNotificationStatus(ctx context.Context, in *pb.GetNotificationStatusRequest) (*pb.GetNotificationStatusReply, error) {
 	// TODO check mandatory parameters
 	log.Printf("Get status of notification with uid '%s'", in.GetNotificationUid())
 	status, found := s.messages[in.GetNotificationUid()]
