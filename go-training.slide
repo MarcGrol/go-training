@@ -225,6 +225,12 @@ Switch to this dir:
 
 * Exercise: first program
 
+Use the following base directory for all exercises:
+
+    ${HOME}/go/src/github.com/MarcGrol/go-training/exercises
+
+Use dedicated sub-directory for each exercise
+
 #----------------------------------------------
 
 * Dev tools
@@ -237,15 +243,15 @@ TIP:
 
 - Format-on-save: Use "filewatcher"-plugin with "goimports"
 
-    $ go get golang.org/x/tools/cmd/goimports
+    $ go get -u golang.org/x/tools/cmd/goimports
 
 #----------------------------------------------
 
 * First program <first>
 
-    $ cd ${HOME}/go/src/github.com/MarcGrol/go-training
-    $ mkdir -p hello
-    $ cd hello
+    $ cd ${HOME}/go/src/github.com/MarcGrol/go-training/exercises
+    $ mkdir -p first
+    $ cd first
 
 - Source code: first.go
 
@@ -254,10 +260,10 @@ TIP:
     $ go fmt             # standard formatter (goimports is even better)
 
     $ go run first.go    # compiles and runs right away
-    $ go build           # creates executable "first" or first.exe in .
+    $ go build           # creates executable "./first" or ./first.exe in .
     $ go install         # creates executable "first" in ${HOME}/go/bin
 
-    $ hello
+    $ first              # or ${HOME}/go/bin/first
     Hi everybody!
 
 
