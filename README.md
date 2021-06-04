@@ -21,7 +21,7 @@ Have golang installed
 
     go get -d -u github.com/MarcGrol/go-training/...
 
-Source-code of all the examples, exercises and solution will end up here:
+Source-code of all the examples, exercises and solutions will end up here:
 
     ${HOME}/go/src/github.com/MarcGrol/go-training
 
