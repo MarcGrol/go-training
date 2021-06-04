@@ -6,34 +6,35 @@ package appointmentstore
 
 import (
 	context "context"
-	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
+
+	gomock "github.com/golang/mock/gomock"
 )
 
-// MockAppointmentStore is a mock of AppointmentStore interface
+// MockAppointmentStore is a mock of AppointmentStore interface.
 type MockAppointmentStore struct {
 	ctrl     *gomock.Controller
 	recorder *MockAppointmentStoreMockRecorder
 }
 
-// MockAppointmentStoreMockRecorder is the mock recorder for MockAppointmentStore
+// MockAppointmentStoreMockRecorder is the mock recorder for MockAppointmentStore.
 type MockAppointmentStoreMockRecorder struct {
 	mock *MockAppointmentStore
 }
 
-// NewMockAppointmentStore creates a new mock instance
+// NewMockAppointmentStore creates a new mock instance.
 func NewMockAppointmentStore(ctrl *gomock.Controller) *MockAppointmentStore {
 	mock := &MockAppointmentStore{ctrl: ctrl}
 	mock.recorder = &MockAppointmentStoreMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAppointmentStore) EXPECT() *MockAppointmentStoreMockRecorder {
 	return m.recorder
 }
 
-// PutAppointment mocks base method
+// PutAppointment mocks base method.
 func (m *MockAppointmentStore) PutAppointment(ctx context.Context, appointment Appointment) (Appointment, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PutAppointment", ctx, appointment)
@@ -42,13 +43,13 @@ func (m *MockAppointmentStore) PutAppointment(ctx context.Context, appointment A
 	return ret0, ret1
 }
 
-// PutAppointment indicates an expected call of PutAppointment
+// PutAppointment indicates an expected call of PutAppointment.
 func (mr *MockAppointmentStoreMockRecorder) PutAppointment(ctx, appointment interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PutAppointment", reflect.TypeOf((*MockAppointmentStore)(nil).PutAppointment), ctx, appointment)
 }
 
-// GetAppointmentOnUid mocks base method
+// GetAppointmentOnUid mocks base method.
 func (m *MockAppointmentStore) GetAppointmentOnUid(ctx context.Context, appointmentUID string) (Appointment, bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAppointmentOnUid", ctx, appointmentUID)
@@ -58,13 +59,13 @@ func (m *MockAppointmentStore) GetAppointmentOnUid(ctx context.Context, appointm
 	return ret0, ret1, ret2
 }
 
-// GetAppointmentOnUid indicates an expected call of GetAppointmentOnUid
+// GetAppointmentOnUid indicates an expected call of GetAppointmentOnUid.
 func (mr *MockAppointmentStoreMockRecorder) GetAppointmentOnUid(ctx, appointmentUID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentOnUid", reflect.TypeOf((*MockAppointmentStore)(nil).GetAppointmentOnUid), ctx, appointmentUID)
 }
 
-// GetAppointmentsOnUserUid mocks base method
+// GetAppointmentsOnUserUid mocks base method.
 func (m *MockAppointmentStore) GetAppointmentsOnUserUid(ctx context.Context, userUID string) ([]Appointment, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAppointmentsOnUserUid", ctx, userUID)
@@ -73,13 +74,13 @@ func (m *MockAppointmentStore) GetAppointmentsOnUserUid(ctx context.Context, use
 	return ret0, ret1
 }
 
-// GetAppointmentsOnUserUid indicates an expected call of GetAppointmentsOnUserUid
+// GetAppointmentsOnUserUid indicates an expected call of GetAppointmentsOnUserUid.
 func (mr *MockAppointmentStoreMockRecorder) GetAppointmentsOnUserUid(ctx, userUID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentsOnUserUid", reflect.TypeOf((*MockAppointmentStore)(nil).GetAppointmentsOnUserUid), ctx, userUID)
 }
 
-// GetAppointmentsOnStatus mocks base method
+// GetAppointmentsOnStatus mocks base method.
 func (m *MockAppointmentStore) GetAppointmentsOnStatus(ctx context.Context, status AppointmentStatus) ([]Appointment, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAppointmentsOnStatus", ctx, status)
@@ -88,7 +89,7 @@ func (m *MockAppointmentStore) GetAppointmentsOnStatus(ctx context.Context, stat
 	return ret0, ret1
 }
 
-// GetAppointmentsOnStatus indicates an expected call of GetAppointmentsOnStatus
+// GetAppointmentsOnStatus indicates an expected call of GetAppointmentsOnStatus.
 func (mr *MockAppointmentStoreMockRecorder) GetAppointmentsOnStatus(ctx, status interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentsOnStatus", reflect.TypeOf((*MockAppointmentStore)(nil).GetAppointmentsOnStatus), ctx, status)

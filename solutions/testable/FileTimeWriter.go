@@ -15,26 +15,26 @@ type Nower interface {
 
 type filetimeWriter struct {
 	uuidGenerator UuidGenerator
-	nower Nower
+	nower         Nower
 }
 
-func New(uuidGenerator UuidGenerator, nower Nower ) *filetimeWriter {
+func New(uuidGenerator UuidGenerator, nower Nower) *filetimeWriter {
 	return &filetimeWriter{
 		uuidGenerator: uuidGenerator,
-		nower:nower,
+		nower:         nower,
 	}
 }
 
-func (w filetimeWriter)Write() error {
+func (w filetimeWriter) Write() error {
 	u := w.uuidGenerator.Generate()
 	ft := w.nower.Now().Format(time.RFC3339)
 
-	return ioutil.WriteFile(u + ".txt", []byte(ft), 0644)
+	return ioutil.WriteFile(u+".txt", []byte(ft), 0644)
 }
 
-func (w filetimeWriter)getFilenameAndContent() error {
+func (w filetimeWriter) getFilenameAndContent() error {
 	u := w.uuidGenerator.Generate()
 	ft := w.nower.Now().Format(time.RFC3339)
 
-	return ioutil.WriteFile(u + ".txt", []byte(ft), 0644)
+	return ioutil.WriteFile(u+".txt", []byte(ft), 0644)
 }
