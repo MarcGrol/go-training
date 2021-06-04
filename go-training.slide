@@ -198,7 +198,7 @@ NB: We are no longer using GOPATH
 
 - Make the directory of your self-made executables is in the PATH env-var
 
-    $ export PATH=${PATH}:${GOPATH}/bin   # in ~/.bash_profile
+    $ export PATH=${PATH}:${HOME}/go/bin   # in ~/.bash_profile
 
 #----------------------------------------------
 
