@@ -14,18 +14,20 @@ const (
 )
 
 type mockNower struct{}
-func (m mockNower)Now() time.Time{
-	t, _ :=  time.Parse(time.RFC3339, expectedTimestamp)
+
+func (m mockNower) Now() time.Time {
+	t, _ := time.Parse(time.RFC3339, expectedTimestamp)
 	return t
 }
 
 type mockUider struct{}
-func (u mockUider)Generate() string{
+
+func (u mockUider) Generate() string {
 	return "1"
 }
 
-func TestFileWritten( t *testing.T) {
-	ftw := New(&mockUider{}, &mockNower{} )
+func TestFileWritten(t *testing.T) {
+	ftw := New(&mockUider{}, &mockNower{})
 
 	err := ftw.Write()
 	assert.NoError(t, err)

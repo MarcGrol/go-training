@@ -6,35 +6,36 @@ package notificationapi
 
 import (
 	context "context"
+	reflect "reflect"
+
 	gomock "github.com/golang/mock/gomock"
 	grpc "google.golang.org/grpc"
-	reflect "reflect"
 )
 
-// MockNotificationClient is a mock of NotificationClient interface
+// MockNotificationClient is a mock of NotificationClient interface.
 type MockNotificationClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockNotificationClientMockRecorder
 }
 
-// MockNotificationClientMockRecorder is the mock recorder for MockNotificationClient
+// MockNotificationClientMockRecorder is the mock recorder for MockNotificationClient.
 type MockNotificationClientMockRecorder struct {
 	mock *MockNotificationClient
 }
 
-// NewMockNotificationClient creates a new mock instance
+// NewMockNotificationClient creates a new mock instance.
 func NewMockNotificationClient(ctrl *gomock.Controller) *MockNotificationClient {
 	mock := &MockNotificationClient{ctrl: ctrl}
 	mock.recorder = &MockNotificationClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockNotificationClient) EXPECT() *MockNotificationClientMockRecorder {
 	return m.recorder
 }
 
-// SendEmail mocks base method
+// SendEmail mocks base method.
 func (m *MockNotificationClient) SendEmail(ctx context.Context, in *SendEmailRequest, opts ...grpc.CallOption) (*SendReply, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
@@ -47,14 +48,14 @@ func (m *MockNotificationClient) SendEmail(ctx context.Context, in *SendEmailReq
 	return ret0, ret1
 }
 
-// SendEmail indicates an expected call of SendEmail
+// SendEmail indicates an expected call of SendEmail.
 func (mr *MockNotificationClientMockRecorder) SendEmail(ctx, in interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendEmail", reflect.TypeOf((*MockNotificationClient)(nil).SendEmail), varargs...)
 }
 
-// SendSms mocks base method
+// SendSms mocks base method.
 func (m *MockNotificationClient) SendSms(ctx context.Context, in *SendSmsRequest, opts ...grpc.CallOption) (*SendReply, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
@@ -67,37 +68,37 @@ func (m *MockNotificationClient) SendSms(ctx context.Context, in *SendSmsRequest
 	return ret0, ret1
 }
 
-// SendSms indicates an expected call of SendSms
+// SendSms indicates an expected call of SendSms.
 func (mr *MockNotificationClientMockRecorder) SendSms(ctx, in interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendSms", reflect.TypeOf((*MockNotificationClient)(nil).SendSms), varargs...)
 }
 
-// MockNotificationServer is a mock of NotificationServer interface
+// MockNotificationServer is a mock of NotificationServer interface.
 type MockNotificationServer struct {
 	ctrl     *gomock.Controller
 	recorder *MockNotificationServerMockRecorder
 }
 
-// MockNotificationServerMockRecorder is the mock recorder for MockNotificationServer
+// MockNotificationServerMockRecorder is the mock recorder for MockNotificationServer.
 type MockNotificationServerMockRecorder struct {
 	mock *MockNotificationServer
 }
 
-// NewMockNotificationServer creates a new mock instance
+// NewMockNotificationServer creates a new mock instance.
 func NewMockNotificationServer(ctrl *gomock.Controller) *MockNotificationServer {
 	mock := &MockNotificationServer{ctrl: ctrl}
 	mock.recorder = &MockNotificationServerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockNotificationServer) EXPECT() *MockNotificationServerMockRecorder {
 	return m.recorder
 }
 
-// SendEmail mocks base method
+// SendEmail mocks base method.
 func (m *MockNotificationServer) SendEmail(arg0 context.Context, arg1 *SendEmailRequest) (*SendReply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SendEmail", arg0, arg1)
@@ -106,13 +107,13 @@ func (m *MockNotificationServer) SendEmail(arg0 context.Context, arg1 *SendEmail
 	return ret0, ret1
 }
 
-// SendEmail indicates an expected call of SendEmail
+// SendEmail indicates an expected call of SendEmail.
 func (mr *MockNotificationServerMockRecorder) SendEmail(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendEmail", reflect.TypeOf((*MockNotificationServer)(nil).SendEmail), arg0, arg1)
 }
 
-// SendSms mocks base method
+// SendSms mocks base method.
 func (m *MockNotificationServer) SendSms(arg0 context.Context, arg1 *SendSmsRequest) (*SendReply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SendSms", arg0, arg1)
@@ -121,7 +122,7 @@ func (m *MockNotificationServer) SendSms(arg0 context.Context, arg1 *SendSmsRequ
 	return ret0, ret1
 }
 
-// SendSms indicates an expected call of SendSms
+// SendSms indicates an expected call of SendSms.
 func (mr *MockNotificationServerMockRecorder) SendSms(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendSms", reflect.TypeOf((*MockNotificationServer)(nil).SendSms), arg0, arg1)

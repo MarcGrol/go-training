@@ -8,14 +8,14 @@ import (
 
 type Patient struct {
 	Name string
-	Age int
+	Age  int
 }
 
 type PatientClient struct {
 	HostName string
 }
 
-func (pc PatientClient) Fetch(uid string) (Patient,error) {
+func (pc PatientClient) Fetch(uid string) (Patient, error) {
 	client := http.Client{}
 	httpResponse, err := client.Get(fmt.Sprintf("%s/api/patient/%s", pc.HostName, uid))
 	if err != nil {

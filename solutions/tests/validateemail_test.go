@@ -8,7 +8,7 @@ import (
 func TestValidateEmail(t *testing.T) {
 	tests := []struct {
 		input string
-		want bool
+		want  bool
 	}{
 		{input: "", want: false},
 		{input: "@", want: false},

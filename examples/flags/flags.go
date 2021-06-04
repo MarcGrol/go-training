@@ -20,14 +20,14 @@ func printUsage() {
 func main() {
 	login := flag.String("login", "", "GitHub login of user") // HL
 	once := flag.Bool("once", false, "Perform action once")   // HL
-	reps := flag.Int("reps", 10, "Number of reps")   // HL
+	reps := flag.Int("reps", 10, "Number of reps")            // HL
 	flag.Parse()
 
 	if *login == "" {
 		printUsage()
 	}
 
-	for idx:=0;idx<*reps; idx++ {
+	for idx := 0; idx < *reps; idx++ {
 		log.Printf("Looking up GitHub user: %s (once:%v)", *login, *once)
 	}
 }

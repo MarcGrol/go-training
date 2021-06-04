@@ -2,10 +2,11 @@ package httpclient
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestFetchPatientSuccess(t *testing.T) {
@@ -19,7 +20,7 @@ func TestFetchPatientSuccess(t *testing.T) {
 	defer testServer.Close()
 
 	// perform request
-	client := &PatientClient{HostName:testServer.URL}
+	client := &PatientClient{HostName: testServer.URL}
 	resp, err := client.Fetch("123")
 
 	// validate output as return from fake server
@@ -34,7 +35,7 @@ func returnSuccesResponse(t *testing.T, w http.ResponseWriter, r *http.Request) 
 	w.WriteHeader(http.StatusOK)
 	resp := Patient{
 		Name: "Marc",
-		Age:    42,
+		Age:  42,
 	}
 
 	err := json.NewEncoder(w).Encode(resp)
@@ -51,7 +52,7 @@ func TestFetchPatientError(t *testing.T) {
 	defer testServer.Close()
 
 	// perform request
-	client := &PatientClient{HostName:testServer.URL}
+	client := &PatientClient{HostName: testServer.URL}
 	_, err := client.Fetch("123")
 
 	// validate output as return from fake server

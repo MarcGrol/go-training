@@ -12,27 +12,27 @@ import (
 )
 
 const (
-	debug = true
-	timeout = 10 * time.Second
+	debug             = true
+	timeout           = 10 * time.Second
 	originatingNumber = "+12016043948"
-	twilioURL =  "https://api.twilio.com/2010-04-01/Accounts/%s/Messages.json"
+	twilioURL         = "https://api.twilio.com/2010-04-01/Accounts/%s/Messages.json"
 )
 
 type smsClient struct {
 	accountId string
-	password string
+	password  string
 }
 
 func NewTwilloSmsClient(accountId, password string) SmsClient {
 	return &smsClient{
-		accountId:accountId,
-		password:password,
+		accountId: accountId,
+		password:  password,
 	}
 }
 
 func (sn *smsClient) SendSms(c context.Context, destinationNumber string, msgPayload string) error {
 	client := &http.Client{
-		Timeout:timeout,
+		Timeout: timeout,
 	}
 
 	form := url.Values{}
@@ -53,13 +53,13 @@ func (sn *smsClient) SendSms(c context.Context, destinationNumber string, msgPay
 		reqDump, err := httputil.DumpRequest(req, true)
 		if err == nil {
 			unescapedRequest, _ := url.QueryUnescape(string(reqDump))
-			fmt.Printf( "[twilio] http request:\n %s", unescapedRequest)
+			fmt.Printf("[twilio] http request:\n %s", unescapedRequest)
 		}
 	}
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return fmt.Errorf( "[twilio] send/receive error: %s", err.Error())
+		return fmt.Errorf("[twilio] send/receive error: %s", err.Error())
 	}
 	defer resp.Body.Close()
 
@@ -75,7 +75,7 @@ func (sn *smsClient) SendSms(c context.Context, destinationNumber string, msgPay
 		var response twilioErrorResponse
 		err = json.NewDecoder(resp.Body).Decode(&response)
 		if err != nil {
-			return fmt.Errorf( "[twilio] decode response: %s", err)
+			return fmt.Errorf("[twilio] decode response: %s", err)
 		}
 
 		if resp.StatusCode == 400 {
@@ -93,9 +93,9 @@ func (sn *smsClient) SendSms(c context.Context, destinationNumber string, msgPay
 	var response twilioSuccessResponse
 	err = json.NewDecoder(resp.Body).Decode(&response)
 	if err != nil {
-		return fmt.Errorf( "[twilio] decode response: %s", err)
+		return fmt.Errorf("[twilio] decode response: %s", err)
 	}
-	fmt.Printf( "[twilio] Successfully sent sms %d: %+v", resp.StatusCode, response)
+	fmt.Printf("[twilio] Successfully sent sms %d: %+v", resp.StatusCode, response)
 	return nil
 }
 

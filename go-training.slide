@@ -169,6 +169,23 @@ https://dave.cheney.net/
     $ which go     # typically located in /usr/local/bin/
     $ go env
 
+
+#----------------------------------------------
+
+* Workspace:
+- Contains all go stuff
+
+    ${HOME}/go    # default
+
+- Convention:
+    ${HOME}/go
+        ├── src/   # source code
+        ├── pkg/   # libraries
+        └── bin/   # executables
+
+- The toolchain uses these conventions
+
+NB: We are no longer using GOPATH
 #----------------------------------------------
 
 * More setup (macos, unix)
@@ -179,32 +196,9 @@ https://dave.cheney.net/
 
     $ PATH=${PATH}:/usr/local/bin         # in ~/.bash_profile
 
-- Set GOPATH
-
-    $ echo $GOPATH
-
-    $ export GOPATH=~/go                  # in ~/.bash_profile
-
-- Make the directory of your self-made executbles is in the PATH env-var
+- Make the directory of your self-made executables is in the PATH env-var
 
     $ export PATH=${PATH}:${GOPATH}/bin   # in ~/.bash_profile
-
-#----------------------------------------------
-
-* Workspace:
-- Contains all go stuff
-
-    ${HOME}/go    # default
-
-    # otherwise set the "GOPATH" environmental variable: export GOPATH=${HOME}/src/go
-
-- Convention:
-    ${GOPATH}
-    ├── src/   # source code
-    ├── pkg/   # libraries
-    └── bin/   # executables
-
-- The toolchain uses these conventions
 
 #----------------------------------------------
 
@@ -214,18 +208,18 @@ https://dave.cheney.net/
 
 * Get the training material
 
-    $ go get -v github.com/MarcGrol/go-training/...
+    $ go get -d -u github.com/MarcGrol/go-training/...
 
 Everything will end up in:
 
-    ${GOPATH}/src/github.com/MarcGrol/go-training
+    ${HOME}/go/src/github.com/MarcGrol/go-training
     ├── go-training.slide
     ├── examples/
     └── exercises/
 
 Switch to this dir:
 
-    $ cd ${GOPATH}/src/github.com/MarcGrol/go-training
+    $ cd ${HOME}/go/src/github.com/MarcGrol/go-training
 
 #----------------------------------------------
 
@@ -249,7 +243,7 @@ TIP:
 
 * First program <first>
 
-    $ cd ${GOPATH}/src/github.com/MarcGrol/go-training
+    $ cd ${HOME}/go/src/github.com/MarcGrol/go-training
     $ mkdir -p hello
     $ cd hello
 
@@ -261,7 +255,7 @@ TIP:
 
     $ go run first.go    # compiles and runs right away
     $ go build           # creates executable "first" or first.exe in .
-    $ go install         # creates executable "first" in ${GOPATH}/bin
+    $ go install         # creates executable "first" in ${HOME}/go/bin
 
     $ hello
     Hi everybody!

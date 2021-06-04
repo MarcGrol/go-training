@@ -6,35 +6,36 @@ package appointmentapi
 
 import (
 	context "context"
+	reflect "reflect"
+
 	gomock "github.com/golang/mock/gomock"
 	grpc "google.golang.org/grpc"
-	reflect "reflect"
 )
 
-// MockAppointmentInternalClient is a mock of AppointmentInternalClient interface
+// MockAppointmentInternalClient is a mock of AppointmentInternalClient interface.
 type MockAppointmentInternalClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockAppointmentInternalClientMockRecorder
 }
 
-// MockAppointmentInternalClientMockRecorder is the mock recorder for MockAppointmentInternalClient
+// MockAppointmentInternalClientMockRecorder is the mock recorder for MockAppointmentInternalClient.
 type MockAppointmentInternalClientMockRecorder struct {
 	mock *MockAppointmentInternalClient
 }
 
-// NewMockAppointmentInternalClient creates a new mock instance
+// NewMockAppointmentInternalClient creates a new mock instance.
 func NewMockAppointmentInternalClient(ctrl *gomock.Controller) *MockAppointmentInternalClient {
 	mock := &MockAppointmentInternalClient{ctrl: ctrl}
 	mock.recorder = &MockAppointmentInternalClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAppointmentInternalClient) EXPECT() *MockAppointmentInternalClientMockRecorder {
 	return m.recorder
 }
 
-// GetAppointmentsOnStatus mocks base method
+// GetAppointmentsOnStatus mocks base method.
 func (m *MockAppointmentInternalClient) GetAppointmentsOnStatus(ctx context.Context, in *GetAppointmentsOnStatusRequest, opts ...grpc.CallOption) (*GetAppointmentsReply, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
@@ -47,14 +48,14 @@ func (m *MockAppointmentInternalClient) GetAppointmentsOnStatus(ctx context.Cont
 	return ret0, ret1
 }
 
-// GetAppointmentsOnStatus indicates an expected call of GetAppointmentsOnStatus
+// GetAppointmentsOnStatus indicates an expected call of GetAppointmentsOnStatus.
 func (mr *MockAppointmentInternalClientMockRecorder) GetAppointmentsOnStatus(ctx, in interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentsOnStatus", reflect.TypeOf((*MockAppointmentInternalClient)(nil).GetAppointmentsOnStatus), varargs...)
 }
 
-// ModifyAppointmentStatus mocks base method
+// ModifyAppointmentStatus mocks base method.
 func (m *MockAppointmentInternalClient) ModifyAppointmentStatus(ctx context.Context, in *ModifyAppointmentStatusRequest, opts ...grpc.CallOption) (*AppointmentReply, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
@@ -67,37 +68,37 @@ func (m *MockAppointmentInternalClient) ModifyAppointmentStatus(ctx context.Cont
 	return ret0, ret1
 }
 
-// ModifyAppointmentStatus indicates an expected call of ModifyAppointmentStatus
+// ModifyAppointmentStatus indicates an expected call of ModifyAppointmentStatus.
 func (mr *MockAppointmentInternalClientMockRecorder) ModifyAppointmentStatus(ctx, in interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ModifyAppointmentStatus", reflect.TypeOf((*MockAppointmentInternalClient)(nil).ModifyAppointmentStatus), varargs...)
 }
 
-// MockAppointmentInternalServer is a mock of AppointmentInternalServer interface
+// MockAppointmentInternalServer is a mock of AppointmentInternalServer interface.
 type MockAppointmentInternalServer struct {
 	ctrl     *gomock.Controller
 	recorder *MockAppointmentInternalServerMockRecorder
 }
 
-// MockAppointmentInternalServerMockRecorder is the mock recorder for MockAppointmentInternalServer
+// MockAppointmentInternalServerMockRecorder is the mock recorder for MockAppointmentInternalServer.
 type MockAppointmentInternalServerMockRecorder struct {
 	mock *MockAppointmentInternalServer
 }
 
-// NewMockAppointmentInternalServer creates a new mock instance
+// NewMockAppointmentInternalServer creates a new mock instance.
 func NewMockAppointmentInternalServer(ctrl *gomock.Controller) *MockAppointmentInternalServer {
 	mock := &MockAppointmentInternalServer{ctrl: ctrl}
 	mock.recorder = &MockAppointmentInternalServerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAppointmentInternalServer) EXPECT() *MockAppointmentInternalServerMockRecorder {
 	return m.recorder
 }
 
-// GetAppointmentsOnStatus mocks base method
+// GetAppointmentsOnStatus mocks base method.
 func (m *MockAppointmentInternalServer) GetAppointmentsOnStatus(arg0 context.Context, arg1 *GetAppointmentsOnStatusRequest) (*GetAppointmentsReply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAppointmentsOnStatus", arg0, arg1)
@@ -106,13 +107,13 @@ func (m *MockAppointmentInternalServer) GetAppointmentsOnStatus(arg0 context.Con
 	return ret0, ret1
 }
 
-// GetAppointmentsOnStatus indicates an expected call of GetAppointmentsOnStatus
+// GetAppointmentsOnStatus indicates an expected call of GetAppointmentsOnStatus.
 func (mr *MockAppointmentInternalServerMockRecorder) GetAppointmentsOnStatus(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentsOnStatus", reflect.TypeOf((*MockAppointmentInternalServer)(nil).GetAppointmentsOnStatus), arg0, arg1)
 }
 
-// ModifyAppointmentStatus mocks base method
+// ModifyAppointmentStatus mocks base method.
 func (m *MockAppointmentInternalServer) ModifyAppointmentStatus(arg0 context.Context, arg1 *ModifyAppointmentStatusRequest) (*AppointmentReply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ModifyAppointmentStatus", arg0, arg1)
@@ -121,36 +122,36 @@ func (m *MockAppointmentInternalServer) ModifyAppointmentStatus(arg0 context.Con
 	return ret0, ret1
 }
 
-// ModifyAppointmentStatus indicates an expected call of ModifyAppointmentStatus
+// ModifyAppointmentStatus indicates an expected call of ModifyAppointmentStatus.
 func (mr *MockAppointmentInternalServerMockRecorder) ModifyAppointmentStatus(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ModifyAppointmentStatus", reflect.TypeOf((*MockAppointmentInternalServer)(nil).ModifyAppointmentStatus), arg0, arg1)
 }
 
-// MockAppointmentExternalClient is a mock of AppointmentExternalClient interface
+// MockAppointmentExternalClient is a mock of AppointmentExternalClient interface.
 type MockAppointmentExternalClient struct {
 	ctrl     *gomock.Controller
 	recorder *MockAppointmentExternalClientMockRecorder
 }
 
-// MockAppointmentExternalClientMockRecorder is the mock recorder for MockAppointmentExternalClient
+// MockAppointmentExternalClientMockRecorder is the mock recorder for MockAppointmentExternalClient.
 type MockAppointmentExternalClientMockRecorder struct {
 	mock *MockAppointmentExternalClient
 }
 
-// NewMockAppointmentExternalClient creates a new mock instance
+// NewMockAppointmentExternalClient creates a new mock instance.
 func NewMockAppointmentExternalClient(ctrl *gomock.Controller) *MockAppointmentExternalClient {
 	mock := &MockAppointmentExternalClient{ctrl: ctrl}
 	mock.recorder = &MockAppointmentExternalClientMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAppointmentExternalClient) EXPECT() *MockAppointmentExternalClientMockRecorder {
 	return m.recorder
 }
 
-// GetAppointmentsOnUser mocks base method
+// GetAppointmentsOnUser mocks base method.
 func (m *MockAppointmentExternalClient) GetAppointmentsOnUser(ctx context.Context, in *GetAppointmentsOnUserRequest, opts ...grpc.CallOption) (*GetAppointmentsReply, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
@@ -163,14 +164,14 @@ func (m *MockAppointmentExternalClient) GetAppointmentsOnUser(ctx context.Contex
 	return ret0, ret1
 }
 
-// GetAppointmentsOnUser indicates an expected call of GetAppointmentsOnUser
+// GetAppointmentsOnUser indicates an expected call of GetAppointmentsOnUser.
 func (mr *MockAppointmentExternalClientMockRecorder) GetAppointmentsOnUser(ctx, in interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentsOnUser", reflect.TypeOf((*MockAppointmentExternalClient)(nil).GetAppointmentsOnUser), varargs...)
 }
 
-// RequestAppointment mocks base method
+// RequestAppointment mocks base method.
 func (m *MockAppointmentExternalClient) RequestAppointment(ctx context.Context, in *RequestAppointmentRequest, opts ...grpc.CallOption) (*AppointmentReply, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, in}
@@ -183,37 +184,37 @@ func (m *MockAppointmentExternalClient) RequestAppointment(ctx context.Context, 
 	return ret0, ret1
 }
 
-// RequestAppointment indicates an expected call of RequestAppointment
+// RequestAppointment indicates an expected call of RequestAppointment.
 func (mr *MockAppointmentExternalClientMockRecorder) RequestAppointment(ctx, in interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RequestAppointment", reflect.TypeOf((*MockAppointmentExternalClient)(nil).RequestAppointment), varargs...)
 }
 
-// MockAppointmentExternalServer is a mock of AppointmentExternalServer interface
+// MockAppointmentExternalServer is a mock of AppointmentExternalServer interface.
 type MockAppointmentExternalServer struct {
 	ctrl     *gomock.Controller
 	recorder *MockAppointmentExternalServerMockRecorder
 }
 
-// MockAppointmentExternalServerMockRecorder is the mock recorder for MockAppointmentExternalServer
+// MockAppointmentExternalServerMockRecorder is the mock recorder for MockAppointmentExternalServer.
 type MockAppointmentExternalServerMockRecorder struct {
 	mock *MockAppointmentExternalServer
 }
 
-// NewMockAppointmentExternalServer creates a new mock instance
+// NewMockAppointmentExternalServer creates a new mock instance.
 func NewMockAppointmentExternalServer(ctrl *gomock.Controller) *MockAppointmentExternalServer {
 	mock := &MockAppointmentExternalServer{ctrl: ctrl}
 	mock.recorder = &MockAppointmentExternalServerMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAppointmentExternalServer) EXPECT() *MockAppointmentExternalServerMockRecorder {
 	return m.recorder
 }
 
-// GetAppointmentsOnUser mocks base method
+// GetAppointmentsOnUser mocks base method.
 func (m *MockAppointmentExternalServer) GetAppointmentsOnUser(arg0 context.Context, arg1 *GetAppointmentsOnUserRequest) (*GetAppointmentsReply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAppointmentsOnUser", arg0, arg1)
@@ -222,13 +223,13 @@ func (m *MockAppointmentExternalServer) GetAppointmentsOnUser(arg0 context.Conte
 	return ret0, ret1
 }
 
-// GetAppointmentsOnUser indicates an expected call of GetAppointmentsOnUser
+// GetAppointmentsOnUser indicates an expected call of GetAppointmentsOnUser.
 func (mr *MockAppointmentExternalServerMockRecorder) GetAppointmentsOnUser(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppointmentsOnUser", reflect.TypeOf((*MockAppointmentExternalServer)(nil).GetAppointmentsOnUser), arg0, arg1)
 }
 
-// RequestAppointment mocks base method
+// RequestAppointment mocks base method.
 func (m *MockAppointmentExternalServer) RequestAppointment(arg0 context.Context, arg1 *RequestAppointmentRequest) (*AppointmentReply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RequestAppointment", arg0, arg1)
@@ -237,7 +238,7 @@ func (m *MockAppointmentExternalServer) RequestAppointment(arg0 context.Context,
 	return ret0, ret1
 }
 
-// RequestAppointment indicates an expected call of RequestAppointment
+// RequestAppointment indicates an expected call of RequestAppointment.
 func (mr *MockAppointmentExternalServerMockRecorder) RequestAppointment(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RequestAppointment", reflect.TypeOf((*MockAppointmentExternalServer)(nil).RequestAppointment), arg0, arg1)

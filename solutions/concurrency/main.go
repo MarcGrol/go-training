@@ -5,8 +5,8 @@ import (
 	"time"
 )
 
-func SlowActionWithChannel(a,b int, responseChannel chan int) {
-	responseChannel <- SimulateSlowAction(a,b)
+func SlowActionWithChannel(a, b int, responseChannel chan int) {
+	responseChannel <- SimulateSlowAction(a, b)
 }
 
 func waitforCompletion(responseChannel chan int) int {
@@ -30,8 +30,8 @@ func main() {
 	responseChannel := make(chan int)
 	defer close(responseChannel)
 
-	for i:=0; i<100; i++ {
-		go SlowActionWithChannel(i,i,responseChannel)
+	for i := 0; i < 100; i++ {
+		go SlowActionWithChannel(i, i, responseChannel)
 	}
 
 	responseCount := waitforCompletion(responseChannel)

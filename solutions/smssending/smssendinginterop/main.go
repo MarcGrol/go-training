@@ -4,8 +4,9 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/MarcGrol/go-training/solutions/smssending"
 	"os"
+
+	"github.com/MarcGrol/go-training/solutions/smssending"
 )
 
 var PROGRAM = os.Args[0]
@@ -15,7 +16,7 @@ func main() {
 
 	c := context.Background()
 
-	client:= smssending.NewTwilloSmsClient(cfg.accountId, cfg.password)
+	client := smssending.NewTwilloSmsClient(cfg.accountId, cfg.password)
 	err := client.SendSms(c, cfg.recipientPhoneNumber, cfg.messageText)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error sending sms via twillo: %s\n", err)
@@ -24,11 +25,11 @@ func main() {
 	os.Exit(0)
 }
 
-type config struct{
-	accountId string
-	password string
+type config struct {
+	accountId            string
+	password             string
 	recipientPhoneNumber string
-	messageText string
+	messageText          string
 }
 
 func parseArgs() config {
@@ -50,9 +51,9 @@ func parseArgs() config {
 	}
 
 	return config{
-		accountId:*account,
-		password:*password,
-		recipientPhoneNumber:*to,
-		messageText:*msg,
+		accountId:            *account,
+		password:             *password,
+		recipientPhoneNumber: *to,
+		messageText:          *msg,
 	}
 }

@@ -3,6 +3,7 @@ package main
 import "fmt"
 
 var (
+	// VersionHash is being populated from a command-line flag
 	VersionHash string
 )
 
