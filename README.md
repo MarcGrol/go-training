@@ -19,7 +19,7 @@ Have golang installed
 
 ## Getting the training material on your laptop
 
-    go go get -d -u github.com/MarcGrol/go-training/...
+    go get -d -u github.com/MarcGrol/go-training/...
 
 Source-code of all the examples, exercises and solution will end up here:
 
