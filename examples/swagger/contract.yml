@@ -1,0 +1,105 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: PatientService
+host: 127.0.0.1
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /patients:
+    get:
+      operationId: GetPatients
+      responses:
+        200:
+          description: Returns patients
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Patient'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+
+    post:
+      operationId: CreatePatient
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/CreatePatientParams'
+      responses:
+        200:
+          description: Returns created patient
+          schema:
+            $ref: '#/definitions/Patient'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+
+  # TODO: Finish this endpoint
+#  /patients/{patient_id}:
+#    get:
+#      operationId: GetPatient
+#        parameters:
+#          - name: patient_id
+#            in: path
+#            required: true
+#            type: integer
+
+definitions:
+  Patient:
+    properties:
+      id:
+        type: string
+        x-omitempty: false
+        x-nullable: true
+      full_name:
+        type: string
+        x-omitempty: false
+        x-nullable: true
+      telephone_number:
+        type: string
+        x-omitempty: false
+        x-nullable: true
+      email:
+        type: string
+        x-omitempty: false
+        x-nullable: true
+
+  CreatePatientParams:
+    required:
+      - full_name
+      - telephone_number
+      - email
+    properties:
+      full_name:
+        type: string
+        minLength: 2
+        maxLength: 255
+      telephone_number:
+        type: string
+        minLength: 2
+        maxLength: 255
+      email:
+        type: string
+        format: email
+        minLength: 2
+        maxLength: 255
+
+  Error:
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
