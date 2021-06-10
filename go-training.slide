@@ -179,7 +179,7 @@ https://dave.cheney.net/
 
 - Convention:
     ${HOME}/go
-        ├── src/   # source code
+        ├── src/   # source code of packages fetched with "go get"
         ├── pkg/   # libraries
         └── bin/   # executables
 
