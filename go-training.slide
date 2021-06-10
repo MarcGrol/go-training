@@ -220,6 +220,11 @@ Everything will end up in:
 Switch to this dir:
 
     $ cd ${HOME}/go/src/github.com/MarcGrol/go-training
+    
+And build and install the project
+
+    $ go install ./...    # executables end up in ${HOME}/go/bin
+
 
 #----------------------------------------------
 
