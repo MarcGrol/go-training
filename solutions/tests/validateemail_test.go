@@ -16,7 +16,8 @@ func TestValidateEmail(t *testing.T) {
 		{input: "m/grol@xebia..com", want: false},
 		{input: "mgrol@xebia..com", want: false},
 		{input: "mgrol@xebia", want: true},
-		{input: "marc.grol@xebia.com", want: true},
+		{input: "mgrol+dev@xebia", want: true},
+		{input: "marc.grol@gmail.com", want: true},
 	}
 
 	for _, tc := range tests {

@@ -1,6 +1,7 @@
 Learning go
-December 2020
+6 June 2021
 Tags: go golang xebia
+Summary: Interactive training with lots of examples and exercises
 
 Marc Grol
 Software engineer, Xebia
@@ -63,8 +64,8 @@ Day 3:
 - Written any code?
 - Did tour, tutorial? Read a book?
 - Used go tool-chain? go get, go build, go install?
-- Build http-client and http-server?
 - json/xml marshalling?
+- Build http-client and http-server?
 - Used channels and goroutines?
 - Unit testing?
 - Own open-source project? Production code?
@@ -99,7 +100,7 @@ Also works for us
 
 Missing in go:
 
-- Generics (but has slice and map)
+- Generics (but has slice and map) (Planned for next year)
 - Constructors (but uses "constructor" functions)
 - Inheritance (but has "embedding")
 - Exceptions
@@ -579,7 +580,7 @@ Use maps and slices to group the following people on hobby:
 
 * Interfaces
 - Duck-typing: no explicit "implements"
-- Good to improve testability
+- Very useful to improve testability
 
 example from stdlib
 

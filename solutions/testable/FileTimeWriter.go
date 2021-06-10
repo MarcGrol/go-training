@@ -2,6 +2,7 @@ package testable
 
 import (
 	"io/ioutil"
+	"strings"
 	"time"
 )
 
@@ -27,14 +28,11 @@ func New(uuidGenerator UuidGenerator, nower Nower) *filetimeWriter {
 
 func (w filetimeWriter) Write() error {
 	u := w.uuidGenerator.Generate()
-	ft := w.nower.Now().Format(time.RFC3339)
+	ft := w.nower.Now()
 
-	return ioutil.WriteFile(u+".txt", []byte(ft), 0644)
-}
+	uppercaseFilename := strings.ToUpper(u) + ".txt"
 
-func (w filetimeWriter) getFilenameAndContent() error {
-	u := w.uuidGenerator.Generate()
-	ft := w.nower.Now().Format(time.RFC3339)
+	futureDate := ft.AddDate(1, 2, 3).Format(time.RFC3339)
 
-	return ioutil.WriteFile(u+".txt", []byte(ft), 0644)
+	return ioutil.WriteFile(uppercaseFilename, []byte(futureDate), 0644)
 }
