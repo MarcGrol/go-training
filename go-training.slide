@@ -5,8 +5,8 @@ Tags: go golang xebia
 Marc Grol
 Software engineer, Xebia
 mgrol@xebia.com
-http://www.xebia.com/
-https://github.com/MarcGrol/
+.link  http://www.xebia.com/
+.link  https://github.com/MarcGrol/
 
 #----------------------------------------------
 
@@ -127,19 +127,18 @@ Missing in java:
 
 - Types:
 
-    error string rune bool byte int int8 int16 int32 int64 float32 float64
-    uint uint8 uint16 uint32 uint64 (uintptr) (complex64) (complex128)
+	error string rune bool byte int int8 int16 int32 int64 float32 float64
+	uint uint8 uint16 uint32 uint64 (uintptr) (complex64) (complex128)
 
 - Constants:
 
-    true false iota
+	true false iota
 
 - Zero value:
 
-    nil
+	nil
 
 - Functions:
-
     append cap close complex copy delete len make new (panic) (recover)
 
 #----------------------------------------------
@@ -695,7 +694,7 @@ How:
 
     func TestSplit(t *testing.T) {
       tests := []struct { // anonymous struct
-        input string; sep   string; want  []string
+        input string; sep string; want  []string
       }{
         {input: "a/b/c", sep: "/", want: []string{"a", "b", "c"}},
         {input: "a/b/c", sep: ",", want: []string{"a/b/c"}},
