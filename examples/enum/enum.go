@@ -8,10 +8,9 @@ import (
 type Color int // HL
 
 const ( // HL
-	Unknown Color = iota // 0 (=default) // HL
-	Red                  // 1 // HL
-	Green                // 2 // HL
-	Blue                 // 3 // HL
+	Red   Color = iota // 0 (=default) // HL
+	Green              // 1 // HL
+	Blue               // 2 // HL
 ) // HL
 
 func (c Color) String() string {
@@ -25,7 +24,7 @@ func (c Color) String() string {
 	}
 }
 func main() {
-	var myColor Color // uses default
+	var myColor Color // implicily uses default (=Red)
 	otherColor := Green
 	fmt.Printf("my-color: %v (%d), other-color: %v (%d)\n",
 		myColor, myColor, otherColor, otherColor)
