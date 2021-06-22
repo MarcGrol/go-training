@@ -5,8 +5,8 @@ Tags: go golang xebia
 Marc Grol
 Software engineer, Xebia
 mgrol@xebia.com
-.link  http://www.xebia.com/
-.link  https://github.com/MarcGrol/
+http://www.xebia.com/
+https://github.com/MarcGrol/
 
 #----------------------------------------------
 
@@ -35,19 +35,23 @@ mgrol@xebia.com
 * Agenda
 
 Day 1:
+
 - Startup
 - Basis
 
 Day 2:
+
 - Advanced
 
 Day 3:
+
 - Exercise in groups
 - Evaluation
 
 #----------------------------------------------
 
 * Approach
+
 - Learn by example
 - See code, run code
 - Associate with something you already know
@@ -58,6 +62,7 @@ Day 3:
 #----------------------------------------------
 
 * Your experience?
+
 - Other languages?
 - Go installed on laptop?
 - Written any code?
@@ -72,6 +77,7 @@ Day 3:
 #----------------------------------------------
 
 * Why go was created?
+
 - Help Google solve problems: handle web requests
 - Simple: limited -> easy to read
 - Scale: infrastructure, teams, code bases
@@ -113,34 +119,42 @@ Missing in java:
 #----------------------------------------------
 
 * Summary of language (fits on one sheet!!!!)
+
 - Keywords:
+
     break case continue default defer else (fallthrough) for (goto) if return switch
     package import func const interface map range struct type chan go select var
 
 - Types:
-	error string rune bool byte int int8 int16 int32 int64 float32 float64
-	uint uint8 uint16 uint32 uint64 (uintptr) (complex64) (complex128)
+
+    error string rune bool byte int int8 int16 int32 int64 float32 float64
+    uint uint8 uint16 uint32 uint64 (uintptr) (complex64) (complex128)
 
 - Constants:
-	true false iota
+
+    true false iota
 
 - Zero value:
-	nil
+
+    nil
 
 - Functions:
-	append cap close complex copy delete len make new (panic) (recover)
+
+    append cap close complex copy delete len make new (panic) (recover)
 
 #----------------------------------------------
 
 * Useful sources of information
 
-https://golang.org/doc/effective_go.html
+.link https://golang.org/doc/effective_go.html
 
-https://golangweekly.com/ (newsletter to keep up)
+.link https://golangweekly.com/ golangweekly.com/ (newsletter to keep up)
 
-https://github.com/avelino/awesome-go
+.link https://github.com/avelino/awesome-go
 
-https://dave.cheney.net/
+.link https://dave.cheney.net/
+
+.link https://tour.golang.org/
 
 #----------------------------------------------
 
@@ -166,6 +180,7 @@ https://dave.cheney.net/
     $ from msi file to c:\Go       # on windows
 
 - Verify installation
+
     $ which go     # typically located in /usr/local/bin/
     $ go env
 
@@ -173,11 +188,13 @@ https://dave.cheney.net/
 #----------------------------------------------
 
 * Workspace:
+
 - Contains all go stuff
 
     ${HOME}/go    # default
 
 - Convention:
+
     ${HOME}/go
         ├── src/   # source code of packages fetched with "go get"
         ├── pkg/   # libraries
@@ -185,7 +202,8 @@ https://dave.cheney.net/
 
 - The toolchain uses these conventions
 
-NB: We are no longer using GOPATH
+NB: We are no longer using `GOPATH`
+
 #----------------------------------------------
 
 * More setup (macos, unix)
@@ -284,9 +302,11 @@ TIP:
 - More coarse-grained than Java: can contain  multiple files
 
 - Package name first line of source file
+
      package main // package that results in executable with same name as package
 
 or
+
      package news // package that results in library that is accessible via 'news'
 
 NB:
@@ -656,7 +676,7 @@ How:
 * Unit testing <testit>
 - Part of toolchain
 - In same package, dedicated file
-- Filename convention: <lalala>_test.go
+- Filename convention: `<lalala>_test.go`
 
 .code examples/testit/reverse_test.go /START OMIT/,/END OMIT/
 
@@ -668,26 +688,27 @@ How:
 
 #----------------------------------------------
 * Table driven test
+
 - Used a lot in the stdlib
 - Very readable
 - Easy to be complete
 
     func TestSplit(t *testing.T) {
-        tests := []struct { // anonymous struct
-            input,sep string, want []string
-        }{
-            {input: "a/b/c", sep: "/", want: []string{"a", "b", "c"}},
-            {input: "a/b/c", sep: ",", want: []string{"a/b/c"}},
-            {input: "abc", sep: "/", want: []string{"abc"}},
-        }
+      tests := []struct { // anonymous struct
+        input string; sep   string; want  []string
+      }{
+        {input: "a/b/c", sep: "/", want: []string{"a", "b", "c"}},
+        {input: "a/b/c", sep: ",", want: []string{"a/b/c"}},
+        {input: "abc", sep: "/", want: []string{"abc"}},
+      }
 
-        for _, tc := range tests {
-            t.Run(fmt.Sprintf("Testcase: %s", tc.input), func(t *testing.T) {
-                if !reflect.DeepEqual(tc.want, got) {
-                    t.Fatalf("expected: %v, got: %v", tc.want, got)
-                }
-            })
-        }
+      for _, tc := range tests {
+        t.Run(fmt.Sprintf("Testcase: %s", tc.input), func(t *testing.T) {
+          if !reflect.DeepEqual(tc.want, got) {
+            t.Fatalf("expected: %v, got: %v", tc.want, got)
+          }
+        })
+      }
     }
 
 #----------------------------------------------
