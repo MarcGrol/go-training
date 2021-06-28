@@ -225,18 +225,20 @@ NB: We are no longer using `GOPATH`
 
 * Get the training material
 
-    $ go get -d -u github.com/MarcGrol/go-training/...
+    $ git clone https://github.com/MarcGrol/go-training.git
 
 Everything will end up in:
 
-    ${HOME}/go/src/github.com/MarcGrol/go-training
+    go-training
     ├── go-training.slide
     ├── examples/
+    ├── solutions/
     └── exercises/
+    
 
 Switch to this dir:
 
-    $ cd ${HOME}/go/src/github.com/MarcGrol/go-training
+    $ cd go-training
     
 And build and install the project
 
