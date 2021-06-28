@@ -273,7 +273,7 @@ TIP:
 
 * First program <first>
 
-    $ cd ${HOME}/go/src/github.com/MarcGrol/go-training/exercises
+    $ cd go-training/exercises
     $ mkdir -p first
     $ cd first
 
