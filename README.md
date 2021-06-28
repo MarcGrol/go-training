@@ -22,7 +22,7 @@ Have golang installed
     git clone https://github.com/MarcGrol/go-training.git
     
     
-Source-code of all the examples, exercises and solutions will end up in the just cloned directort tree:
+Source-code of all the examples, exercises and solutions will end up in the just cloned directory tree:
 
     cd go-training
 
