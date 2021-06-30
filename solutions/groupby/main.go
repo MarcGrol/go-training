@@ -1,17 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main()  {
 	hobbiesOfPeople := map[string][]string{
 		"Julia":  {"voetbal", "tekenen"},
 		"Sophie": {"hockey"},
 		"Mila":   {"tekenen"},
-		"Emma":  {"volleybal", "turnen"},
+		"Emma":   {"volleybal", "turnen"},
 		"Tess":   {"hardlopen"},
-		"Zoë":    {"kunst", "voetbal"},
+		"Zoë":    {"kunst", "Voetbal"},
 		"Noor":   {"voetbal"},
-		"Elin":   {"hockey"},
+		"Elin":   {"Hockey"},
 		"Sara":   {"voetbal", "turnen"},
 		"Yara":   {"tekenen"},
 	}
@@ -19,7 +22,12 @@ func main()  {
 	peopleOnHobby := map[string][]string{}
 	for name, hobbies := range hobbiesOfPeople {
 		for _, hobby := range hobbies {
-			peopleOnHobby[hobby] = append(peopleOnHobby[hobby], name)
+			persons, found := peopleOnHobby[hobby]
+			if !found {
+				persons = []string{}
+			}
+			persons = append(persons, name)
+			peopleOnHobby[strings.ToLower(hobby)] = persons
 		}
 	}
 	fmt.Println("%+v", peopleOnHobby)

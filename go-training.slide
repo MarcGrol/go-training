@@ -621,6 +621,21 @@ Dynamic size
 
 #----------------------------------------------
 
+* Always keep result of append
+
+    // wrong
+    append( letters, "e" )
+
+    // right
+    letters = append(letters, "e")
+
+Why?
+
+- Realloc when no longer fits
+- Returns new pointer
+
+#----------------------------------------------
+
 * Map
 - Store key-value pairs (like Java HashMap)
 - Typically key is primitive, value can be everything: primitives, structs, slices, maps etc
@@ -659,11 +674,11 @@ Use maps and slices to group the following people on hobby:
     "Julia":  "voetbal", "tekenen"
     "Sophie": "hockey"
     "Mila":   "tekenen"
-    "Emma":  "volleybal", "turnen"
+    "Emma":   "volleybal", "turnen"
     "Tess":   "hardlopen"
-    "Zoë":    "kunst", "voetbal"
+    "Zoë":    "kunst", "Voetbal"
     "Noor":   "voetbal"
-    "Elin":   "hockey"
+    "Elin":   "Hockey"
     "Sara":   "voetbal", "turnen"
     "Yara":   "tekenen"
 
