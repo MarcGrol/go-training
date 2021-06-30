@@ -5,8 +5,8 @@ Tags: go golang xebia
 Marc Grol
 Software engineer, Xebia
 mgrol@xebia.com
-.link  http://www.xebia.com/
-.link  https://github.com/MarcGrol/
+http://www.xebia.com/
+https://github.com/MarcGrol/
 
 #----------------------------------------------
 
@@ -155,6 +155,13 @@ Missing in java:
 
 .link https://tour.golang.org/
 
+
+#----------------------------------------------
+
+* Getting our hands dirty
+
+#----------------------------------------------
+
 #----------------------------------------------
 
 #* Installation git and golang
@@ -176,13 +183,19 @@ Missing in java:
 #    $ sudo apt-get install golang  # on linux
 #    $ from msi file to c:\Go       # on windows
 
+
 #----------------------------------------------
 
 * Verify installation
 
 #----------------------------------------------
 
+Verify git:
+
     $ git --version
+
+Verify go:
+
     $ go version
 
 #----------------------------------------------
@@ -201,79 +214,85 @@ Missing in java:
 
 #----------------------------------------------
 
-* Training material
-
-#----------------------------------------------
-
-* Get the training material
+* Get the training material on your laptop
 
     $ cd ${HOME}             # on unix/mac
     $ cd /d %USERPROFILE%    # on windows
 
     $ git clone https://github.com/MarcGrol/go-training.git
 
-Everything will end up in:
+Everything will end up in go-training:
 
     go-training
     ├── go-training.slide
     ├── examples/
     └── solutions/
-    
 
 Switch to this dir:
 
     $ cd go-training
 
-And build and install the project
+And build and install the training project
 
-    $ go install ./...    # executables end up in ${HOME}/go/bin
+    $ go install ./...    # Results end up in ${HOME}/go/...
 
-
-#----------------------------------------------
-
-* Exercise: first program
-
-Use the following base directory for all exercises:
-
-    ${HOME}/go/src/github.com/MarcGrol/go-training/exercises
-
-Use dedicated sub-directory for each exercise
 
 #----------------------------------------------
 
-* First program <first>
+* First program
 
-    $ mkdir -p exercises            # create dedicated directory for exercises
-    $ cd go-training/exercises
-    $ mkdir -p first
-    $ cd first
-
-- Source code: first.go
+Note that many examples in the presentation are editable and executable (Run!)
 
 .play -edit examples/first/first.go
+
+Start using the go toolchain:
 
     $ go fmt             # standard formatter (goimports is even better)
 
     $ go run first.go    # compiles and runs right away
     $ go build           # creates executable "./first" or ./first.exe in .
-    $ go install         # creates executable "first" in ${HOME}/go/bin
 
+    $ go install         # creates executable "first" in ${HOME}/go/bin
     $ first              # or ${HOME}/go/bin/first
     Hi everybody!
 
 
 #----------------------------------------------
 
-* Workspace:
+* Exercise 1: Write, build and run your first program
+
+Prepare dedicated directory for exercises:
+
+    $ mkdir -p exercises            # base directory for all exercises
+    $ cd exercises
+
+    $ mkdir -p first                # dir for this exercise
+    $ cd first
+
+Tasks:
+
+- Create a file first.go
+- Write
+- Compile
+- Format
+- Install
+- Run
+
+    Peek: examples/first/first.go
 
 #----------------------------------------------
 
-- Contains all go stuff
+* Where do the executables end up?
+
+- "Workspace"
+
 
     ${HOME}/go           # on unix
     %HOMEPATH%/go        # on windows
 
-- Convention:
+- Contains all go stuff
+
+Convention:
 
     ${HOME}/go
         ├── pkg/   # libraries
@@ -281,11 +300,7 @@ Use dedicated sub-directory for each exercise
 
 - The toolchain uses these conventions
 
-NB: We are no longer using `GOPATH`
-
-#----------------------------------------------
-
-* Editing
+#NB: We are no longer using `GOPATH`
 
 #----------------------------------------------
 
@@ -295,16 +310,18 @@ NB: We are no longer using `GOPATH`
 - unix terminal or windows command
 - git
 
-#TIP:
+PRO TIP:
 
-#- Format-on-save: Use "filewatcher"-plugin with "goimports"
+- Format-on-save: Use "filewatcher"-plugin
+
+# Use "filewatcher"-plugin with "goimports"
 
 #    $ go get -u golang.org/x/tools/cmd/goimports
 
 
 #----------------------------------------------
 
-* Basics
+* Language basics
 
 #----------------------------------------------
 
@@ -396,13 +413,18 @@ Enforce rules:
 
 #----------------------------------------------
 
-* Exercise: controll structures
+* Exercise 2: Play around with controll flow
 
-Create a program that calculates:
+Use dedicated directory for this exercise:
 
-- Sum of all values from 1 to 100
-- Sum incremental values untill their sum exceeds 1000
-- Put calculation logic in separate library
+    $ exercises/flow
+
+Tasks:
+
+- Sum of all values from 1 up to 100
+- Sum incremental values untill their sum exceeds 1000, return number of loops
+
+    Peek: solutions/flow
 
 #----------------------------------------------
 
@@ -426,14 +448,21 @@ Create a program that calculates:
 
 (More on functions later)
 
+
 #----------------------------------------------
 
-* Defer <defer>
-- Cleanup of file-handles, mutexes, channels and connections
-- Debugging: log "enter" and "leave" of function
-- Unit-testing: "setup" and "teardown"
+* Exercise 3: Move function to dedicated library
 
-.play -edit examples/defer/defer.go /START OMIT/,/END OMIT/
+Continue with previous exercise:
+
+    $ exercises/flow
+
+Tasks:
+
+- Put calculation logic in separate library
+
+    Peek: solutions/flow
+
 
 #----------------------------------------------
 
@@ -457,14 +486,22 @@ Do not use panic and recover
 
 #----------------------------------------------
 
-* Exercise: error-handling
+* Exercise 4: Idiomatic error-handling
 
-File access using the io/ioutil-package:
+Use dedicated directory for this exercise:
 
+    $ exercises/errorhandling
+
+
+Tasks:
 - Read a file
 - Capitalize the content of the file
 - Write this capitalized content to a new other name
 - Use Proper error-handling
+
+TIP: File access using the "io/ioutil"-package ("os" nowadays)
+
+    Peek: solutions/errorhandling
 
 #----------------------------------------------
 
@@ -519,10 +556,33 @@ File access using the io/ioutil-package:
 
 #----------------------------------------------
 
-* Exercise: data
 
-- Model your business domain using structs, enums and pointers
-- Might need slices (see next section)
+#----------------------------------------------
+
+* Slices (more on it later)
+
+- Build in (Generics!)
+- Equivalent of an array/list
+
+.play -edit solutions/model/model.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Exercise 5: Model your business domain
+
+Use dedicated directory for this exercise:
+
+    $ exercises/model
+
+.image examples/images/uml.png
+
+Tasks:
+- Use structs
+- Use enums
+- Use pointers
+- Use slices
+
+    Peek: solutions/model
 
 #----------------------------------------------
 
@@ -867,6 +927,15 @@ NB:
   func init() {
     // your global initialisations here
   }
+
+#----------------------------------------------
+
+* Defer <defer>
+- Cleanup of file-handles, mutexes, channels and connections
+- Debugging: log "enter" and "leave" of function
+- Unit-testing: "setup" and "teardown"
+
+.play -edit examples/defer/defer.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
