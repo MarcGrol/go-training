@@ -467,8 +467,10 @@ Tasks:
 #----------------------------------------------
 
 * Error handling
+
 - Multiple return values
 - if error is nil, the call worked
+
   resp, err := doSomethingThatCanFail(arg1, arg2)
   if err != nil {
       return fmt.Errorf("Error doing something that can fail: %s", err) // early return to minimize indentation
