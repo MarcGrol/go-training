@@ -967,6 +967,21 @@ Tasks:
 
     Peek: solutions/concurrency
 
+#----------------------------------------------
+
+* Debugging
+
+- Use intelliJ IDEA or Goland
+
+#----------------------------------------------
+
+* Exercise: fix using debugger
+
+    Use examples/debugging
+
+Tasks:
+
+- Fix the code by making use of the debugger 
 
 
 #----------------------------------------------
@@ -1375,6 +1390,8 @@ One does not lighty introduce a new major version, because it requires you to ma
 #----------------------------------------------
 * Create a module
 
+Create a new package outside go-training
+
     // assume your code builds and tests
     go mod init github.com/my/project    # creates a new go.mod and go.sum files
     go build ./... && go test ./...      # adds regular and test dependencies
@@ -1397,17 +1414,6 @@ Upgrade a module
 - Add a dependency
 - Upgrade dependencies (to hightest minor version)
 - Upgrading a dependency to new major version
-
-#----------------------------------------------
-
-* Debugging
-
-- Use intelliJ IDEA or Goland
-
-#----------------------------------------------
-
-* Exercise: fix using debugger
-
 
 #----------------------------------------------
 * Static analysis <staticanalysis>
