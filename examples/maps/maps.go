@@ -22,6 +22,7 @@ func main() {
 	if !found {
 		jordanStudents = []string{}
 	}
+	studentsOnSchool["Jordan"] = jordanStudents
 
 	// iterate map // HL
 	for key, value := range studentsOnSchool {
