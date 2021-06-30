@@ -157,65 +157,47 @@ Missing in java:
 
 #----------------------------------------------
 
-* Setup environment
+#* Installation git and golang
 
 #----------------------------------------------
 
-* Installation
+#- Install git:
 
-- Install git:
+#.link https://git-scm.com/download
 
-.link https://git-scm.com/download
+#    $ brew install git               # on mac
+#    $ from download                  # on windows
 
-    $ brew install git               # on mac
-    $ from download                  # on windows
+#- Install go:
 
-- Install go:
+#.link https://golang.org/doc/install#download
 
-.link https://golang.org/doc/install#download
-
-    $ brew install go              # on mac
-    $ sudo apt-get install golang  # on linux
-    $ from msi file to c:\Go       # on windows
-
-- Verify installation
-
-    $ which go     # typically located in /usr/local/bin/
-    $ go env
-
+#    $ brew install go              # on mac
+#    $ sudo apt-get install golang  # on linux
+#    $ from msi file to c:\Go       # on windows
 
 #----------------------------------------------
 
-* Workspace:
-
-- Contains all go stuff
-
-    ${HOME}/go    # default
-
-- Convention:
-
-    ${HOME}/go
-        ├── src/   # source code of packages fetched with "go get"
-        ├── pkg/   # libraries
-        └── bin/   # executables
-
-- The toolchain uses these conventions
-
-NB: We are no longer using `GOPATH`
+* Verify installation
 
 #----------------------------------------------
 
-* More setup (macos, unix)
+    $ git --version
+    $ go version
 
-- Make sure the directory of the "go"-executable is in the PATH env-var
+#----------------------------------------------
 
-    $ echo $PATH
+#* More setup (macos, unix)
 
-    $ PATH=${PATH}:/usr/local/bin         # in ~/.bash_profile
+#- Make sure the directory of the "go"-executable is in the PATH env-var
 
-- Make the directory of your self-made executables is in the PATH env-var
+#    $ echo $PATH
 
-    $ export PATH=${PATH}:${HOME}/go/bin   # in ~/.bash_profile
+#    $ PATH=${PATH}:/usr/local/bin         # in ~/.bash_profile
+
+#- Make the directory of your self-made executables is in the PATH env-var
+
+#    $ export PATH=${PATH}:${HOME}/go/bin   # in ~/.bash_profile
 
 #----------------------------------------------
 
@@ -225,6 +207,9 @@ NB: We are no longer using `GOPATH`
 
 * Get the training material
 
+    $ cd ${HOME}             # on unix/mac
+    $ cd /d %USERPROFILE%    # on windows
+
     $ git clone https://github.com/MarcGrol/go-training.git
 
 Everything will end up in:
@@ -232,14 +217,13 @@ Everything will end up in:
     go-training
     ├── go-training.slide
     ├── examples/
-    ├── solutions/
-    └── exercises/
+    └── solutions/
     
 
 Switch to this dir:
 
     $ cd go-training
-    
+
 And build and install the project
 
     $ go install ./...    # executables end up in ${HOME}/go/bin
@@ -257,22 +241,9 @@ Use dedicated sub-directory for each exercise
 
 #----------------------------------------------
 
-* Dev tools
-
-- IntelliJ IDEA or Goland
-- unix terminal or windows command
-- git
-
-TIP:
-
-- Format-on-save: Use "filewatcher"-plugin with "goimports"
-
-    $ go get -u golang.org/x/tools/cmd/goimports
-
-#----------------------------------------------
-
 * First program <first>
 
+    $ mkdir -p exercises            # create dedicated directory for exercises
     $ cd go-training/exercises
     $ mkdir -p first
     $ cd first
@@ -289,6 +260,46 @@ TIP:
 
     $ first              # or ${HOME}/go/bin/first
     Hi everybody!
+
+
+#----------------------------------------------
+
+* Workspace:
+
+#----------------------------------------------
+
+- Contains all go stuff
+
+    ${HOME}/go           # on unix
+    %HOMEPATH%/go        # on windows
+
+- Convention:
+
+    ${HOME}/go
+        ├── pkg/   # libraries
+        └── bin/   # executables
+
+- The toolchain uses these conventions
+
+NB: We are no longer using `GOPATH`
+
+#----------------------------------------------
+
+* Editing
+
+#----------------------------------------------
+
+* Dev tools
+
+- IntelliJ IDEA or Goland
+- unix terminal or windows command
+- git
+
+#TIP:
+
+#- Format-on-save: Use "filewatcher"-plugin with "goimports"
+
+#    $ go get -u golang.org/x/tools/cmd/goimports
 
 
 #----------------------------------------------
