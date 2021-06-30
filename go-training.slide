@@ -577,9 +577,7 @@ Use dedicated directory for this exercise:
 .image examples/images/uml.png
 
 Tasks:
-- Use structs
-- Use enums
-- Use pointers
+- Use structs, enums, pointers
 - Use slices
 
     Peek: solutions/model
@@ -652,19 +650,26 @@ initialization:
 
 * Exercise: slices and maps
 
+Use dedicated directory for this exercise:
+
+    $ exercises/slicesmaps
+
 Use maps and slices to group the following people on hobby:
 
-    Julia:  voetbal, tekenen
-    Sophie: hockey
-    Mila:   tekenen
-    Emma:   volleybal, turnen
-    Tess:   hardlopen
-    Zoë:    kunst, voetbal
-    Noor:   voetbal
-    Elin:   hockey
-    Sara:   voetbal, turnen
-    Yara:   tekenen
+    "Julia":  "voetbal", "tekenen"
+    "Sophie": "hockey"
+    "Mila":   "tekenen"
+    "Emma":  "volleybal", "turnen"
+    "Tess":   "hardlopen"
+    "Zoë":    "kunst", "voetbal"
+    "Noor":   "voetbal"
+    "Elin":   "hockey"
+    "Sara":   "voetbal", "turnen"
+    "Yara":   "tekenen"
 
+TIP: Copy and paste and use editor in column-mode
+
+    Peek: solutions/groupby
 #----------------------------------------------
 * Interfaces
 #----------------------------------------------
