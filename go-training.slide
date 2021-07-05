@@ -934,88 +934,140 @@ combine with go routines to execute work in background
 
 TODO
 
-#----------------------------------------------
-* Concurrency
-#----------------------------------------------
-
-# Whatever mix of packages you use: Consumers just have to understand a single error-handling strategy
-
-* Concurrency
-
-Overemphasized
-Most of your code is synchronous
-Concurrent-style not forced upon you, used selectively
-
-- built-in "channels" and "goroutines"
-- Goroutines: think very, very lightweight threads
-- Channels: think pipe or queue to communicate with goroutine(s)
-- "select"-loop: UNIX-like: wait for events from multiple channels
 
 #----------------------------------------------
+* Dependency management
+#----------------------------------------------
+* In other ecosystems
 
-* Concurrency example <channels>
-- Do not communicate by sharing memory. Instead, share memory by communicating.
+- maven in Java
+- npm for javascript
 
-.play -edit examples/channels/channels.go /START OMIT/,/END OMIT/
+#----------------------------------------------
+* The old way
+
+- Use "go get" to fetch latest and greatest versions of your dependencies
+- Rely on well behaving citizens: backwards compatility
+- Repair work unpredictable: Upgrade your own code or offer pr on dependency
+- Okay when you test, build and deploy every day
+
+#----------------------------------------------
+* New approach
+
+- Based on semantic versioning:
+
+    major.minor.release
+    breaking.feature.fix
+
+- Have reproducable builds
+- Repair work more predictable: you decide when and what to upgrade
+- If build broken, downgrade to lower version of dependency or upgrade your own code
+
+#----------------------------------------------
+* Go modules
+
+- A module is a tree of go packages, versioned as a whole
+- "go.mod"-file in its root stores module-name and dependencies
+
+    module github.com/MarcGrol/my-example
+
+    go 1.16
+
+    require (
+    	github.com/google/uuid v1.2.0
+    	github.com/gorilla/mux v1.8.0
+    	github.com/stretchr/testify v1.7.0
+    )
+
+Real-life example:
+
+    github.com/MarcGrol/go-training/go.mod
+
+#----------------------------------------------
+* Major version upgrade
+
+- Backwards incompatible changes
+- Would break code of consumers
+- Create new package with major version-number  in the import path
+
+    import (
+        "rsc.io/quote"
+        quoteV2 "rsc.io/quote/v2"
+    )
+
+- Old and new version can live side-by-side
+
+Note:
+
+- One does not lighty introduce a new major version, because it requires you to maintain multiple trees
+
+#----------------------------------------------
+* Example commands
+
+Create a new package outside go-training
+
+    // assume your code builds and tests
+    go mod init github.com/my/project    # creates a new go.mod and go.sum files
+    go install ./... && go test ./...    # adds regular and test dependencies
+    go list -m all
+    go mod tidy                          # removes unused dependencies
+    cat go.mod                           # you should commit this file
+    cat go.sum                           # you should commit this file
+
+Upgrade a module
+
+    go list -m -versions github.com/my/dependency1 # list versions of a module
+    go get github.com/my/dependency1               # latest
+    go get github.com/other/dependency2@v1.0.3     # specfic version of githash
 
 #----------------------------------------------
 
-* Select example <select>
-- Waitfor events on multiple channels
+* Interesting videos
 
-.play -edit examples/select/select.go /START OMIT/,/END OMIT/
+- On how to use go modules and upgrade versions
 
-#----------------------------------------------
-
-* Example usage
-
-- Devide and conquer: Chunk your problem in parts that can be processed concurrently in isolation
-- Send out multiple requests concurrently: Continue when all responses have been received
-- Cache eviction: Scheduled background "thread" removes old entries at regular intervals
-- Fan out: Fire and forget
-- Respond faster by moving non-criticals (like notification) off the main thread
-- Synchronzed state-machine: select loop is the heart
-
-NB:
-
-- When multiple go-routines access the same data, you will need to synchronize (with mutexes or channels)
-- Cleanup: don't leave dangling channels and goroutines
+.link https://www.youtube.com/watch?v=aeF3l-zmPsY
+.link https://www.youtube.com/watch?v=H_4eRD8aegk
 
 #----------------------------------------------
 
-* Exercise: concurrency
+* Exercise: Create a new go-module
 
+Create a new directory outside go-training
 
-Use dedicated directory for this exercise:
-
-    $ exercises/concurrency
+     ${HOME}/myuuid
 
 Tasks:
 
-- Execute a slow action (see function below) concurrently (100x) and wait for all the results for no more than 1 second. Report the number of results received.
+- Use the following source-code
 
-.code solutions/concurrency/externalApi.go /START OMIT/,/END OMIT/
+.code examples/myuuid/myuuid.go /START OMIT/,/END OMIT/
 
-- Create a "thread-safe" in-memory cache (Get, Put) that automatically removes entries older than 10 seconds
+- Create a go module
 
-    Peek: solutions/concurrency
-
-#----------------------------------------------
-
-* Debugging
-
-- Use intelliJ IDEA or Goland
+# go mod init github.com/MarcGrol/myuuid
+# go mod tidy
 
 #----------------------------------------------
 
-* Exercise: fix using debugger
+* Exercise: Upgrade an existing go module
 
-    Use examples/debugging
+Continue with same directory outside go-training
+
+     ${HOME}/myuuid
 
 Tasks:
 
-- Fix the code by making use of the debugger 
+- Improve the source-code to use the package
 
+    github.com/google/uuid
+
+- Upgrade dependencies
+
+# go get github.com/google/uuid
+# go install
+# go mod tidy
+# cat go.mod
 
 #----------------------------------------------
 * Testing
@@ -1157,6 +1209,89 @@ Tasks:
 - Run the benchmark and find out at what 'size' pass-by-value and pass-by-reference have equal performance
 
 - Make the 'nontestable'-package testable
+
+
+#----------------------------------------------
+* Concurrency
+#----------------------------------------------
+
+# Whatever mix of packages you use: Consumers just have to understand a single error-handling strategy
+
+* Concurrency
+
+Overemphasized
+Most of your code is synchronous
+Concurrent-style not forced upon you, used selectively
+
+- built-in "channels" and "goroutines"
+- Goroutines: think very, very lightweight threads
+- Channels: think pipe or queue to communicate with goroutine(s)
+- "select"-loop: UNIX-like: wait for events from multiple channels
+
+#----------------------------------------------
+
+* Concurrency example <channels>
+- Do not communicate by sharing memory. Instead, share memory by communicating.
+
+.play -edit examples/channels/channels.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Select example <select>
+- Waitfor events on multiple channels
+
+.play -edit examples/select/select.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Example usage
+
+- Devide and conquer: Chunk your problem in parts that can be processed concurrently in isolation
+- Send out multiple requests concurrently: Continue when all responses have been received
+- Cache eviction: Scheduled background "thread" removes old entries at regular intervals
+- Fan out: Fire and forget
+- Respond faster by moving non-criticals (like notification) off the main thread
+- Synchronzed state-machine: select loop is the heart
+
+NB:
+
+- When multiple go-routines access the same data, you will need to synchronize (with mutexes or channels)
+- Cleanup: don't leave dangling channels and goroutines
+
+#----------------------------------------------
+
+* Exercise: concurrency
+
+
+Use dedicated directory for this exercise:
+
+    $ exercises/concurrency
+
+Tasks:
+
+- Execute a slow action (see function below) concurrently (100x) and wait for all the results for no more than 1 second. Report the number of results received.
+
+.code solutions/concurrency/externalApi.go /START OMIT/,/END OMIT/
+
+- Create a "thread-safe" in-memory cache (Get, Put) that automatically removes entries older than 10 seconds
+
+    Peek: solutions/concurrency
+
+#----------------------------------------------
+
+* Debugging
+
+- Use intelliJ IDEA or Goland
+
+#----------------------------------------------
+
+* Exercise: fix using debugger
+
+    Use examples/debugging
+
+Tasks:
+
+- Fix the code by making use of the debugger 
 
 
 #----------------------------------------------
@@ -1357,97 +1492,7 @@ Example with "Alice"
 
 
 #----------------------------------------------
-
 * Tooling
-
-#----------------------------------------------
-* Dependency management
-
-The old way:
-
-- based on GOPATH
-
-The new way:
-
-- based on go modules
-
-    https://www.youtube.com/watch?v=aeF3l-zmPsY
-    https://www.youtube.com/watch?v=H_4eRD8aegk
-
-#----------------------------------------------
-* The old way: based on GOPATH:
-
-- Use "go get" to fetch latest and greatest versions of your dependencies
-
-    go get -v -u -t github.com/Duxxie/platform/...
-
-    -v: verbose output
-    -u: use the network to update the named packages and their dependencies
-    -t: also download the packages required to build the tests
-
-- Rely on well behaving citizens: backwards compatility
-- Repair work unpredictable: Upgrade your own code or offer pr on dependency
-- Okay when you test, build and deploy every day
-
-#----------------------------------------------
-* The new way: based on go modules:
-
-- Stores module-name and versions of dependencies within project to have reproducable builds
-- Depends on semantic versioning:
-
-    major.minor.release
-    breaking.feature.fix
-
-- Repair work more predictable: you decide when and what to upgrade
-- If build broken, downgrade to lower version of dependency or upgrade your own code
-
-Note:
-
-- Only works when your project "lives" outside GOPATH
-
-
-#----------------------------------------------
-* Go modules
-
-- Collection of Go packages stored in a file tree with a go.mod file at its root
-- Module can consist of multiple packages
-- Major version-number appears in the import path
-
-    import (
-        "rsc.io/quote"
-        quoteV3 "rsc.io/quote/v3"
-    )
-
-One does not lighty introduce a new major version, because it requires you to maintain multiple trees
-
-#----------------------------------------------
-* Create a module
-
-Create a new package outside go-training
-
-    // assume your code builds and tests
-    go mod init github.com/my/project    # creates a new go.mod and go.sum files
-    go build ./... && go test ./...      # adds regular and test dependencies
-    go list -m all
-    go mod tidy                          # removes unused dependencies
-    cat go.mod                           # you should commit this file
-    cat go.sum                           # you should commit this file
-
-Upgrade a module
-
-    go list -m -versions github.com/my/dependency1 # list versions of a module
-    go get github.com/my/dependency1               # latest
-    go get github.com/other/dependency2@v1.0.3     # specfic version
-
-#----------------------------------------------
-
-* Exercise: add go modules to an existing project
-
-- Create a new module
-- Add a dependency
-- Upgrade dependencies (to hightest minor version)
-- Upgrading a dependency to new major version
-
 #----------------------------------------------
 * Static analysis <staticanalysis>
 
