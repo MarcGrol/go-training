@@ -663,6 +663,15 @@ Why?
 - Returns new pointer
 
 #----------------------------------------------
+* Anonymous slice
+
+- For one-time use only 
+
+.play -edit examples/anonymous/main.go /START OMIT/,/END OMIT/
+
+- Useful for table driven tests
+
+#----------------------------------------------
 
 * Map
 - Store key-value pairs (like Java HashMap)
@@ -800,13 +809,26 @@ TIP: Use a map as im memory datastore
 #----------------------------------------------
 
 * Package initialisation
-- Executed only once at startup
-- Can be multiple
-- For advanced initialisations
+- Executed only once at startup of package
 
   func init() {
-    // your global initialisations here
+      rand.Seed(time.Now().UnixNano())
   }
+
+- For "const"-like struct initialisations
+
+  var knownMembers []Member
+
+  func init() {
+      knownMembers = []Member{
+        { ... },
+        { ... },
+        { ... },
+      }
+  }
+
+- Can be multiple
+
 
 #----------------------------------------------
 
@@ -925,15 +947,23 @@ combine with go routines to execute work in background
 
 .code -edit examples/emailapi/api.go
 
-- Can be useful in combination with build-tags
-
+- Can be useful as alternative for dependency injection
 
 #----------------------------------------------
 
 * Exercise: Practice with advanced functions
 
-TODO
+Use dedicated directory for this exercise:
 
+    $ exercises/moreonfunctions
+
+Tasks:
+
+- Populate list o persons and sort on age ascending
+
+.code examples/sorting/main.go  /START OMIT/,/END OMIT/
+
+    Peek: examples/sorting/main.go (use package "sort")
 
 #----------------------------------------------
 * Dependency management
@@ -1050,7 +1080,7 @@ Tasks:
 
 #----------------------------------------------
 
-* Exercise: Upgrade an existing go module
+* Exercise: Upgrade an existing go-module
 
 Continue with same directory outside go-training
 
@@ -1062,7 +1092,7 @@ Tasks:
 
     github.com/google/uuid
 
-- Upgrade dependencies
+- Upgrade module dependencies
 
 # go get github.com/google/uuid
 # go install
