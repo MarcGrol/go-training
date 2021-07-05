@@ -784,13 +784,15 @@ other example
 #----------------------------------------------
 * Empty interface
 
+    interface{}
+
 - Accepts anything
 - NOT typestrong
+- Like Java Object or void* in C
 
-.play -edit  examples/emptyinterface/main.go
+.play -edit  examples/emptyinterface/main.go /START OMIT/,/END OMIT/
 
-- Like Java Object or void* in C/C++
-
+- Used by standard json and xml packages to (un) serialize
 
 #----------------------------------------------
 
