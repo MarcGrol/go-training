@@ -710,6 +710,17 @@ Task:
 TIP: Copy and paste and use editor in column-mode
 
     Peek: solutions/groupby
+
+#----------------------------------------------
+* Embedding
+#----------------------------------------------
+
+* Embedding
+
+- InHeritance or composition?
+
+.play -edit examples/sync/sync.go /START OMIT/,/END OMIT/
+
 #----------------------------------------------
 * Interfaces
 #----------------------------------------------
