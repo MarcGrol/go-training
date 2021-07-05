@@ -459,6 +459,7 @@ Tasks:
  }
 
 - Can return multiple values
+
  func swap(x, y string) (string, string) { 
     return y, x 
  }
@@ -517,8 +518,12 @@ Tasks:
 - Capitalize the content of the file
 - Write this capitalized content to a new other name
 - Use Proper error-handling
+- Advanced: Read as json and write as xml
 
-TIP: File access using the "io/ioutil"-package ("os" nowadays)
+TIP:
+
+- File access using the "io/ioutil"-package ("os" nowadays)
+- Capitalize using "strings" or "bytes"-package
 
     Peek: solutions/errorhandling
 

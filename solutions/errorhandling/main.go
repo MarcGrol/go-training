@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"os"
 )
@@ -12,9 +13,16 @@ const (
 )
 
 func main() {
-	data, err := os.ReadFile(filename)
+	err := capitalizeFileContent(filename, filenameInCaps)
 	if err != nil {
 		log.Fatalf("Error reading file %s: %s", filename, err)
+	}
+}
+
+func capitalizeFileContent(inFilename, outFilename string) error {
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		return fmt.Errorf("Error reading file %s: %s", filename, err)
 	}
 
 	inCaps := bytes.ToUpper(data)
@@ -22,7 +30,8 @@ func main() {
 
 	err = os.WriteFile(filenameInCaps, inCaps, 0644)
 	if err != nil {
-		log.Fatalf("Error writing file %s: %s", filenameInCaps, err)
+		return fmt.Errorf("Error writing file %s: %s", filenameInCaps, err)
 	}
 
+	return nil
 }
