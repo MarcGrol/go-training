@@ -665,7 +665,7 @@ Why?
 #----------------------------------------------
 * Anonymous slice
 
-- For one-time use only 
+- For one-time use only
 
 .play -edit examples/anonymous/main.go /START OMIT/,/END OMIT/
 
@@ -1135,55 +1135,112 @@ How:
     exit status 1
 
 #----------------------------------------------
-* Table driven test
+* Table driven test (like the stdlib does)
 
-- Used a lot in the stdlib
-- Very readable
-- Easy to be complete
+- Very readable and easy to extend
 
-    func TestSplit(t *testing.T) {
-      tests := []struct { // anonymous struct
-        input string; sep string; want  []string
-      }{
-        {input: "a/b/c", sep: "/", want: []string{"a", "b", "c"}},
-        {input: "a/b/c", sep: ",", want: []string{"a/b/c"}},
-        {input: "abc", sep: "/", want: []string{"abc"}},
-      }
-
-      for _, tc := range tests {
-        t.Run(fmt.Sprintf("Testcase: %s", tc.input), func(t *testing.T) {
-          if !reflect.DeepEqual(tc.want, got) {
-            t.Fatalf("expected: %v, got: %v", tc.want, got)
-          }
-        })
-      }
-    }
+.code solutions/tests/validateemail_test.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
-* Design for testability: Use dependency injection
+* Exercise table driven test
 
-    package uniqueid
+Create a new directory in the exercises directory
 
-    // Generator provides an interface for creating uuid's.
-    type Generator interface {
-        Generate() string
-    }
+    exercises/tabledriventest
 
-Service must internally create uuid's:
+Tasks:
 
-    package patient
+- Implement a string-splitter with the following signature
 
-    type Service struct {
-        uuidGenerator uniqueid.Generator
-    }
+    Split( input string, seperator string ) []string
 
-    func New(uuidGenerator uniqueid.Generator) *Service {
+- Create a table driven test to verify the following situations
+
+    input       seperator       expected-output
+    --------    ---------       ------------------------
+    "a/b/c"      "/"            []string{"a", "b", "c"}
+    "a/b/c"      ","            []string{"a/b/c"}
+    "abc"        "/"            []string{"abc"}
+
+
+
+#----------------------------------------------
+
+* Design for testability
+
+#----------------------------------------------
+
+* Example 1: uuid and current-time
+
+Situation:
+
+- Patient service assigns a uuid and time-created for each new patient
+
+Goal:
+
+- Veriify correctness of code in unit tests
+
+Problem:
+
+- Different uuid and time-created each time called -> hard to test
+
+Solution:
+
+- Use predictable "uuid-generator" and "nower" in unit-tests
+- Use real uuid generator and nower in production
+
+#----------------------------------------------
+
+*   Example 2: database
+
+Situation:
+
+- Service uses a third-party database to store its patients
+
+Goal:
+
+- Veriify correctness of code in unit tests
+
+Problem:
+
+- Setup a dedicated database for each unit of each developer?
+
+Solution:
+
+- Use fake database in unit-tests
+- Use real database in production
+
+
+#----------------------------------------------
+* Solutions
+
+- Dependency injection (like in java)
+- ...
+
+#----------------------------------------------
+* Dependency injection
+
+Create interfaces (with both production and test implementations) for
+
+    - uuid-generation:                            -> UUIDer
+    - current-time generation:                    -> Nower
+    - storing and fetching patients in datastore: -> PatientStorer
+
+Inject these dependencies as parameters into the constructor of your service:
+
+    func New(uuidGenerator uniqueid.Generator, nower current.Generator) *PatientService {
         return &Service{
             uuidGenerator: uuidGenerator,
+            nower: nower,
         }
     }
 
-- This pattern also suited to replace direct calls to time.Now() or manage access to databases etc
+Consequences:
+
+- Service only depends on the interface and not on implementation.
+- Can use different uuid-er for test
+
+
 
 #----------------------------------------------
 * Mocks and stubs
@@ -1216,6 +1273,7 @@ Trigger generation:
 #----------------------------------------------
 
 * More on testing
+
 - Standard library offers utils for testing http-clients and http-servers
 - Code coverage: IntellijIDEA
 - Race condition detection

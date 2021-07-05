@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+// START OMIT
 func TestValidateEmail(t *testing.T) {
 	tests := []struct {
 		input string
@@ -29,3 +30,4 @@ func TestValidateEmail(t *testing.T) {
 		})
 	}
 }
+// END OMIT
