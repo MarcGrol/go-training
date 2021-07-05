@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func main()  {
+func main() {
 	hobbiesOfPeople := map[string][]string{
 		"Julia":  {"voetbal", "tekenen"},
 		"Sophie": {"hockey"},

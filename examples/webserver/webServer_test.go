@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
@@ -17,11 +18,21 @@ func (u predicatbleUider) Create() string {
 	return "1"
 }
 
+func testUUIDer() string {
+	return "123"
+}
+
+func testNower() time.Time {
+	location, _ := time.LoadLocation("Europe/Amsterdam")
+	t, _ := time.ParseInLocation("2006-01-02T15:04:05", "2016-02-27T00:00:00", location)
+	return t
+}
+
 func TestGet(t *testing.T) {
 	// setup
 	router := mux.NewRouter()
 	patientStore := newPatientStore(predicatbleUider{})
-	sut := NewPatientWebService(patientStore)
+	sut := NewPatientService(testUUIDer, testNower, patientStore)
 	sut.RegisterEndpoint(router)
 
 	// given
@@ -47,7 +58,7 @@ func TestPost(t *testing.T) {
 	// setup
 	router := mux.NewRouter()
 	patientStore := newPatientStore(predicatbleUider{})
-	sut := NewPatientWebService(patientStore)
+	sut := NewPatientService(testUUIDer, testNower, patientStore)
 	sut.RegisterEndpoint(router)
 
 	// given
@@ -70,7 +81,7 @@ func TestPut(t *testing.T) {
 	// setup
 	router := mux.NewRouter()
 	patientStore := newPatientStore(predicatbleUider{})
-	sut := NewPatientWebService(patientStore)
+	sut := NewPatientService(testUUIDer, testNower, patientStore)
 	sut.RegisterEndpoint(router)
 
 	// given
@@ -97,7 +108,7 @@ func TestDelete(t *testing.T) {
 	// setup
 	router := mux.NewRouter()
 	patientStore := newPatientStore(predicatbleUider{})
-	sut := NewPatientWebService(patientStore)
+	sut := NewPatientService(testUUIDer, testNower, patientStore)
 	sut.RegisterEndpoint(router)
 
 	// given

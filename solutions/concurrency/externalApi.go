@@ -15,4 +15,5 @@ func SimulateSlowAction(a, b int) int {
 	time.Sleep(time.Duration(sleepDurationInMillisec) * time.Millisecond) // sleep approx. 1 sec
 	return a * b
 }
+
 // END OMIT

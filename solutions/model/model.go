@@ -23,7 +23,7 @@ func main() {
 			{Name: "Pien", Age: 18},
 		},
 	}
-	fmt	.Printf("%+v", parent)
+	fmt.Printf("%+v", parent)
 }
-// END OMIT
 
+// END OMIT

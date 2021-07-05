@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/MarcGrol/go-training/solutions/flow/calclib"
 )
 
@@ -31,5 +32,3 @@ func main() {
 	iterCount := calclib.SumUntillMax(1000)
 	fmt.Printf("num iterations [0..100] = %d\n", iterCount)
 }
-
-

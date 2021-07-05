@@ -771,15 +771,26 @@ other example
 - Keep them small. Why?
 - Composeable
 
-
 .code -edit examples/interfaces/storeApi.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 * Example usage of interface <interfaces>
+
 - For dependency injection
 - The business logic of PatientService is testable without a "real"-datastore
 
 .code -edit examples/interfaces/main.go  /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+* Empty interface
+
+- Accepts anything
+- NOT typestrong
+
+.play -edit  examples/emptyinterface/main.go
+
+- Like Java Object or void* in C/C++
+
 
 #----------------------------------------------
 
@@ -1135,7 +1146,21 @@ How:
     exit status 1
 
 #----------------------------------------------
-* Table driven test (like the stdlib does)
+* Exercise unit test
+
+Create a new directory in the exercises directory
+
+    exercises/stringsplitter
+
+Tasks:
+
+- Create a string splitter that splits "a/b/c" into "a", "b" and "c"
+
+- Create unit tests that verifies correct behavior
+
+
+#----------------------------------------------
+* Table driven test (when in Rome, do as ....)
 
 - Very readable and easy to extend
 
@@ -1144,9 +1169,9 @@ How:
 #----------------------------------------------
 * Exercise table driven test
 
-Create a new directory in the exercises directory
+Continue with previous example
 
-    exercises/tabledriventest
+    exercises/stringsplitter
 
 Tasks:
 
@@ -1163,6 +1188,7 @@ Tasks:
     "abc"        "/"            []string{"abc"}
 
 
+   Peek: solutions/tests/validateemail_test.go
 
 #----------------------------------------------
 
@@ -1170,95 +1196,109 @@ Tasks:
 
 #----------------------------------------------
 
-* Example 1: uuid and current-time
+* Example 1: Send sms with pincode
 
 Situation:
 
-- Patient service assigns a uuid and time-created for each new patient
+- To finalize the registration process a patient is challenged with pin-code in an sms to verify its phone-number.
 
 Goal:
 
-- Veriify correctness of code in unit tests
+- Verify that the sms is sent and has the right phone-number and has correct content
 
 Problem:
 
-- Different uuid and time-created each time called -> hard to test
+- Correct sms sending in unit-test would be hard to proven and expensive
 
 Solution:
 
-- Use predictable "uuid-generator" and "nower" in unit-tests
-- Use real uuid generator and nower in production
+- Use fake/mock sms-sender in unit-tests and the real sms-sender in production
 
 #----------------------------------------------
 
-*   Example 2: database
+* Example 2: Interact with datastore
 
 Situation:
 
-- Service uses a third-party database to store its patients
+- The registration service relies on a third-party datastore to store and fetch its patients
 
 Goal:
 
-- Veriify correctness of code in unit tests
+- Verify correct interaction with datastore in unit tests
 
 Problem:
 
-- Setup a dedicated database for each unit of each developer?
+- Setting a dedicated database for each unit-test of each developer is slow and expensive?
 
 Solution:
 
-- Use fake database in unit-tests
-- Use real database in production
-
+- Use fake datastore in unit-tests and the real one in production
 
 #----------------------------------------------
-* Solutions
+* How to fake/mock an sms-sender or datastore?
 
 - Dependency injection (like in java)
+- (Overridable function with default implementation)
 - ...
 
 #----------------------------------------------
 * Dependency injection
 
-Create interfaces (with both production and test implementations) for
+Distinguish 3 interfaces    :
 
-    - uuid-generation:                            -> UUIDer
-    - current-time generation:                    -> Nower
-    - storing and fetching patients in datastore: -> PatientStorer
+.code solutions/registrationService/externalApis.go  /START OMIT/,/END OMIT/
 
-Inject these dependencies as parameters into the constructor of your service:
-
-    func New(uuidGenerator uniqueid.Generator, nower current.Generator) *PatientService {
-        return &Service{
-            uuidGenerator: uuidGenerator,
-            nower: nower,
-        }
-    }
+Inject these dependencies as parameters into the constructor of the registration     service:
 
 Consequences:
 
-- Service only depends on the interface and not on implementation.
-- Can use different uuid-er for test
+- Registration service only depends on interface
+- Can use "mock" version during test and real ones for production
 
+#----------------------------------------------
+* Example implementation
 
+.code solutions/registrationService/service.go  /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 * Mocks and stubs
 
-- Create by hand
-- Generate from interface using mockgen
+- Create mocks by hand (cumbersome)
+- Automatically generate from interface using mockgen
 
-    package uniqueid
-
-    //go:generate mockgen -source=api.go -destination=uidGeneratorMock.go -package=uniqueid Generator
-
-    type Generator interface {
-    	Generate() string
-    }
+.code examples/uniqueid/api.go
 
 Trigger generation:
 
     go generate ./...
+
+Resulting file:
+
+   uidGeneratorMock.go
+
+This generated mock can be used in unit tests
+
+#----------------------------------------------
+* Example unit test
+
+.code solutions/registrationService/service_test.go  /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+* Exercise dependency injection
+
+Create a new directory in the exercises directory
+
+    exercises/maketestable
+
+Tasks:
+
+- Write unit tests for the package
+
+     examples/nontestable
+
+- TIP: Requires  some serious refactoring
+
+    Peek: solutions/testable
 
 #----------------------------------------------
 
@@ -1270,6 +1310,23 @@ Trigger generation:
 
 - On profiling: https://www.youtube.com/watch?v=O-bJ4s8OdcA
 
+
+#----------------------------------------------
+* Exercise benchmarking
+
+Create a new directory in the exercises directory
+
+    exercises/benchmarking
+
+Tasks:
+
+- Determine as what size of a struct pass-by-reference becomes faster than pass-by-value
+
+.code examples/benchmark/mycalclib.go  /START OMIT/,/END OMIT/
+
+    Peek: examples/benchmark
+
+
 #----------------------------------------------
 
 * More on testing
@@ -1279,24 +1336,9 @@ Trigger generation:
 - Race condition detection
 - Continuous integration
 
-#----------------------------------------------
-
-* Exercise: tests
-
-
-Use dedicated directory for this exercise:
-
-    $ exercises/mytesting
-
-Tasks:
-
 - Write a table driven test for validating email-addresses
 
     Peek: solutions/tests/validateemail.go
-
-- Run the benchmark and find out at what 'size' pass-by-value and pass-by-reference have equal performance
-
-- Make the 'nontestable'-package testable
 
 
 #----------------------------------------------

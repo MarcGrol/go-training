@@ -5,27 +5,13 @@ import (
 	"sync"
 )
 
-type Patient struct {
-	UID         string   `json:"uid"`
-	FullName    string   `json:"fullName"`
-	AddressLine string   `json:"addressLine"`
-	Allergies   []string `json:"allergies"`
-}
-
-type PatientStore interface {
-	Put(ctx context.Context, appointment Patient) (Patient, error)
-	GetOnUid(ctx context.Context, appointmentUID string) (Patient, bool, error)
-	Search(ctx context.Context) ([]Patient, error)
-	Remove(ctx context.Context, userUID string) error
-}
-
 type inMemoryPatientStore struct {
 	sync.Mutex
-	uider    Uider
+	uider    func() string
 	patients map[string]Patient
 }
 
-func newPatientStore(uider Uider) PatientStore {
+func newPatientStore(uider func() string) PatientStore {
 	return &inMemoryPatientStore{
 		uider:    uider,
 		patients: map[string]Patient{},
@@ -37,7 +23,7 @@ func (as *inMemoryPatientStore) Put(ctx context.Context, patient Patient) (Patie
 	defer as.Unlock()
 
 	if patient.UID == "" {
-		patient.UID = as.uider.Create()
+		patient.UID = as.uider()
 	}
 	as.patients[patient.UID] = patient
 	return patient, nil

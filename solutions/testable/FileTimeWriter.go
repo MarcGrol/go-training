@@ -26,7 +26,7 @@ func New(uuidGenerator UuidGenerator, nower Nower) *filetimeWriter {
 	}
 }
 
-func (w filetimeWriter) Write() error {
+func (w filetimeWriter) Write() (string, error) {
 	u := w.uuidGenerator.Generate()
 	ft := w.nower.Now()
 
@@ -34,5 +34,5 @@ func (w filetimeWriter) Write() error {
 
 	futureDate := ft.AddDate(1, 2, 3).Format(time.RFC3339)
 
-	return ioutil.WriteFile(uppercaseFilename, []byte(futureDate), 0644)
+	return uppercaseFilename, ioutil.WriteFile(uppercaseFilename, []byte(futureDate), 0644)
 }

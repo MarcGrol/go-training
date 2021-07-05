@@ -30,4 +30,5 @@ func TestValidateEmail(t *testing.T) {
 		})
 	}
 }
+
 // END OMIT

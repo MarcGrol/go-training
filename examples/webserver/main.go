@@ -5,6 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
+
+	"github.com/google/uuid"
 
 	"github.com/gorilla/mux"
 )
@@ -14,9 +17,15 @@ import (
 func main() {
 	var router *mux.Router = mux.NewRouter()
 
-	uider := NewBasicUuider()
-	patientStore := newPatientStore(uider)
-	webService := NewPatientWebService(patientStore)
+	uider := func() string {
+		return uuid.New().String()
+	}
+	store := newPatientStore(uider)
+	nower := func() time.Time {
+		return time.Now()
+	}
+
+	webService := NewPatientService(uider, nower, store)
 	webService.RegisterEndpoint(router)
 
 	port := os.Getenv("PORT")

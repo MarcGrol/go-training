@@ -33,8 +33,9 @@ func (u mockUider) Generate() string {
 func TestFileWritten(t *testing.T) {
 	ftw := New(&mockUider{}, &mockNower{})
 
-	err := ftw.Write()
+	filename, err := ftw.Write()
 	assert.NoError(t, err)
+	assert.Equal(t, expectedFilename, filename)
 	defer func() {
 		err = os.Remove(expectedFilename) // cleanup
 		assert.NoError(t, err)

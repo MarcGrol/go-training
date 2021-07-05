@@ -3,16 +3,21 @@ package main
 import (
 	"context"
 	"fmt"
+	"time"
 )
 
 // START OMIT
 
 type patientWebService struct {
+	uuider       func() string
+	nower        func() time.Time
 	patientStore PatientStore
 }
 
-func NewPatientWebService(patientStore PatientStore) *patientWebService {
+func NewPatientService(uuider func() string, nower func() time.Time, patientStore PatientStore) *patientWebService {
 	return &patientWebService{
+		uuider:       uuider,
+		nower:        nower,
 		patientStore: patientStore,
 	}
 }
@@ -24,7 +29,8 @@ func (s *patientWebService) getPatientOnUID(c context.Context, patientUID string
 // END OMIT
 
 func (s *patientWebService) createPatient(c context.Context, patient Patient) (Patient, error) {
-	patient.UID = ""
+	patient.UID = s.uuider()
+	patient.CreatedAt = s.nower()
 	return s.patientStore.Put(c, patient)
 }
 
@@ -36,6 +42,9 @@ func (s *patientWebService) modifyPatientOnUid(c context.Context, patient Patien
 	if !found {
 		return Patient{}, fmt.Errorf("Not found")
 	}
+
+	patient.LastModified = s.nower()
+
 	return s.patientStore.Put(c, patient)
 }
 

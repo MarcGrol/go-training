@@ -1,4 +1,4 @@
 package callingc
 
-func main()  {
+func main() {
 }
