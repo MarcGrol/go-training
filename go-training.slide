@@ -846,11 +846,14 @@ TIP: Use a map as im memory datastore
 #----------------------------------------------
 
 * Defer <defer>
+
+- Guaranteed to be called when function returns
+- Can be multiple
 - Cleanup of file-handles, mutexes, channels and connections
 - Debugging: log "enter" and "leave" of function
 - Unit-testing: "setup" and "teardown"
 
-.play -edit examples/defer/defer.go /START OMIT/,/END OMIT/
+.code -edit examples/defer/unlock.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
@@ -871,16 +874,13 @@ example: binary search
 #----------------------------------------------
 * More examples usages of closures
 
-- HTTP middleware
+- HTTP server interface
 
 example: Measure duration of http-call
 
-    func timed(f http.HandlerFunc) http.HandlerFunc {
+    func handleHTTPRequest(f http.HandlerFunc) http.HandlerFunc {
         return func(w http.ResponseWriter, r *http.Request) {
-            start := time.Now()
-            f(w, r)
-            end := time.Now()
-            fmt.Println("The request took", end.Sub(start))
+            ...
         }
     }
 
@@ -955,12 +955,12 @@ combine with go routines to execute work in background
 
 #----------------------------------------------
 
-* Overridable functions <emailapi>
-- Interfaces more suitable for overriding however you might encounter this
+#* Overridable functions <emailapi>
+#- Interfaces more suitable for overriding however you might encounter this
 
-.code -edit examples/emailapi/api.go
+#.code -edit examples/emailapi/api.go
 
-- Can be useful as alternative for dependency injection
+#- Can be useful as alternative for dependency injection
 
 #----------------------------------------------
 
@@ -972,7 +972,7 @@ Use dedicated directory for this exercise:
 
 Tasks:
 
-- Populate list o persons and sort on age ascending
+- Sort on age ascending
 
 .code examples/sorting/main.go  /START OMIT/,/END OMIT/
 
