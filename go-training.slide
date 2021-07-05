@@ -153,6 +153,7 @@ Missing in java:
 	nil
 
 - Functions:
+
     append cap close complex copy delete len make new (panic) (recover)
 
 #----------------------------------------------
