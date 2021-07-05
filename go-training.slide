@@ -254,6 +254,23 @@ And build and install the training project
 
 #----------------------------------------------
 
+* Dev tools
+
+- IntelliJ IDEA or Goland
+- unix terminal or windows command
+- git
+
+PRO TIP:
+
+- Format-on-save: Use "filewatcher"-plugin
+
+# Use "filewatcher"-plugin with "goimports"
+
+#    $ go get -u golang.org/x/tools/cmd/goimports
+
+
+#----------------------------------------------
+
 * First program
 
 Note that many examples in the presentation are editable and executable (Run!)
@@ -319,28 +336,12 @@ Convention:
 
 #----------------------------------------------
 
-* Dev tools
-
-- IntelliJ IDEA or Goland
-- unix terminal or windows command
-- git
-
-PRO TIP:
-
-- Format-on-save: Use "filewatcher"-plugin
-
-# Use "filewatcher"-plugin with "goimports"
-
-#    $ go get -u golang.org/x/tools/cmd/goimports
-
-
-#----------------------------------------------
-
 * Language basics
 
 #----------------------------------------------
 
 * Creating packages
+
 - Group related stuff
 - Each package in dedicated directory
 - More coarse-grained than Java: can contain  multiple files
@@ -374,6 +375,7 @@ NB:
     /* a comment */  and // another one
 
 Document your packages:
+
 - Package level comment
 - Every exported (capitalized) name in a program should have a comment
 
