@@ -1,10 +1,10 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 const (
@@ -25,10 +25,11 @@ func capitalizeFileContent(inFilename, outFilename string) error {
 		return fmt.Errorf("Error reading file %s: %s", filename, err)
 	}
 
-	inCaps := bytes.ToUpper(data)
+	inCaps := strings.ToUpper(string(data))
+	//inCaps := bytes.ToUpper(data)
 	log.Printf("In caps: %s", inCaps)
 
-	err = os.WriteFile(filenameInCaps, inCaps, 0644)
+	err = os.WriteFile(filenameInCaps, []byte(inCaps), 0644)
 	if err != nil {
 		return fmt.Errorf("Error writing file %s: %s", filenameInCaps, err)
 	}
