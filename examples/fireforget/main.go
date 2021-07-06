@@ -11,8 +11,7 @@ import (
 func main() {
 	a := 1
 	b := 1004223
-	go func() {
-		// this block runs in background within a go-routine
+	go func() { // this block runs in background within a go-routine // HL
 		result := doWork1(a, b)
 		result = doWork2(result)
 		result = doWork3(result)

@@ -881,40 +881,27 @@ TIP: Use a map as im memory datastore
 
 #----------------------------------------------
 
-* Closures <binarysearch>
+* Closures <functionsAsParams>
 
 - Lambda's in Java
-- Alternative to single method interfaces
+- Functions as variables, input and output-parameters
 
-example: binary search
+.code -edit examples/functionsAsParams/main.go /START OMIT/,/END OMIT/
 
-.play -edit examples/binarysearch/main.go
 
 #----------------------------------------------
-* More examples usages of closures
+* Function as input parameter: delegate
 
-- HTTP server interface
+.play -edit examples/transactional/main.go /START OMIT/,/END OMIT/
 
-example: Measure duration of http-call
+#----------------------------------------------
+* Function as output parameter: interceptor, proxy
 
-    func handleHTTPRequest(f http.HandlerFunc) http.HandlerFunc {
-        return func(w http.ResponseWriter, r *http.Request) {
-            ...
-        }
-    }
-
-example: Transaction
-
-    err := eventStore.RunInTransaction(c, rc, func(c context.Context) error {
-         ...
-    })
-    if err != nil {
-         ...
-    }
+.code -edit examples/proxy/proxy.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
-* More examples usages of closures
+* Function as output parameter: factory
 
 - Pass data into handlers without global data
 
@@ -936,7 +923,7 @@ example: Transaction
 
 * More examples usages of closures <fireforget>
 
-combine with go routines to execute work in background
+Combine with go routines to execute work in background
 
 .play -edit examples/fireforget/main.go /START OMIT/,/END OMIT/
 
