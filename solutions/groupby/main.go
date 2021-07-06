@@ -23,7 +23,7 @@ func main() {
 	fmt.Printf("%+v", peopleOnHobby)
 }
 
-func firstThatStartWith( in []string, prefix string) (foundValue string, exists bool) {
+func firstThatStartWith(in []string, prefix string) (foundValue string, exists bool) {
 	for _, val := range in {
 		if strings.HasPrefix(val, prefix) {
 			foundValue = val
@@ -35,7 +35,7 @@ func firstThatStartWith( in []string, prefix string) (foundValue string, exists 
 	return
 }
 
-func groupBy(hobbiesOfPeople map[string][]string)map[string][]string {
+func groupBy(hobbiesOfPeople map[string][]string) map[string][]string {
 	peopleOnHobby := map[string][]string{}
 	for name, hobbies := range hobbiesOfPeople {
 		for _, hobby := range hobbies {

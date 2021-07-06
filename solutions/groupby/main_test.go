@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGroupBy( t *testing.T){
+func TestGroupBy(t *testing.T) {
 	hobbiesOfPeople := map[string][]string{
 		"Julia":  {"Voetbal", "tekenen"},
 		"Sophie": {"voetbal", "turnen"},

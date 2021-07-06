@@ -5,9 +5,9 @@ import (
 )
 
 type Patient struct {
-	UID          string    `json:"uid"`
-	FullName     string    `json:"fullName"`
-	AddressLine  string    `json:"addressLine"`
+	UID         string `json:"uid"`
+	FullName    string `json:"fullName"`
+	AddressLine string `json:"addressLine"`
 }
 
 func newPatientStore(uider func() string) *inMemoryPatientStore {
@@ -30,4 +30,5 @@ func (ps *inMemoryPatientStore) Put(patient Patient) error {
 
 	return nil
 }
+
 // END OMIT
