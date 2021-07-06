@@ -998,140 +998,6 @@ Tasks:
     Peek: examples/sorting/main.go (use package "sort")
 
 #----------------------------------------------
-* Dependency management
-#----------------------------------------------
-* In other ecosystems
-
-- maven in Java
-- npm for javascript
-
-#----------------------------------------------
-* The old way
-
-- Use "go get" to fetch latest and greatest versions of your dependencies
-- Rely on well behaving citizens: backwards compatility
-- Repair work unpredictable: Upgrade your own code or offer pr on dependency
-- Okay when you test, build and deploy every day
-
-#----------------------------------------------
-* New approach
-
-- Based on semantic versioning:
-
-    major.minor.release
-    breaking.feature.fix
-
-- Have reproducable builds
-- Repair work more predictable: you decide when and what to upgrade
-- If build broken, downgrade to lower version of dependency or upgrade your own code
-
-#----------------------------------------------
-* Go modules
-
-- A module is a tree of go packages, versioned as a whole
-- "go.mod"-file in its root stores module-name and dependencies
-
-    module github.com/MarcGrol/my-example
-
-    go 1.16
-
-    require (
-    	github.com/google/uuid v1.2.0
-    	github.com/gorilla/mux v1.8.0
-    	github.com/stretchr/testify v1.7.0
-    )
-
-Real-life example:
-
-    github.com/MarcGrol/go-training/go.mod
-
-#----------------------------------------------
-* Major version upgrade
-
-- Backwards incompatible changes
-- Would break code of consumers
-- Create new package with major version-number  in the import path
-
-    import (
-        "rsc.io/quote"
-        quoteV2 "rsc.io/quote/v2"
-    )
-
-- Old and new version can live side-by-side
-
-Note:
-
-- One does not lighty introduce a new major version, because it requires you to maintain multiple trees
-
-#----------------------------------------------
-* Example commands
-
-Create a new package outside go-training
-
-    // assume your code builds and tests
-    go mod init github.com/my/project    # creates a new go.mod and go.sum files
-    go install ./... && go test ./...    # adds regular and test dependencies
-    go list -m all
-    go mod tidy                          # removes unused dependencies
-    cat go.mod                           # you should commit this file
-    cat go.sum                           # you should commit this file
-
-Upgrade a module
-
-    go list -m -versions github.com/my/dependency1 # list versions of a module
-    go get github.com/my/dependency1               # latest
-    go get github.com/other/dependency2@v1.0.3     # specfic version of githash
-
-#----------------------------------------------
-
-* Interesting videos
-
-- On how to use go modules and upgrade versions
-
-.link https://www.youtube.com/watch?v=aeF3l-zmPsY
-.link https://www.youtube.com/watch?v=H_4eRD8aegk
-
-#----------------------------------------------
-
-* Exercise: Create a new go-module
-
-Create a new directory outside go-training
-
-     ${HOME}/myuuid
-
-Tasks:
-
-- Use the following source-code
-
-.code examples/myuuid/myuuid.go /START OMIT/,/END OMIT/
-
-- Create a go module
-
-# go mod init github.com/MarcGrol/myuuid
-# go mod tidy
-
-#----------------------------------------------
-
-* Exercise: Upgrade an existing go-module
-
-Continue with same directory outside go-training
-
-     ${HOME}/myuuid
-
-Tasks:
-
-- Improve the source-code to use the package
-
-    github.com/google/uuid
-
-- Upgrade module dependencies
-
-# go get github.com/google/uuid
-# go install
-# go mod tidy
-# cat go.mod
-
-#----------------------------------------------
 * Testing
 #----------------------------------------------
 
@@ -1415,13 +1281,151 @@ Use dedicated directory for this exercise:
 
 Tasks:
 
-- Execute a slow action (see function below) concurrently (100x) and wait for all the results for no more than 1 second. Report the number of results received.
+- Execute a slow action (see function below) concurrently (100x) and wait for all the results before exiting main
+- Wait for no more than 1 second (ignore the rest). Report the number of results received.
 
 .code solutions/concurrency/externalApi.go /START OMIT/,/END OMIT/
 
 - Create a "thread-safe" in-memory cache (Get, Put) that automatically removes entries older than 10 seconds
 
     Peek: solutions/concurrency
+
+
+
+#----------------------------------------------
+* Dependency management
+#----------------------------------------------
+* In other ecosystems
+
+- maven in Java
+- npm for javascript
+
+#----------------------------------------------
+* The old way
+
+- Use "go get" to fetch latest and greatest versions of your dependencies
+- Rely on well behaving citizens: backwards compatility
+- Repair work unpredictable: Upgrade your own code or offer pr on dependency
+- Okay when you test, build and deploy every day
+
+#----------------------------------------------
+* New approach
+
+- Based on semantic versioning:
+
+    major.minor.release
+    breaking.feature.fix
+
+- Have reproducable builds
+- Repair work more predictable: you decide when and what to upgrade
+- If build broken, downgrade to lower version of dependency or upgrade your own code
+
+#----------------------------------------------
+* Go modules
+
+- A module is a tree of go packages, versioned as a whole
+- "go.mod"-file in its root stores module-name and dependencies
+
+    module github.com/MarcGrol/my-example
+
+    go 1.16
+
+    require (
+    	github.com/google/uuid v1.2.0
+    	github.com/gorilla/mux v1.8.0
+    	github.com/stretchr/testify v1.7.0
+    )
+
+Real-life example:
+
+    github.com/MarcGrol/go-training/go.mod
+
+#----------------------------------------------
+* Major version upgrade
+
+- Backwards incompatible changes
+- Would break code of consumers
+- Create new package with major version-number  in the import path
+
+    import (
+        "rsc.io/quote"
+        quoteV2 "rsc.io/quote/v2"
+    )
+
+- Old and new version can live side-by-side
+
+Note:
+
+- One does not lighty introduce a new major version, because it requires you to maintain multiple trees
+
+#----------------------------------------------
+* Example commands
+
+Create a new package outside go-training
+
+    // assume your code builds and tests
+    go mod init github.com/my/project    # creates a new go.mod and go.sum files
+    go install ./... && go test ./...    # adds regular and test dependencies
+    go list -m all
+    go mod tidy                          # removes unused dependencies
+    cat go.mod                           # you should commit this file
+    cat go.sum                           # you should commit this file
+
+Upgrade a module
+
+    go list -m -versions github.com/my/dependency1 # list versions of a module
+    go get github.com/my/dependency1               # latest
+    go get github.com/other/dependency2@v1.0.3     # specfic version of githash
+
+#----------------------------------------------
+
+* Interesting videos
+
+- On how to use go modules and upgrade versions
+
+.link https://www.youtube.com/watch?v=aeF3l-zmPsY
+.link https://www.youtube.com/watch?v=H_4eRD8aegk
+
+#----------------------------------------------
+
+* Exercise: Create a new go-module
+
+Create a new directory outside go-training
+
+     ${HOME}/myuuid
+
+Tasks:
+
+- Use the following source-code
+
+.code examples/myuuid/myuuid.go /START OMIT/,/END OMIT/
+
+- Create a go module
+
+# go mod init github.com/MarcGrol/myuuid
+# go mod tidy
+
+#----------------------------------------------
+
+* Exercise: Upgrade an existing go-module
+
+Continue with same directory outside go-training
+
+     ${HOME}/myuuid
+
+Tasks:
+
+- Improve the source-code to use the package
+
+    github.com/google/uuid
+
+- Upgrade module dependencies
+
+# go get github.com/google/uuid
+# go install
+# go mod tidy
+# cat go.mod
+
 
 #----------------------------------------------
 

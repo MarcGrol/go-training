@@ -5,7 +5,7 @@ import "log"
 //START OMIT
 func main() {
 	// Inject Storer into business logic service
-	patientService := NewPatientService(NewSimpplisticDatastore())
+	patientService := NewPatientService(NewSimplisticDatastore())
 
 	patient := Patient{UID: "patient-12345", FullName: "Sjoerd Sjoerdsma", Allergies: []string{"pinda"}}
 

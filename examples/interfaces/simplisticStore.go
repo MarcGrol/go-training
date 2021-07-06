@@ -9,7 +9,7 @@ type SimplisticDatastore struct {
 	data map[string]interface{}
 }
 
-func NewSimpplisticDatastore() Datastorer {
+func NewSimplisticDatastore() Datastorer {
 	return &SimplisticDatastore{
 		data: map[string]interface{}{},
 	}
@@ -29,6 +29,7 @@ func (ds *SimplisticDatastore) Get(key string) (interface{}, bool, error) {
 	defer ds.Unlock()
 
 	value, found := ds.data[key]
+
 	return value, found, nil
 }
 
