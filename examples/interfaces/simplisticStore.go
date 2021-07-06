@@ -1,8 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"sync"
+)
 
 type SimplisticDatastore struct {
+	sync.Mutex
 	data map[string]interface{}
 }
 
@@ -13,23 +16,27 @@ func NewSimpplisticDatastore() Datastorer {
 }
 
 func (ds *SimplisticDatastore) Put(key string, value interface{}) error {
+	ds.Lock()
+	defer ds.Unlock()
+
 	ds.data[key] = value
-	fmt.Printf("Put %+v\n", value)
+
 	return nil
 }
 
 func (ds *SimplisticDatastore) Get(key string) (interface{}, bool, error) {
+	ds.Lock()
+	defer ds.Unlock()
+
 	value, found := ds.data[key]
-	if !found {
-		fmt.Printf("Key %s not found\n", key)
-	} else {
-		fmt.Printf("Got %+v\n", value)
-	}
 	return value, found, nil
 }
 
 func (ds *SimplisticDatastore) Remove(key string) error {
+	ds.Lock()
+	defer ds.Unlock()
+
 	delete(ds.data, key)
-	fmt.Printf("Remove key %s\n", key)
+
 	return nil
 }

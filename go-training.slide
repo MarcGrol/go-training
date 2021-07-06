@@ -741,12 +741,12 @@ TIP: Copy and paste and use editor in column-mode
 
 * Interfaces
 - Duck-typing: no explicit "implements"
-- Very useful to improve testability
+- Very useful to improve testability (dependency injection)
 
 example from stdlib
 
    package fmt;
-   
+
    // Accepts anything that implements the "Writer"-interface:
    // Examples of Writers: file, buffer, stdout, network, http-response, zip-file etc
    func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) { ... }
