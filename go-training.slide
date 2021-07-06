@@ -746,21 +746,28 @@ TIP: Copy and paste and use editor in column-mode
 example from stdlib
 
    package fmt;
+   
    // Accepts anything that implements the "Writer"-interface:
    // Examples of Writers: file, buffer, stdout, network, http-response, zip-file etc
    func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) { ... }
 
-other example
+io.Writer-interface:
 
-   // The business logic layer can return this EnrichedError as regular 'error' .
-   // The http layer convert this error into an appropriate http-response (200, 400, 403, 500 etc)
-   type EnrichedError struct {
-        Kind ErrorKind // invalid-input, not-authorized, internal-error etc
-        Message string
-   }
-   func (e HttpError)Error() string { // implement Error-interface
-      return e.Message
-   }
+    type Writer interface {
+        Write(p []byte) (n int, err error)
+    }
+#other example
+
+#  // The business logic layer can return this EnrichedError as regular 'error' .
+#   // The http layer convert this error into an appropriate http-response (200, 400, 403, 500 etc)
+#   type EnrichedError struct {
+#        Kind ErrorKind // invalid-input, not-authorized, internal-error etc
+#        Message string
+#   }
+#   func (e HttpError)Error() string { // implement Error-interface
+#      return e.Message
+#   }
+#   func GetHttpStatus(err error) int { ... }
 
 # Refactor using interfaces when initially done
 
@@ -771,7 +778,19 @@ other example
 - Keep them small. Why?
 - Composeable
 
+Typestrong variant
+
+    type Datastorer interface {
+        Put(patientUid string, patient Patient) error
+        Get(patientUid string) (Patient, bool, error)
+        Remove(patientUid string) error
+    }
+
+or "generic"-variant that stores anything
+
 .code -edit examples/interfaces/storeApi.go /START OMIT/,/END OMIT/
+
+
 
 #----------------------------------------------
 * Example usage of interface <interfaces>
@@ -1338,11 +1357,6 @@ Tasks:
 - Race condition detection
 - Continuous integration
 
-- Write a table driven test for validating email-addresses
-
-    Peek: solutions/tests/validateemail.go
-
-
 #----------------------------------------------
 * Concurrency
 #----------------------------------------------
@@ -1351,7 +1365,7 @@ Tasks:
 
 * Concurrency
 
-Overemphasized
+Overemphasized?
 Most of your code is synchronous
 Concurrent-style not forced upon you, used selectively
 
@@ -1434,20 +1448,16 @@ Tasks:
 
 * Rich standard libraries
 Just a few examples:
-- flags
-- file I/O
-- sync
-- logging
-- os
-- sort
-- networking
-- http, http2: client and server
+
+- logging, flags,
+- file I/O, os
+- sync, sort
+- networking, http, (client and server)
 - encoding (json, xml, mime)
-- compression
-- crypto
+- compression, crypto
 - templates
 - sql
-- integrating C-code
+- integrating C-code (.link https://dave.cheney.net/tag/cgo )
 - ...
 
 
