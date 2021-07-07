@@ -1341,19 +1341,93 @@ Tasks:
 
 * Concurrency
 
-Overemphasized?
-Most of your code is synchronous
-Concurrent-style not forced upon you, used selectively
 
-- built-in "channels" and "goroutines"
-- Goroutines: think very, very lightweight threads
-- Channels: think pipe or queue to communicate with goroutine(s)
-- "select"-loop: UNIX-like: wait for events from multiple channels
+Mimic the real world a little better:
+
+- Processing multiple requests at the same time
+- Devide and conquer
+- Speedup: Concurrent fetching before merge
+- Cache eviction: Scheduled background "thread" removes old entries at regular intervals
+- Synchronzed state-machine: select loop is the heart
+- Fan out: Fire and forget
+- Return earlier by moving non-criticals (like notification) off the main thread
 
 #----------------------------------------------
 
-* Concurrency example <channels>
-- Do not communicate by sharing memory. Instead, share memory by communicating.
+* First class citizens for concurrency:
+
+- Goroutines
+- Channels
+- Select-loop
+
+#----------------------------------------------
+
+* Goroutines
+
+- Think very, very lightweight threads
+- More that 100.000 can be created in single process
+
+    // start go-routine
+    go functionName( parameter1, parameter2 )
+
+- Go-routine terminates when function returns
+
+#----------------------------------------------
+
+* Channels
+
+- Think pipe or queue to communicate to/from goroutine(s)
+
+   // create blocking channel: writing returns when other side has read
+   blockingChannel := make(chan Response)
+
+   // create buffered channel: write returns immediately
+   resultChannel := make(chan Response, 10)
+
+    // prevent resource leak
+    defer close(resultChannel)
+
+   // write to channel
+   resultChannel <- value
+
+   // read from channel
+   value := resultChannel
+
+- Must be closed properly
+- What if you write to closed channel?
+
+#----------------------------------------------
+
+* Select-loop
+
+- Wait for events from multiple channels
+
+    for {
+		select { // blocking untill msg received on one of its channels
+		case msg := <-msgChannel:
+			fmt.Printf("msg: %s\n", msg) // stay in loop
+		case <-tick:
+			fmt.Println("tick.") // stay in loop
+		case <-boom:
+			fmt.Println("BOOM!")
+			return // abort loop
+		}
+	}
+
+- Should NOT do any blocking actions within loop
+
+#----------------------------------------------
+
+* Problems
+
+Multiple go-routines need the share  data:
+
+- Share by communicating: send copy over channel
+- Communicate by sharing: protect shared resource with mutext
+
+#----------------------------------------------
+
+* Divide the work <channels>
 
 .play -edit examples/channels/channels.go /START OMIT/,/END OMIT/
 
@@ -1366,40 +1440,32 @@ Concurrent-style not forced upon you, used selectively
 
 #----------------------------------------------
 
-* Example usage
+* Some remarks:
 
-- Devide and conquer: Chunk your problem in parts that can be processed concurrently in isolation
-- Send out multiple requests concurrently: Continue when all responses have been received
-- Cache eviction: Scheduled background "thread" removes old entries at regular intervals
-- Fan out: Fire and forget
-- Respond faster by moving non-criticals (like notification) off the main thread
-- Synchronzed state-machine: select loop is the heart
+- Don't overdo it
+- Most of your code is synchronous
+- Hide within packages (not part of external interface)
 
-NB:
-
-- When multiple go-routines access the same data, you will need to synchronize (with mutexes or channels)
-- Cleanup: don't leave dangling channels and goroutines
 
 #----------------------------------------------
 
 * Exercise: concurrency
 
-
 Use dedicated directory for this exercise:
 
     $ exercises/concurrency
 
+We have an operation that takes approx. 1 second to complete that we have to call 100 times to solve our task
+
+   Peek: examples/slowapi
+
 Tasks:
 
-- Execute a slow action (see function below) concurrently (100x) and wait for all the results before exiting main
-- Wait for no more than 1 second (ignore the rest). Report the number of results received.
+- Can you speed it up and make it run within 2 seconds?
 
-.code solutions/concurrency/externalApi.go /START OMIT/,/END OMIT/
+- Same but wait no more than 1 second (ignore the rest). Also report the number of results received.
 
-- Create a "thread-safe" in-memory cache (Get, Put) that automatically removes entries older than 10 seconds
-
-    Peek: solutions/concurrency
-
+  Peek:solutions/concurrency
 
 
 #----------------------------------------------

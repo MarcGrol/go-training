@@ -3,37 +3,47 @@ package main
 import (
 	"fmt"
 	"time"
+
+	"github.com/MarcGrol/go-training/examples/slowapi"
 )
 
-func SlowActionWithChannel(a, b int, responseChannel chan int) {
-	responseChannel <- SimulateSlowAction(a, b)
+const (
+	taskCount = 100
+)
+
+func SlowSummer(a, b int, responseChannel chan int) {
+	responseChannel <- slowapi.Sum(a, b)
 }
 
-func waitforCompletion(responseChannel chan int) int {
+func waitforCompletion(responseChannel chan int) (int, int) {
+	// only half of the tasks should be completed in 1 sec
 	terminationChannel := time.After(1 * time.Second)
 
 	responseCount := 0
+	sum := 0
 	for {
 		select { // blocks until msg received on one of its channels
-		case <-responseChannel:
+		case value := <-responseChannel:
 			responseCount++
-			if responseCount >= 100 {
-				return responseCount
+			sum += value
+			if responseCount >= taskCount {
+				break
 			}
 		case <-terminationChannel:
-			return responseCount // break out of loop
+			break
 		}
 	}
+	return sum, responseCount
 }
 
 func main() {
 	responseChannel := make(chan int)
 	defer close(responseChannel)
 
-	for i := 0; i < 100; i++ {
-		go SlowActionWithChannel(i, i, responseChannel)
+	for i := 0; i < taskCount; i++ {
+		go SlowSummer(i, i, responseChannel)
 	}
 
-	responseCount := waitforCompletion(responseChannel)
-	fmt.Printf("Got %d responses\n", responseCount)
+	sum, responseCount := waitforCompletion(responseChannel)
+	fmt.Printf("Got sum %d based on %d responses\n", sum, responseCount)
 }

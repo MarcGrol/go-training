@@ -6,23 +6,23 @@ import (
 )
 
 // START OMIT
-func sendMsg(c chan string) { // HL
-	time.Sleep(100 * time.Millisecond) // HL
-	c <- "Put your helmet on"          // HL
-} // HL
+func sendMsg(c chan<- string) { // chan<-: Only allows writing to
+	time.Sleep(100 * time.Millisecond)
+	c <- "Put your helmet on"
+}
 
 func main() {
-	tick := time.Tick(800 * time.Millisecond)
-	boom := time.After(3 * time.Second)
-	msgChannel := make(chan string)
+	tickerChannel := time.Tick(800 * time.Millisecond) // Emit a signal every ...
+	afterChannel := time.After(3 * time.Second)        // Fires once after ...
+	msgChannel := make(chan string)                    // Used by sendMsg to return its result
 	go sendMsg(msgChannel)
 	for {
 		select { // blocking untill msg received on one of its channels
 		case msg := <-msgChannel:
 			fmt.Printf("msg: %s\n", msg) // stay in loop
-		case <-tick:
-			fmt.Println("tick.") // stay in loop
-		case <-boom:
+		case <-tickerChannel:
+			fmt.Println("tickerChannel.") // stay in loop
+		case <-afterChannel:
 			fmt.Println("BOOM!")
 			return // abort loop
 		}

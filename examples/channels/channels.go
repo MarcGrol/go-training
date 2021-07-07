@@ -3,23 +3,29 @@ package main
 import "fmt"
 
 // START OMIT
-func sum(a []int, resultChannel chan int) {
+// This function will be running in the background  // HL
+func sum(a []int, resultChannel chan<- int) { // chan<-: Only allows writing to
 	sum := 0
 	for _, v := range a {
 		sum += v
 	}
-	resultChannel <- sum // send result back over channel // HL
+	resultChannel <- sum // send result back over channel
 }
 
 func doit() {
-	responseChannel := make(chan int) // construct channel // HL
+	// Create result channel // HL
+	responseChannel := make(chan int) // construct channel
 	defer close(responseChannel)      // prevent resource leak
 
-	go sum([]int{1, 2, 3}, responseChannel)      // 1 + 2 + 3 = 6 // HL
-	go sum([]int{4, 5, 6}, responseChannel)      // 4 + 5 + 6 = 15 // HL
-	x, y := <-responseChannel, <-responseChannel // receive from channel // HL
+	// Divide the work over multiple go-routines that run in background // HL
+	go sum([]int{1, 2, 3}, responseChannel) // 1 + 2 + 3 = 6
+	go sum([]int{4, 5, 6}, responseChannel) // 4 + 5 + 6 = 15
 
-	fmt.Printf("one=%d\nanother=%d", x, y) // order undefined
+	// Waitfor all background tasks to have completed 	// HL
+	x, y := <-responseChannel, <-responseChannel // receive from channels
+
+	// Continue with result // HL
+	fmt.Printf("sum=%d", x+y) // order undefined
 }
 
 // END OMIT
