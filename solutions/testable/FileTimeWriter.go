@@ -30,8 +30,8 @@ func (w filetimeWriter) Write() (string, error) {
 	u := w.uuidGenerator.Generate()
 	uppercaseFilename := strings.ToUpper(u) + ".txt"
 
-	ft := w.nower.Now()
-	futureDate := ft.AddDate(1, 2, 3).Format(time.RFC3339)
+	now := w.nower.Now()
+	futureDate := now.AddDate(1, 2, 3).Format(time.RFC3339)
 
 	return uppercaseFilename, ioutil.WriteFile(uppercaseFilename, []byte(futureDate), 0644)
 }
