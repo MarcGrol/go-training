@@ -949,7 +949,7 @@ Combine with go routines to execute work in background
         // Prepare connection to the server.
         conn, err := grpc.Dial(addressPort, grpc.WithInsecure(), grpc.WithBlock())
         if err != nil {
-            return nil, func() {}, fmt.Errorf("Error creating notifapi-grpc-client: %v", err)
+            return nil, nil , fmt.Errorf("Error creating notifapi-grpc-client: %v", err)
         }
         cleanup := func() {
             if conn != nil {
@@ -958,6 +958,14 @@ Combine with go routines to execute work in background
         }
         return NewNotificationClient(conn), cleanup, nil
     }
+
+    func doit() error {
+        client, cleanup, err := NewGrpcClient("qqq")
+        if err != nil {
+            return err
+        }
+        defer cleanup()
+    .....
 
 #----------------------------------------------
 
@@ -1026,12 +1034,43 @@ Create a new directory in the exercises directory
 
     exercises/stringsplitter
 
+Develop a package that provides a stringsplitter that converts "a/b/c" into "a", "b" and "c"
+
 Tasks:
 
-- Create a string splitter that splits "a/b/c" into "a", "b" and "c"
+- Create unit tests that verifies correct behavior of splitter
 
-- Create unit tests that verifies correct behavior
+   Consider using package "github.com/stretchr/testify/assert"
 
+- Run unit test and observe failure
+
+   go test
+
+- Implement a string splitter (TIP: use package strings.Split)
+
+- Run unit test and observe  success
+
+#----------------------------------------------
+* Java style asserts
+
+Start uisng package:
+
+    go get github.com/stretchr/testify/assert/...
+
+
+Use package:
+
+    import "github.com/stretchr/testify/assert"
+
+Use in test:
+
+    ....
+    sut := NewAppointmentStore(NewBasicUuider())
+    appointment, found, err := sut.GetAppointmentOnUid(c, "a")
+    assert.NoError(t, err)
+    assert.True(t, found)
+    assert.Equal(t, "a", appointment.AppointmentUID)
+    ....
 
 #----------------------------------------------
 * Table driven test (when in Rome, do as ....)
@@ -1039,6 +1078,15 @@ Tasks:
 - Very readable and easy to extend
 
 .code solutions/tests/validateemail_test.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Example usage
+
+Test service and verify if different input are validated correctly
+
+- input: request-body (as struct or as json)
+- expected output: http-response-code (and response message+code)
 
 #----------------------------------------------
 * Exercise table driven test

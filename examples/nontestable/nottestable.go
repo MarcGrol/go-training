@@ -10,7 +10,7 @@ import (
 
 func Write() error {
 
-	// Determine the current date and 1 year, 2 month and 3 days
+	// Determine the current date and add 1 year, 2 month and 3 days
 	future := time.Now().AddDate(1, 2, 3)
 
 	// Format date in iso 3339 format

@@ -14,11 +14,12 @@ type Person struct {
 func main() {
 	persons := []Person{
 		{name: "Marc", age: 50},
-		{name: "Eva", age: 48},
 		{name: "Pien", age: 18},
+		{name: "Eva", age: 48},
 		{name: "Tijl", age: 15},
 		{name: "Freek", age: 11},
 	}
+
 	// END OMIT
 	// sort in age "ascending"
 	sort.Slice(persons, func(i, j int) bool {
