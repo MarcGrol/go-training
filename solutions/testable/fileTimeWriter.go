@@ -4,6 +4,8 @@ import (
 	"io/ioutil"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type UuidGenerator interface {
@@ -19,14 +21,26 @@ type filetimeWriter struct {
 	nower         Nower
 }
 
-func New(uuidGenerator UuidGenerator, nower Nower) *filetimeWriter {
+func newFiletimeWriter(uuidGenerator UuidGenerator, nower Nower) *filetimeWriter {
 	return &filetimeWriter{
 		uuidGenerator: uuidGenerator,
 		nower:         nower,
 	}
 }
 
-func (w filetimeWriter) Write() (string, error) {
+type realNower struct{}
+
+func (rn *realNower) Now() time.Time {
+	return time.Now()
+}
+
+type realUuidGenerator struct{}
+
+func (r *realUuidGenerator) Generate() string {
+	return uuid.New().String()
+}
+
+func (w filetimeWriter) write() (string, error) {
 	u := w.uuidGenerator.Generate()
 	uppercaseFilename := strings.ToUpper(u) + ".txt"
 
@@ -34,4 +48,9 @@ func (w filetimeWriter) Write() (string, error) {
 	futureDate := now.AddDate(1, 2, 3).Format(time.RFC3339)
 
 	return uppercaseFilename, ioutil.WriteFile(uppercaseFilename, []byte(futureDate), 0644)
+}
+
+func Write() error {
+	_, err := newFiletimeWriter(&realUuidGenerator{}, &realNower{}).write()
+	return err
 }

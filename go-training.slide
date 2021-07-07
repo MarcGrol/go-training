@@ -535,44 +535,94 @@ TIP:
 
 * Struct <struct>
 
-- No constructor
+- Equivalent to Java class
 - Case of variable determines accessibility (private, public)
 
 .play -edit examples/struct/struct.go /START OMIT/,/END OMIT/
 
+#----------------------------------------------
+
+* Initializing structs
+
+    student := Student{
+            FullName:    "Freek Grol",
+            AddressLine: "...., De Bilt, Nederland",
+            Study: Study{
+                Name: "Geography",
+            },
+            ProgressYear: 3,
+    }
+
+or
+
+    student := Student{} // Default values for all fields
+
+or
+
+    student := Student{}
+    student.FullName = "Freek Grol"
+    student.AddressLine = "..."
+
+
+
+#----------------------------------------------
+
+* Pointers
+
+Address of object, not a copy
+Default value: nil
+
+- For methods that mutate data
+
+  func MarkDeceasedWrong(p Patient) { // patient NOT adjusted after function returns
+    p.Deceased = true
+  }
+  func MarkDeceased(p *Patient) { // patient adjusted after ..
+    p.Deceased = true
+  }
+
+- For passing around huge structs
+
+  func ProcessRontgenImage ( ing *Image ) { ... }
+
+- Indicate Optional (poor mans)
+
+  type Person struct {
+    Name string
+    Car  *Car // optional
+  }
+
+#----------------------------------------------
+
+* Initializing pointers
+
+    student := &Student{            // Starts with '&'
+            FullName:    "...   ",
+            AddressLine: "...., De Bilt, Nederland",
+    }
+
+or
+
+    func NewStudent(fullName, adddressLine string,
+                    birthdate time.Time,
+                    studyName string, progressYear int) *Student { // returns *
+        return &Student{
+            FullName:    fullName,
+            AddressLine: adddressLine,
+        }
+    }
+
+or
+
+    student := new(Student)
+    student.FullName = "Freek Grol"
+    student.AddressLine = "..."
 
 #----------------------------------------------
 
 * Struct methods <methods>
 
 .play -edit examples/methods/methods.go /START OMIT/,/END OMIT/
-
-#----------------------------------------------
-
-* Pointers
-
-- Default value: nil
-- For passing large objects around (prevent copy overhead)
-
-  var ho *HugeObject = &HugeObject{} // ho := &HugeObject{}
-  ho := new(HugeObject)
-  insuranceService.CalculateRisk( hu )
-
-- For methods that mutate data
-
-  func (p Patient)MarkDeceased() { // won't adjust patient
-    p.Deceased = true
-  }
-  func (p *Patient)MarkDeceased() { // will work
-    p.Deceased = true
-  }
-
-- Indicate Optional (poor mans)
-
-  type Person struct {
-    Name string
-    Child *Person // optional
-  }
 
 #----------------------------------------------
 

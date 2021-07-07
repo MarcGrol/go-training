@@ -30,17 +30,17 @@ func (u mockUider) Generate() string {
 	return uid
 }
 
-func TestFileWritten(t *testing.T) {
-	ftw := New(&mockUider{}, &mockNower{})
+func TestWithHandmadeStubs(t *testing.T) {
+	ftw := newFiletimeWriter(&mockUider{}, &mockNower{})
 
-	filename, err := ftw.Write()
+	filename, err := ftw.write()
 	assert.NoError(t, err)
-	assert.Equal(t, expectedFilename, filename)
 	defer func() {
 		err = os.Remove(expectedFilename) // cleanup
 		assert.NoError(t, err)
 	}()
 
+	assert.Equal(t, expectedFilename, filename)
 	result, err := ioutil.ReadFile(expectedFilename)
 	assert.NoError(t, err)
 

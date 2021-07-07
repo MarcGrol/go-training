@@ -23,7 +23,7 @@ func TestRegistrationSucces(t *testing.T) {
 		PhoneNumber: "31648928857",
 	}
 
-	mockStorer.EXPECT().PutPatientOnUid(gomock.Any()).Return(nil)                // HL
+	mockStorer.EXPECT().PutPatientOnUid(gomock.Any()).Return(nil)           // HL
 	mockPincoder.EXPECT().GenerateRandomPin().Return(1234)                  // HL
 	mockSmsSender.EXPECT().SendSms(fmt.Sprintf("+%s", patient.PhoneNumber), // HL
 		"Finalize registration with pincode 1234").Return(nil) // HL
@@ -57,7 +57,6 @@ func TestRegistrationWithoutPhoneNUmber(t *testing.T) {
 	assert.NoError(t, err) // HL
 }
 
-
 func TestRegistrationDatastoreError(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -88,12 +87,12 @@ func TestRegistrationDatastoreSmsSenderError(t *testing.T) {
 	mockSmsSender := NewMockSmsSender(ctrl)
 
 	patient := Patient{
-		UID:  "123",
-		Name: "Marc",
+		UID:         "123",
+		Name:        "Marc",
 		PhoneNumber: "31648928857",
 	}
 
-	mockStorer.EXPECT().PutPatientOnUid(patient).Return(nil) // HL
+	mockStorer.EXPECT().PutPatientOnUid(patient).Return(nil)                // HL
 	mockPincoder.EXPECT().GenerateRandomPin().Return(1234)                  // HL
 	mockSmsSender.EXPECT().SendSms(fmt.Sprintf("+%s", patient.PhoneNumber), // HL
 		"Finalize registration with pincode 1234").Return(fmt.Errorf("error contact remote service")) // HL

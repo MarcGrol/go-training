@@ -28,18 +28,18 @@ func main() {
 
 	passByValue(person)
 	fmt.Printf("by value: not adjusted: %+v\n", person)
-	// results in by value: not adjusted: {Name:Marc}
+	// results in by value: not adjusted: {FullName:Marc}
 
 	passByReference(&person)
 	fmt.Printf("by reference adjusted: %+v\n", person)
-	// results in: by reference adjusted: {Name:Silvan}
+	// results in: by reference adjusted: {FullName:Silvan}
 
 	person.thisModifyDoesNotWork("Henk")
 	fmt.Printf("by value: not adjusted: %+v\n", person)
-	// results in: by value: not adjusted: {Name:Silvan}
+	// results in: by value: not adjusted: {FullName:Silvan}
 
 	person.modify("Henk")
 	fmt.Printf("by reference adjusted: %+v\n", person)
-	// results in: by reference adjusted: {Name:Henk}
+	// results in: by reference adjusted: {FullName:Henk}
 
 }

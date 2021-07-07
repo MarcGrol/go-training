@@ -36,7 +36,6 @@ func (rs *RegistrationService) RegisterPatient(patient Patient) error {
 	return nil
 }
 
-
 // END OMIT
 
 func validate(p Patient) error {

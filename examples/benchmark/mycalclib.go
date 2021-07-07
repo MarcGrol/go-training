@@ -2,7 +2,7 @@ package benchmark
 
 //START OMIT
 type BigStruct struct {
-	data [1024 * 100]string // at what size are pointers faster?
+	data [1024 * 1000]string // at what size are pointers faster?
 }
 
 func (bs *BigStruct) DoCalculationByReference() int {

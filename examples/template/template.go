@@ -35,7 +35,7 @@ var p = Person{
 func main() {
 	// START OMIT
 	const tpl = `<html><body>
-		<p>Hi, I'm {{.Name}}.
+		<p>Hi, I'm {{.FullName}}.
 		I like {{range $i, $el := .Interests}}{{if $i}} and {{end}}{{$el}}{{end}}</p>
 		<ul>
 		{{range .Children -}}

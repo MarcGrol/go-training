@@ -19,6 +19,6 @@ func Write() error {
 	// Create a file with a random upper-case name
 	filename := strings.ToUpper(uuid.New().String())
 
-	// Write adjusted formatted date to file with random uppercase name
+	// write adjusted formatted date to file with random uppercase name
 	return ioutil.WriteFile(filename+".txt", []byte(formattedDate), 0644)
 }
