@@ -569,8 +569,33 @@ or
 
 * Pointers
 
-Address of object, not a copy
-Default value: nil
+- Pointer to memory where object resides
+
+    var intPointer *int = new(int)
+    *intPointer = 9
+
+    var patient *Patient = &Patient{}
+    patient2 := &Patient{}
+    var patient *Patient    // nil (default value)
+
+As parameters
+
+    func adjust( a *int ) {
+        *a = 9
+    }
+
+    func dosomethingWithSideEffects( p *Patient ) {
+        p.Age = 42
+    }
+
+    p := Patient{}
+    dosomethingWithSideEffects(&p)
+
+
+
+#----------------------------------------------
+
+* Why pointers?
 
 - For methods that mutate data
 
@@ -583,7 +608,7 @@ Default value: nil
 
 - For passing around huge structs
 
-  func ProcessRontgenImage ( ing *Image ) { ... }
+  func ProcessRontgenImage ( img *Image ) { ... }
 
 - Indicate Optional (poor mans)
 
@@ -596,7 +621,7 @@ Default value: nil
 
 * Initializing pointers
 
-    student := &Student{            // Starts with '&'
+    student := &Student{            // NOTE: starts with '&'
             FullName:    "...   ",
             AddressLine: "...., De Bilt, Nederland",
     }
@@ -605,7 +630,7 @@ or
 
     func NewStudent(fullName, adddressLine string,
                     birthdate time.Time,
-                    studyName string, progressYear int) *Student { // returns *
+                    studyName string, progressYear int) *Student { // NOTE: returns *
         return &Student{
             FullName:    fullName,
             AddressLine: adddressLine,
