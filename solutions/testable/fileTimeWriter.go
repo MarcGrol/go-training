@@ -51,6 +51,7 @@ func (w filetimeWriter) write() (string, error) {
 }
 
 func Write() error {
+	// Creates filetimeWriter with default behaviour
 	_, err := newFiletimeWriter(&realUuidGenerator{}, &realNower{}).write()
 	return err
 }

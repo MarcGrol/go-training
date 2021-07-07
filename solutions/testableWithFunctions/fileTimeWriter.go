@@ -14,6 +14,7 @@ type filetimeWriter struct {
 }
 
 func newFiletimeWriter() filetimeWriter {
+	// Creates filetimeWriter with default behaviour
 	return filetimeWriter{
 		uuidGenerator: func() string { return uuid.New().String() },
 		nower:         func() time.Time { return time.Now() },
