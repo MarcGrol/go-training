@@ -78,7 +78,7 @@ func TestRegistrationDatastoreError(t *testing.T) {
 	err := sut.RegisterPatient(patient)
 	assert.Error(t, err) // HL
 }
-	
+
 func TestRegistrationDatastoreSmsSenderError(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
