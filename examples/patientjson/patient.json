@@ -2,6 +2,7 @@
   "first-name": "Marc",
   "birth-date": "27-02-1971",
   "address-line": "..., De Bilt, Nederland",
+  "allergies": ["hooikoorts", "doorgeslagen perfectionisme"],
   "children": [
     {
       "first-name": "Pien",

@@ -1667,9 +1667,12 @@ example:
       Age  int    `json:"age,omitempty" xml:"age,omitempty"`
    }
 
+- Why are attributes global?
 
-* Serialisation example <encoding>
-.play -edit examples/encoding/encoding.go  /^func main/,/^}/
+#----------------------------------------------
+
+#* Serialisation example <encoding>
+#.play -edit examples/encoding/encoding.go  /^func main/,/^}/
 
 #----------------------------------------------
 
@@ -1679,36 +1682,20 @@ Use dedicated directory for this exercise:
 
     $ exercises/serialisation
 
-Read as file examples/patientjson/patient.json as sjon and write it as xml
+Use the file examples/patientjson/patient.json as input
 
 Tasks:
 
-- Can you speed it up and make it run within 2 seconds?
+- Read the file and parse the json into a structure
 
-- Same but wait no more than 1 second (ignore the rest). Also report the number of results received.
+     TIP: Use package encoding/json
 
-  Peek:solutions/concurrency
+- Convert the populated structure into xml on stdout
+
+     TIP: Use package encoding/xml
 
 
-Create a new directory outside go-training
-
-     ${HOME}/myuuid
-
-Tasks:
-
-- Use the following source-code
-
-.code examples/myuuid/myuuid.go /START OMIT/,/END OMIT/
-
-- Create a go module
-
-# go mod init github.com/MarcGrol/myuuid
-# go mod tidy
-
-Tips:
-
-- https://mholt.github.io/json-to-go/
-- https://github.com/go-test/deep
+    Peek: examples/encoding/encooding.go
 
 #----------------------------------------------
 
