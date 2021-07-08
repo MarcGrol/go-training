@@ -39,7 +39,7 @@ func waitforCompletion(responseChannel <-chan int, taskCount int) (int, int) {
 }
 
 func main() {
-	const taskCount = 100
+	const taskCount = 10000000
 	responseChannel := generator(taskCount)
 	sum, responseCount := waitforCompletion(responseChannel, taskCount)
 	fmt.Printf("Got sum %d based on %d responses\n", sum, responseCount)

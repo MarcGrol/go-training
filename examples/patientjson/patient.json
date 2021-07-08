@@ -1,0 +1,19 @@
+{
+  "first-name": "Marc",
+  "birth-date": "27-02-1971",
+  "address-line": "..., De Bilt, Nederland",
+  "children": [
+    {
+      "first-name": "Pien",
+      "birth-date": "11-02-2003"
+    },
+    {
+      "first-name": "Tijl",
+      "birth-date": "25-08-2005"
+    },
+    {
+      "first-name": "Pien",
+      "birth-date": "01-09-2009"
+    }
+  ]
+}

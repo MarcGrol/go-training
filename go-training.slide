@@ -1675,6 +1675,36 @@ example:
 
 * Exercise: json and xml
 
+Use dedicated directory for this exercise:
+
+    $ exercises/serialisation
+
+Read as file examples/patientjson/patient.json as sjon and write it as xml
+
+Tasks:
+
+- Can you speed it up and make it run within 2 seconds?
+
+- Same but wait no more than 1 second (ignore the rest). Also report the number of results received.
+
+  Peek:solutions/concurrency
+
+
+Create a new directory outside go-training
+
+     ${HOME}/myuuid
+
+Tasks:
+
+- Use the following source-code
+
+.code examples/myuuid/myuuid.go /START OMIT/,/END OMIT/
+
+- Create a go module
+
+# go mod init github.com/MarcGrol/myuuid
+# go mod tidy
+
 Tips:
 
 - https://mholt.github.io/json-to-go/
