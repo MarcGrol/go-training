@@ -1391,14 +1391,13 @@ Mimic the real world a little better:
     defer close(resultChannel)
 
    // read from channel
-   value := <- resultChannel
+   value, ok := <- resultChannel
 
    // read until remote writer has closed channel
    for val := range resultChannel {}
 
-Prevent close, while others are still writing:
-
-- Reader should never close, writer can close when the only     writer
+- Reader can close when sure all writers are done
+- Writer can close when is the only writer of that channel
 
 #----------------------------------------------
 
@@ -1424,10 +1423,12 @@ Prevent close, while others are still writing:
 
 * Problems
 
-Multiple go-routines need the share  data:
+Multiple go-routines need the share data:
 
-- Share by communicating: send copy over channel
-- Communicate by sharing: protect shared resource with mutext
+Alternative approaches:
+
+- Communicate by sharing -> protect shared resource with mutex
+- Share by communicating -> send copy over channel
 
 #----------------------------------------------
 
@@ -1449,6 +1450,7 @@ Multiple go-routines need the share  data:
 - Don't overdo it
 - Most of your code is synchronous
 - Hide within packages (not part of external interface)
+- Having too many go-routines can blow up your system, so still consider using bounded pools and prepare to give back-pressure
 
 
 #----------------------------------------------
