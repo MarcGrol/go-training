@@ -1699,6 +1699,22 @@ Tasks:
 
 #----------------------------------------------
 
+* Override standard serialisation
+
+If needed, can override the standard serialisation
+
+
+    type UnixTime struct {
+        UnderlyingTime time.Time
+    }
+
+    // MarshalJSON implements the json.Marshaler interface.
+    func (t UnixTime) MarshalJSON() ([]byte, error) { ... }
+
+    // UnmarshalJSON implements the json.Unmarshaler interface.
+    func (t *UnixTime) UnmarshalJSON(data []byte) error { ... }
+#----------------------------------------------
+
 * Flags <flags>
 
 - Read command-line arguments

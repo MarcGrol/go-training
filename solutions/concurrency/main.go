@@ -7,7 +7,7 @@ import (
 	"github.com/MarcGrol/go-training/examples/slowapi"
 )
 
-func generator(numTasks int) <-chan int{
+func generator(numTasks int) <-chan int {
 	responseChannel := make(chan int)
 
 	for i := 0; i < numTasks; i++ {
