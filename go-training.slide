@@ -1401,6 +1401,12 @@ Mimic the real world a little better:
 
 #----------------------------------------------
 
+* Blocking versus buffered channels
+
+.image examples/images/channels.png
+
+#----------------------------------------------
+
 * Select-loop
 
 - Wait for events from multiple channels
