@@ -1629,7 +1629,7 @@ Tasks:
 
 Tasks:
 
-- Fix the code by making use of the debugger 
+- Fix the code by making use of the debugger
 
 
 #----------------------------------------------
@@ -1677,12 +1677,7 @@ example:
 
 #----------------------------------------------
 
-#* Serialisation example <encoding>
-#.play -edit examples/encoding/encoding.go  /^func main/,/^}/
-
-#----------------------------------------------
-
-* Exercise: json and xml
+* Exercise: Parse json and write xml
 
 Use dedicated directory for this exercise:
 
@@ -1705,20 +1700,23 @@ Tasks:
 
 #----------------------------------------------
 
-* Override standard serialisation
+* Override standard json serialisation
 
-If needed, can override the standard serialisation
-
+If needed, you can override the standard json and xml serialisation
 
     type UnixTime struct {
         UnderlyingTime time.Time
     }
 
-    // MarshalJSON implements the json.Marshaler interface.
+    // for json
     func (t UnixTime) MarshalJSON() ([]byte, error) { ... }
-
-    // UnmarshalJSON implements the json.Unmarshaler interface.
     func (t *UnixTime) UnmarshalJSON(data []byte) error { ... }
+
+
+    // for xml
+    func (t MyDate) MarshalText() ([]byte, error) { ... }
+    func (t *MyDate) UnmarshalText(data []byte) error { ... }
+
 #----------------------------------------------
 
 * Flags <flags>

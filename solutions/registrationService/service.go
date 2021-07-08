@@ -25,7 +25,7 @@ func (rs *RegistrationService) RegisterPatient(patient Patient) error {
 	}
 
 	if patient.PhoneNumber != "" {
-		pincode := rs.pincodeGenerator.GenerateRandomPin() // HL
+		pincode := rs.pincodeGenerator.GeneratePincode() // HL
 		smsContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
 
 		err = rs.smsSender.SendSms(internationalize(patient.PhoneNumber), smsContent) // HL

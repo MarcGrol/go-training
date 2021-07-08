@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+option go_package = "registration";
+
+package api;
+
+import "google/api/annotations.proto";
+
+service RegistrationService {
+    rpc RegisterPatient (RegisterPatientRequest) returns (RegisterPatientResponse) {
+        option (google.api.http) = {
+            post: "/api/patient"
+            body: "patient"
+        };
+    }
+    rpc CompletePatientRegistration (CompletePatientRegistrationRequest) returns (CompletePatientRegistrationResponse) {
+        option (google.api.http) = {
+            put: "/api/patient/{patientUid}/challenge",
+            body: "credentials"
+        };
+    }
+}
+
+message RegisterPatientRequest {
+    Patient patient = 1;
+}
+
+message RegisterPatientResponse {
+    string patientUid = 1;
+}
+
+message CompletePatientRegistrationRequest {
+    RegistrationCredentials credentials = 1;
+}
+
+message RegistrationCredentials {
+    string patientUid = 1;
+    int32 pincode = 2;
+}
+
+message CompletePatientRegistrationResponse {
+    RegistrationStatus status = 1;
+}
+
+message Patient {
+    string BSN = 1;
+    string fullName = 2;
+    Address address = 3;
+    Contact contact = 4;
+    RegistrationStatus status = 5;
+}
+
+message Address {
+    string postalCode    = 1;
+    int64 houseNumber = 2;
+}
+
+message Contact {
+    string emailAddress = 1;
+    string phoneNumber = 2;
+}
+
+enum RegistrationStatus {
+    REGISTRATION_UNKNOWN = 0;
+    REGISTRATION_PENDING = 1;
+    REGISTRATION_CONFIRMED = 2;
+}

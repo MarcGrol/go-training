@@ -15,7 +15,7 @@ type PatientStorer interface {
 }
 
 type PincodeGenerator interface {
-	GenerateRandomPin() int
+	GeneratePincode() int
 }
 
 type SmsSender interface {

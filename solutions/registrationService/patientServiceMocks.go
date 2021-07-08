@@ -86,9 +86,9 @@ func (m *MockPincodeGenerator) EXPECT() *MockPincodeGeneratorMockRecorder {
 }
 
 // GenerateRandomPin mocks base method.
-func (m *MockPincodeGenerator) GenerateRandomPin() int {
+func (m *MockPincodeGenerator) GeneratePincode() int {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GenerateRandomPin")
+	ret := m.ctrl.Call(m, "GeneratePincode")
 	ret0, _ := ret[0].(int)
 	return ret0
 }
@@ -96,7 +96,7 @@ func (m *MockPincodeGenerator) GenerateRandomPin() int {
 // GenerateRandomPin indicates an expected call of GenerateRandomPin.
 func (mr *MockPincodeGeneratorMockRecorder) GenerateRandomPin() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GenerateRandomPin", reflect.TypeOf((*MockPincodeGenerator)(nil).GenerateRandomPin))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GeneratePincode", reflect.TypeOf((*MockPincodeGenerator)(nil).GeneratePincode))
 }
 
 // MockSmsSender is a mock of SmsSender interface.
