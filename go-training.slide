@@ -1378,23 +1378,27 @@ Mimic the real world a little better:
 
 - Think pipe or queue to communicate to/from goroutine(s)
 
-   // create blocking channel: writing returns when other side has read
+   // create blocking channel: writer returns when other side has read
    blockingChannel := make(chan Response)
 
-   // create buffered channel: write returns immediately
+   // create buffered channel: write returns immediately until channel is full (10)
    resultChannel := make(chan Response, 10)
-
-    // prevent resource leak
-    defer close(resultChannel)
 
    // write to channel
    resultChannel <- value
 
-   // read from channel
-   value := resultChannel
+    // signal 'done' to reading side
+    defer close(resultChannel)
 
-- Must be closed properly
-- What if you write to closed channel?
+   // read from channel
+   value := <- resultChannel
+
+   // read until remote writer has closed channel
+   for val := range resultChannel {}
+
+Prevent close, while others are still writing:
+
+- Reader should never close, writer can close when the only     writer
 
 #----------------------------------------------
 
@@ -1403,7 +1407,7 @@ Mimic the real world a little better:
 - Wait for events from multiple channels
 
     for {
-		select { // blocking untill msg received on one of its channels
+		select { // blocks untill msg received on one of its channels
 		case msg := <-msgChannel:
 			fmt.Printf("msg: %s\n", msg) // stay in loop
 		case <-tick:
