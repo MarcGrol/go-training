@@ -1686,7 +1686,7 @@ Use the file examples/patientjson/patient.json as input
 
 Tasks:
 
-- Read the file and parse the json into a structure
+- Copy the content of the file into a raw string variable (backticks) andunserialize the json
 
      TIP: Use package encoding/json
 
@@ -1695,7 +1695,7 @@ Tasks:
      TIP: Use package encoding/xml
 
 
-    Peek: examples/encoding/encooding.go
+    Peek: examples/encoding/encoding.go
 
 #----------------------------------------------
 
