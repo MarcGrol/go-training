@@ -3,19 +3,19 @@ package service
 import (
 	"context"
 	"fmt"
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/emailsender"
 	"testing"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/datastorer"
+	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/emailsender"
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/pincoder"
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/smssender"
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/uuider"
 )
 
-func TestRegistrationSucces(t *testing.T) {
+func TestRegistrationWithPhoneNumber(t *testing.T) {
 	ctrl, uuidGenerator, mockStorer, mockPincoder, emailsender, mockSmsSender := setupDependencies(t)
 	defer ctrl.Finish()
 
@@ -29,7 +29,7 @@ func TestRegistrationSucces(t *testing.T) {
 		},
 	}
 
-	mockPincoder.EXPECT().GeneratePincode().Return(1234)
+	mockPincoder.EXPECT().GeneratePincode().Times(1).Return(1234)
 	mockSmsSender.EXPECT().SendSms(fmt.Sprintf("+%s", req.Patient.Contact.PhoneNumber),
 		"Finalize registration with pincode 1234").Return(nil)
 	uuidGenerator.EXPECT().GenerateUuid().Return("abc123")

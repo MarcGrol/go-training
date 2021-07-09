@@ -4,7 +4,7 @@ package service;
 
 // generate code with:  protoc -I. --go_out=plugins=grpc:. ./registration.proto
 
-import "protobuf/google/api/annotations.proto";
+import "google/api/annotations.proto";
 
 service RegistrationService {
     rpc RegisterPatient (RegisterPatientRequest) returns (RegisterPatientResponse) {
@@ -30,12 +30,12 @@ message RegisterPatientResponse {
 }
 
 message CompletePatientRegistrationRequest {
-    RegistrationCredentials credentials = 1;
+    string patientUid = 1;
+    RegistrationCredentials credentials = 2;
 }
 
 message RegistrationCredentials {
-    string patientUid = 1;
-    int32 pincode = 2;
+    int32 pincode = 1;
 }
 
 message CompletePatientRegistrationResponse {

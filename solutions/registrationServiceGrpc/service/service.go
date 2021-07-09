@@ -42,8 +42,6 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *Registe
 		return nil, status.Errorf(codes.InvalidArgument, "Error validating request: %s", err.Error())
 	}
 
-	registrationStatus := datastorer.Registered
-
 	if req.Patient.Contact.PhoneNumber != "" {
 		pincode := rs.pincodeGenerator.GeneratePincode()
 		smsContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
@@ -51,7 +49,6 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *Registe
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "Error sending sms: %s", err)
 		}
-		registrationStatus = datastorer.Pending
 	} else if req.Patient.Contact.EmailAddress != "" {
 		pincode := rs.pincodeGenerator.GeneratePincode()
 		emailSubject := "Registration pincode"
@@ -60,12 +57,11 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *Registe
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "Error sending email: %s", err)
 		}
-		registrationStatus = datastorer.Pending
 	}
 
 	patient := patientToInternal(req.Patient)
 	patient.UID = rs.uuidGenerator.GenerateUuid()
-	patient.RegistrationStatus = registrationStatus
+	patient.RegistrationStatus = datastorer.Pending
 
 	err = rs.patientStore.PutPatientOnUid(patient)
 	if err != nil {
@@ -78,12 +74,12 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *Registe
 }
 
 func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, req *CompletePatientRegistrationRequest) (*CompletePatientRegistrationResponse, error) {
-	err := validateCompletePatientRegistrationRequest(req)
+	err := validatePatientRegistrationRequest(req)
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "Error validating input: %s", err)
 	}
 
-	patient, found, err := rs.patientStore.GetPatientOnUid(req.Credentials.PatientUid)
+	patient, found, err := rs.patientStore.GetPatientOnUid(req.PatientUid)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Error getting patient in uid: %s", err)
 	}
@@ -116,8 +112,8 @@ func validateRegisterPatientRequest(req *RegisterPatientRequest) error {
 	return nil
 }
 
-func validateCompletePatientRegistrationRequest(req *CompletePatientRegistrationRequest) error {
-	if req == nil || req.Credentials == nil || req.Credentials.PatientUid == "" {
+func validatePatientRegistrationRequest(req *CompletePatientRegistrationRequest) error {
+	if req == nil || req.PatientUid == "" || req.Credentials == nil || req.Credentials.Pincode == 0 {
 		return fmt.Errorf("Missing credentials")
 	}
 	return nil
