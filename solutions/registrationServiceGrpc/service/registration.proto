@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "service";
+package service;
 
-package api;
+// generate code with:  protoc -I. --go_out=plugins=grpc:. ./registration.proto
 
 import "protobuf/google/api/annotations.proto";
 

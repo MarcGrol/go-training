@@ -15,7 +15,7 @@ import (
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/uuider"
 )
 
-//go:generate protoc -I . -I protobuf --go_out=plugins=grpc:. ./registration.proto
+//go:generate protoc -I. --go_out=plugins=grpc:. ./registration.proto
 
 type RegistrationService struct {
 	uuidGenerator    uuider.UuidGenerator
@@ -54,8 +54,9 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *Registe
 		registrationStatus = datastorer.Pending
 	} else if req.Patient.Contact.EmailAddress != "" {
 		pincode := rs.pincodeGenerator.GeneratePincode()
-		smsContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
-		err = rs.emailSender.SendEmail(req.Patient.Contact.EmailAddress, smsContent, smsContent)
+		emailSubject := "Registration pincode"
+		emailContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
+		err = rs.emailSender.SendEmail(req.Patient.Contact.EmailAddress, emailSubject, emailContent)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "Error sending email: %s", err)
 		}

@@ -33,7 +33,7 @@ func (m *MockEmailSender) EXPECT() *MockEmailSenderMockRecorder {
 	return m.recorder
 }
 
-// SendSms mocks base method.
+// SendEmail mocks base method.
 func (m *MockEmailSender) SendEmail(emailAddress, subject, body string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SendEmail", emailAddress, subject, body)
@@ -41,8 +41,8 @@ func (m *MockEmailSender) SendEmail(emailAddress, subject, body string) error {
 	return ret0
 }
 
-// SendSms indicates an expected call of SendSms.
-func (mr *MockEmailSenderMockRecorder) SendSms(emailAddress, subject, body interface{}) *gomock.Call {
+// SendEmail indicates an expected call of SendEmail.
+func (mr *MockEmailSenderMockRecorder) SendEmail(emailAddress, subject, body interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendEmail", reflect.TypeOf((*MockEmailSender)(nil).SendEmail), emailAddress, subject, body)
 }

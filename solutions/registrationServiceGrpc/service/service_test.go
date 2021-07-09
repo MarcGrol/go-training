@@ -42,7 +42,7 @@ func TestRegistrationSucces(t *testing.T) {
 	assert.Equal(t, "abc123", resp.PatientUid)
 }
 
-func TestRegistrationWithoutPhoneNUmber(t *testing.T) {
+func TestRegistrationWithEmail(t *testing.T) {
 	ctrl, uuidGenerator, mockStorer, mockPincoder, emailsender, mockSmsSender := setupDependencies(t)
 	defer ctrl.Finish()
 
@@ -57,6 +57,9 @@ func TestRegistrationWithoutPhoneNUmber(t *testing.T) {
 	}
 
 	mockPincoder.EXPECT().GeneratePincode().Return(1234)
+	emailsender.EXPECT().SendEmail(req.Patient.Contact.EmailAddress,
+		"Registration pincode",
+		"Finalize registration with pincode 1234").Return(nil)
 	uuidGenerator.EXPECT().GenerateUuid().Return("abc123")
 	mockStorer.EXPECT().PutPatientOnUid(gomock.Any()).Return(nil)
 
@@ -98,6 +101,9 @@ func TestRegistrationDatastoreError(t *testing.T) {
 	}
 
 	mockPincoder.EXPECT().GeneratePincode().Return(1234)
+	emailsender.EXPECT().SendEmail(req.Patient.Contact.EmailAddress,
+		"Registration pincode",
+		"Finalize registration with pincode 1234").Return(nil)
 	uuidGenerator.EXPECT().GenerateUuid().Return("abc123")
 	mockStorer.EXPECT().PutPatientOnUid(gomock.Any()).Return(fmt.Errorf("Store error"))
 
