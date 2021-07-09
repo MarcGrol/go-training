@@ -4,20 +4,19 @@ import (
 	"sync"
 
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/datastorer"
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/model"
 )
 
 type inMemoryPatientStore struct {
 	sync.Mutex
-	patients map[string]model.Patient
+	patients map[string]datastorer.Patient
 }
 
 func New() datastorer.PatientStorer {
 	return &inMemoryPatientStore{
-		patients: map[string]model.Patient{},
+		patients: map[string]datastorer.Patient{},
 	}
 }
-func (ps *inMemoryPatientStore) PutPatientOnUid(patient model.Patient) error {
+func (ps *inMemoryPatientStore) PutPatientOnUid(patient datastorer.Patient) error {
 	ps.Lock()
 	defer ps.Unlock()
 
@@ -26,7 +25,7 @@ func (ps *inMemoryPatientStore) PutPatientOnUid(patient model.Patient) error {
 	return nil
 }
 
-func (ps *inMemoryPatientStore) GetPatientOnUid(patientUID string) (model.Patient, bool, error) {
+func (ps *inMemoryPatientStore) GetPatientOnUid(patientUID string) (datastorer.Patient, bool, error) {
 	ps.Lock()
 	defer ps.Unlock()
 

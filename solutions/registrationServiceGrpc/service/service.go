@@ -5,111 +5,104 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/uuider"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/datastorer"
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/model"
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/pincoder"
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/smssender"
-	pb "github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/impl/registration"
+	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/uuider"
 )
 
+//go:generate protoc -I . -I protobuf --go_out=plugins=grpc:. ./registration.proto
+
 type RegistrationService struct {
-	uuider           uuider.UuidGenerator
+	uuidGenerator    uuider.UuidGenerator
 	patientStore     datastorer.PatientStorer
 	smsSender        smssender.SmsSender
 	pincodeGenerator pincoder.PincodeGenerator
 }
 
-// START OMIT
-func NewRegistrationService(patientStore datastorer.PatientStorer, pincoder pincoder.PincodeGenerator, smsSender smssender.SmsSender) pb.RegistrationServiceServer {
+func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer.PatientStorer, pincoder pincoder.PincodeGenerator, smsSender smssender.SmsSender) RegistrationServiceServer {
 	return &RegistrationService{
-		patientStore: patientStore, pincodeGenerator: pincoder, smsSender: smsSender,
+		uuidGenerator:    uuidGenerator,
+		patientStore:     patientStore,
+		pincodeGenerator: pincoder,
+		smsSender:        smsSender,
 	}
 }
 
-func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *pb.RegisterPatientRequest) (*pb.RegisterPatientResponse, error) {
+func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *RegisterPatientRequest) (*RegisterPatientResponse, error) {
 	err := validateRegisterPatientRequest(req)
 	if err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.InvalidArgument, "Error validating request: %s", err.Error())
 	}
 
-	patient := fillPatient(req.Patient)
+	registrationStatus := datastorer.Registered
 
-	patient.UID = rs.uuider.GenerateUuid()
-	patient.RegistrationPin = rs.pincodeGenerator.GeneratePincode()
+	if req.Patient.Contact != nil && req.Patient.Contact.PhoneNumber != "" {
+		pincode := rs.pincodeGenerator.GeneratePincode()
+		smsContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
+		err = rs.smsSender.SendSms(internationalize(req.Patient.Contact.PhoneNumber), smsContent)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "Error sending sms: %s", err)
+		}
+		registrationStatus = datastorer.Pending
+	}
+
+	patient := patientToInternal(req.Patient)
+	patient.UID = rs.uuidGenerator.GenerateUuid()
+	patient.RegistrationStatus = registrationStatus
 
 	err = rs.patientStore.PutPatientOnUid(patient)
 	if err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.Internal, "Error storring patient: %s", err)
 	}
 
-	if patient.Contact.PhoneNumber != "" {
-		patient.RegistrationStatus = model.Pending
-		pincode := rs.pincodeGenerator.GeneratePincode() // HL
-		smsContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
-
-		err = rs.smsSender.SendSms(internationalize(patient.Contact.PhoneNumber), smsContent) // HL
-		if err != nil {
-			return nil, err
-		}
-	}
-	return &pb.RegisterPatientResponse{
+	return &RegisterPatientResponse{
 		PatientUid: patient.UID,
 	}, nil
 }
 
-func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, req *pb.CompletePatientRegistrationRequest) (*pb.CompletePatientRegistrationResponse, error) {
+func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, req *CompletePatientRegistrationRequest) (*CompletePatientRegistrationResponse, error) {
 	err := validateCompletePatientRegistrationRequest(req)
 	if err != nil {
-		return nil, fmt.Errorf("Invalid credentials")
+		return nil, status.Errorf(codes.InvalidArgument, "Error validating input: %s", err)
 	}
 
 	patient, found, err := rs.patientStore.GetPatientOnUid(req.Credentials.PatientUid)
 	if err != nil {
-		return nil, fmt.Errorf("Error getting patient in uid")
+		return nil, status.Errorf(codes.Internal, "Error getting patient in uid: %s", err)
 	}
 	if !found {
-		return nil, fmt.Errorf("Patient with uid not found")
+		return nil, status.Errorf(codes.NotFound, "Patient with uid not found")
 	}
-
-	if patient.RegistrationStatus == model.Locked {
-		return nil, fmt.Errorf("Locked")
-	}
-
-	patient.PinRegistationAttempts++
 
 	if int(req.Credentials.Pincode) != patient.RegistrationPin {
-		if patient.PinRegistationAttempts > 5 {
-			patient.RegistrationStatus = model.Locked
-		}
-		rs.patientStore.PutPatientOnUid(patient)
-		return nil, fmt.Errorf("Invalid pin")
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid pin")
 	}
 
-	patient.PinRegistationAttempts = 0
-	patient.RegistrationStatus = model.Registered
-
+	patient.RegistrationStatus = datastorer.Registered
 	err = rs.patientStore.PutPatientOnUid(patient)
 	if err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.Internal, "Error storing patien: %s", err)
 	}
 
-	return &pb.CompletePatientRegistrationResponse{
-		Status: pb.RegistrationStatus_REGISTRATION_CONFIRMED,
+	return &CompletePatientRegistrationResponse{
+		Status: RegistrationStatus_REGISTRATION_CONFIRMED,
 	}, nil
 }
 
-func validateRegisterPatientRequest(req *pb.RegisterPatientRequest) error {
+func validateRegisterPatientRequest(req *RegisterPatientRequest) error {
 	if req == nil || req.Patient == nil || req.Patient.BSN == "" || req.Patient.FullName == "" {
-		return fmt.Errorf("Invalid patient")
+		return fmt.Errorf("Missing fields")
 	}
 	return nil
 }
 
-func validateCompletePatientRegistrationRequest(req *pb.CompletePatientRegistrationRequest) error {
+func validateCompletePatientRegistrationRequest(req *CompletePatientRegistrationRequest) error {
 	if req == nil || req.Credentials == nil || req.Credentials.PatientUid == "" {
-		return fmt.Errorf("Invalid credentials")
+		return fmt.Errorf("Missing credentials")
 	}
 	return nil
 }
@@ -121,11 +114,11 @@ func internationalize(phoneNumber string) string {
 	return "+" + phoneNumber
 }
 
-func fillPatient(p *pb.Patient) model.Patient {
-	return model.Patient{
+func patientToInternal(p *Patient) datastorer.Patient {
+	return datastorer.Patient{
 		BSN:      p.BSN,
 		FullName: p.FullName,
-		Address: model.StreetAddress{
+		Address: datastorer.StreetAddress{
 			PostalCode: func() string {
 				if p.Address != nil {
 					return p.Address.PostalCode
@@ -139,7 +132,7 @@ func fillPatient(p *pb.Patient) model.Patient {
 				return 0
 			}(),
 		},
-		Contact: model.Contact{
+		Contact: datastorer.Contact{
 			PhoneNumber: func() string {
 				if p.Contact != nil {
 					return p.Contact.PhoneNumber

@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-option go_package = "registration";
+option go_package = "service";
 
 package api;
 
-import "google/api/annotations.proto";
+import "protobuf/google/api/annotations.proto";
 
 service RegistrationService {
     rpc RegisterPatient (RegisterPatientRequest) returns (RegisterPatientResponse) {
@@ -51,7 +51,7 @@ message Patient {
 }
 
 message Address {
-    string postalCode    = 1;
+    string postalCode = 1;
     int64 houseNumber = 2;
 }
 

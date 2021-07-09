@@ -7,7 +7,6 @@ package datastorer
 import (
 	reflect "reflect"
 
-	model "github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/model"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,10 +34,10 @@ func (m *MockPatientStorer) EXPECT() *MockPatientStorerMockRecorder {
 }
 
 // GetPatientOnUid mocks base method.
-func (m *MockPatientStorer) GetPatientOnUid(uid string) (model.Patient, bool, error) {
+func (m *MockPatientStorer) GetPatientOnUid(uid string) (Patient, bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPatientOnUid", uid)
-	ret0, _ := ret[0].(model.Patient)
+	ret0, _ := ret[0].(Patient)
 	ret1, _ := ret[1].(bool)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -51,7 +50,7 @@ func (mr *MockPatientStorerMockRecorder) GetPatientOnUid(uid interface{}) *gomoc
 }
 
 // PutPatientOnUid mocks base method.
-func (m *MockPatientStorer) PutPatientOnUid(patient model.Patient) error {
+func (m *MockPatientStorer) PutPatientOnUid(patient Patient) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PutPatientOnUid", patient)
 	ret0, _ := ret[0].(error)
