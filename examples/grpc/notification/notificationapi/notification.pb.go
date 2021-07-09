@@ -6,13 +6,12 @@ package notificationapi
 import (
 	context "context"
 	fmt "fmt"
-	math "math"
-
 	proto "github.com/golang/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	math "math"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -553,7 +552,7 @@ func (c *notificationClient) SendEmail(ctx context.Context, in *SendEmailRequest
 
 func (c *notificationClient) SendSms(ctx context.Context, in *SendSmsRequest, opts ...grpc.CallOption) (*SendSmsReply, error) {
 	out := new(SendSmsReply)
-	err := c.cc.Invoke(ctx, "/notificationapi.Notification/SendSms", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/notificationapi.Notification/SendEmail", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -584,7 +583,7 @@ func (*UnimplementedNotificationServer) SendEmail(ctx context.Context, req *Send
 	return nil, status.Errorf(codes.Unimplemented, "method SendEmail not implemented")
 }
 func (*UnimplementedNotificationServer) SendSms(ctx context.Context, req *SendSmsRequest) (*SendSmsReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendSms not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method SendEmail not implemented")
 }
 func (*UnimplementedNotificationServer) GetNotificationStatus(ctx context.Context, req *GetNotificationStatusRequest) (*GetNotificationStatusReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNotificationStatus not implemented")
@@ -622,7 +621,7 @@ func _Notification_SendSms_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/notificationapi.Notification/SendSms",
+		FullMethod: "/notificationapi.Notification/SendEmail",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NotificationServer).SendSms(ctx, req.(*SendSmsRequest))
@@ -657,7 +656,7 @@ var _Notification_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Notification_SendEmail_Handler,
 		},
 		{
-			MethodName: "SendSms",
+			MethodName: "SendEmail",
 			Handler:    _Notification_SendSms_Handler,
 		},
 		{

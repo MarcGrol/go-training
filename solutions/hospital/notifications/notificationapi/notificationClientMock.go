@@ -62,7 +62,7 @@ func (m *MockNotificationClient) SendSms(ctx context.Context, in *SendSmsRequest
 	for _, a := range opts {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "SendSms", varargs...)
+	ret := m.ctrl.Call(m, "SendEmail", varargs...)
 	ret0, _ := ret[0].(*SendReply)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
@@ -72,7 +72,7 @@ func (m *MockNotificationClient) SendSms(ctx context.Context, in *SendSmsRequest
 func (mr *MockNotificationClientMockRecorder) SendSms(ctx, in interface{}, opts ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendSms", reflect.TypeOf((*MockNotificationClient)(nil).SendSms), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendEmail", reflect.TypeOf((*MockNotificationClient)(nil).SendSms), varargs...)
 }
 
 // MockNotificationServer is a mock of NotificationServer interface.
@@ -116,7 +116,7 @@ func (mr *MockNotificationServerMockRecorder) SendEmail(arg0, arg1 interface{}) 
 // SendSms mocks base method.
 func (m *MockNotificationServer) SendSms(arg0 context.Context, arg1 *SendSmsRequest) (*SendReply, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendSms", arg0, arg1)
+	ret := m.ctrl.Call(m, "SendEmail", arg0, arg1)
 	ret0, _ := ret[0].(*SendReply)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
@@ -125,5 +125,5 @@ func (m *MockNotificationServer) SendSms(arg0 context.Context, arg1 *SendSmsRequ
 // SendSms indicates an expected call of SendSms.
 func (mr *MockNotificationServerMockRecorder) SendSms(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendSms", reflect.TypeOf((*MockNotificationServer)(nil).SendSms), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendEmail", reflect.TypeOf((*MockNotificationServer)(nil).SendSms), arg0, arg1)
 }

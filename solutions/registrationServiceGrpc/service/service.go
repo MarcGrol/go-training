@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/emailsender"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -19,15 +20,18 @@ import (
 type RegistrationService struct {
 	uuidGenerator    uuider.UuidGenerator
 	patientStore     datastorer.PatientStorer
+	emailSender      emailsender.EmailSender
 	smsSender        smssender.SmsSender
 	pincodeGenerator pincoder.PincodeGenerator
 }
 
-func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer.PatientStorer, pincoder pincoder.PincodeGenerator, smsSender smssender.SmsSender) RegistrationServiceServer {
+func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer.PatientStorer, pincoder pincoder.PincodeGenerator,
+	emailSender emailsender.EmailSender, smsSender smssender.SmsSender) RegistrationServiceServer {
 	return &RegistrationService{
 		uuidGenerator:    uuidGenerator,
 		patientStore:     patientStore,
 		pincodeGenerator: pincoder,
+		emailSender:      emailSender,
 		smsSender:        smsSender,
 	}
 }
@@ -40,12 +44,20 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *Registe
 
 	registrationStatus := datastorer.Registered
 
-	if req.Patient.Contact != nil && req.Patient.Contact.PhoneNumber != "" {
+	if req.Patient.Contact.PhoneNumber != "" {
 		pincode := rs.pincodeGenerator.GeneratePincode()
 		smsContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
 		err = rs.smsSender.SendSms(internationalize(req.Patient.Contact.PhoneNumber), smsContent)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "Error sending sms: %s", err)
+		}
+		registrationStatus = datastorer.Pending
+	} else if req.Patient.Contact.EmailAddress != "" {
+		pincode := rs.pincodeGenerator.GeneratePincode()
+		smsContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
+		err = rs.emailSender.SendEmail(req.Patient.Contact.EmailAddress, smsContent, smsContent)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "Error sending email: %s", err)
 		}
 		registrationStatus = datastorer.Pending
 	}
@@ -94,8 +106,11 @@ func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, 
 }
 
 func validateRegisterPatientRequest(req *RegisterPatientRequest) error {
-	if req == nil || req.Patient == nil || req.Patient.BSN == "" || req.Patient.FullName == "" {
-		return fmt.Errorf("Missing fields")
+	if req == nil || req.Patient == nil || req.Patient.BSN == "" || req.Patient.FullName == "" || req.Patient.Contact == nil {
+		return fmt.Errorf("Missing base fields")
+	}
+	if req.Patient.Contact.PhoneNumber == "" && req.Patient.Contact.EmailAddress == "" {
+		return fmt.Errorf("Missing contacts")
 	}
 	return nil
 }

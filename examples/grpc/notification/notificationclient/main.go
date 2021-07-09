@@ -44,7 +44,7 @@ func main() {
 		if err != nil {
 			log.Printf("*** Error sending sms: %v", err)
 		} else {
-			log.Printf("SendSms-response: %+v", uid)
+			log.Printf("SendEmail-response: %+v", uid)
 
 			status, err := getStatus(ctx, client, uid)
 			if err != nil {

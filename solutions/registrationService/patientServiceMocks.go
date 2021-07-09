@@ -85,7 +85,7 @@ func (m *MockPincodeGenerator) EXPECT() *MockPincodeGeneratorMockRecorder {
 	return m.recorder
 }
 
-// GenerateRandomPin mocks base method.
+// GeneratePincode mocks base method.
 func (m *MockPincodeGenerator) GeneratePincode() int {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GeneratePincode")
@@ -93,8 +93,8 @@ func (m *MockPincodeGenerator) GeneratePincode() int {
 	return ret0
 }
 
-// GenerateRandomPin indicates an expected call of GenerateRandomPin.
-func (mr *MockPincodeGeneratorMockRecorder) GenerateRandomPin() *gomock.Call {
+// GeneratePincode indicates an expected call of GeneratePincode.
+func (mr *MockPincodeGeneratorMockRecorder) GeneratePincode() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GeneratePincode", reflect.TypeOf((*MockPincodeGenerator)(nil).GeneratePincode))
 }
@@ -125,7 +125,7 @@ func (m *MockSmsSender) EXPECT() *MockSmsSenderMockRecorder {
 // SendSms mocks base method.
 func (m *MockSmsSender) SendSms(phoneNumber, smsContent string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendSms", phoneNumber, smsContent)
+	ret := m.ctrl.Call(m, "SendEmail", phoneNumber, smsContent)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
@@ -133,5 +133,5 @@ func (m *MockSmsSender) SendSms(phoneNumber, smsContent string) error {
 // SendSms indicates an expected call of SendSms.
 func (mr *MockSmsSenderMockRecorder) SendSms(phoneNumber, smsContent interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendSms", reflect.TypeOf((*MockSmsSender)(nil).SendSms), phoneNumber, smsContent)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendEmail", reflect.TypeOf((*MockSmsSender)(nil).SendSms), phoneNumber, smsContent)
 }
