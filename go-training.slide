@@ -1345,7 +1345,7 @@ Tasks:
 Mimic the real world a little better:
 
 - Processing multiple requests at the same time
-- Devide and conquer
+- Divide and conquer
 - Speedup: Concurrent fetching before merge
 - Cache eviction: Scheduled background "thread" removes old entries at regular intervals
 - Synchronzed state-machine: select loop is the heart
