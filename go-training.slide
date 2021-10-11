@@ -1396,8 +1396,8 @@ Mimic the real world a little better:
    // read until remote writer has closed channel
    for val := range resultChannel {}
 
-- Reader can close when sure all writers are done
-- Writer can close when is the only writer of that channel
+- Reader can close when it is sure all writers are done
+- Writer can close when it is the only writer of that channel
 
 #----------------------------------------------
 
