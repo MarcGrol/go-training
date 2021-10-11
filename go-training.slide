@@ -1412,16 +1412,16 @@ Mimic the real world a little better:
 - Wait for events from multiple channels
 
     for {
-		select { // blocks untill msg received on one of its channels
-		case msg := <-msgChannel:
-			fmt.Printf("msg: %s\n", msg) // stay in loop
-		case <-tick:
-			fmt.Println("tick.") // stay in loop
-		case <-boom:
-			fmt.Println("BOOM!")
-			return // abort loop
-		}
-	}
+        select { // blocks untill msg received on one of its channels
+            case msg := <-msgChannel:
+                fmt.Printf("msg: %s\n", msg) // stay in loop
+            case <-tick:
+                fmt.Println("tick.") // stay in loop
+            case <-boom:
+                fmt.Println("BOOM!")
+                return // abort loop
+        }
+    }
 
 - Should NOT do any blocking actions within loop
 
