@@ -1921,7 +1921,7 @@ Why:
 - Not just for communication with external parties
 - Prevent "breaking the contract". If so, use semantic versioning (major version number update) to make the breaking change explicit.
 
-Be backwards compatable:
+Be backwards compatible:
 
 - Never remove mandatory fields, can remove optionals.
 - Never change naming and ... of existing fields
