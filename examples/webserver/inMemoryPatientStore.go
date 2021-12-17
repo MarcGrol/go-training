@@ -2,45 +2,55 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"sync"
+	"time"
 )
 
 type inMemoryPatientStore struct {
 	sync.Mutex
-	uider    func() string
+	nower func() time.Time
 	patients map[string]Patient
 }
 
-func newPatientStore(uider func() string) PatientStore {
+func newPatientStore(nower func() time.Time) PatientStore {
 	return &inMemoryPatientStore{
-		uider:    uider,
+		nower: nower,
 		patients: map[string]Patient{},
 	}
 }
 
-func (as *inMemoryPatientStore) Put(ctx context.Context, patient Patient) (Patient, error) {
+func (as *inMemoryPatientStore)RunInTransaction( ctx context.Context, run withinTransactionFunc) error {
 	as.Lock()
 	defer as.Unlock()
 
+	return run(ctx)
+}
+
+func (as *inMemoryPatientStore) Create(ctx context.Context, patient Patient) (error) {
 	if patient.UID == "" {
-		patient.UID = as.uider()
+		return fmt.Errorf("Invalid patient: missing uid")
 	}
+	patient.CreatedAt = as.nower()
 	as.patients[patient.UID] = patient
-	return patient, nil
+	return nil
+}
+
+func (as *inMemoryPatientStore) Modify(ctx context.Context, patient Patient) (error) {
+	if patient.UID == "" {
+		return fmt.Errorf("Invalid patient: missing uid")
+	}
+	patient.LastModified = as.nower()
+	as.patients[patient.UID] = patient
+	return nil
 }
 
 func (as *inMemoryPatientStore) GetOnUid(ctx context.Context, appointmentUID string) (Patient, bool, error) {
-	as.Lock()
-	defer as.Unlock()
-
 	patient, found := as.patients[appointmentUID]
 	return patient, found, nil
 }
 
 func (as *inMemoryPatientStore) Search(ctx context.Context) ([]Patient, error) {
-	as.Lock()
-	defer as.Unlock()
-
 	found := []Patient{}
 	for _, appointment := range as.patients {
 		found = append(found, appointment)
@@ -49,9 +59,6 @@ func (as *inMemoryPatientStore) Search(ctx context.Context) ([]Patient, error) {
 }
 
 func (as *inMemoryPatientStore) Remove(ctx context.Context, patientUID string) error {
-	as.Lock()
-	defer as.Unlock()
-
 	delete(as.patients, patientUID)
 
 	return nil

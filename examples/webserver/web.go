@@ -88,7 +88,7 @@ func (s *patientWebService) putPatient() http.HandlerFunc {
 		patient.UID = patientUid
 
 		// call business logic
-		response, err := s.modifyPatientOnUid(c, patient)
+		err = s.modifyPatientOnUid(c, patient)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
@@ -96,7 +96,7 @@ func (s *patientWebService) putPatient() http.HandlerFunc {
 
 		// write response
 		w.Header().Set("Content-Type", "application/json")
-		err = json.NewEncoder(w).Encode(response)
+		err = json.NewEncoder(w).Encode(patient)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return

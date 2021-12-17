@@ -15,17 +15,17 @@ import (
 // START OMIT
 
 func main() {
-	var router *mux.Router = mux.NewRouter()
+	router := mux.NewRouter()
 
 	uider := func() string {
 		return uuid.New().String()
 	}
-	store := newPatientStore(uider)
 	nower := func() time.Time {
 		return time.Now()
 	}
 
-	webService := NewPatientService(uider, nower, store)
+	store := newPatientStore(nower)
+	webService := NewPatientService(uider, store)
 	webService.RegisterEndpoint(router)
 
 	port := os.Getenv("PORT")

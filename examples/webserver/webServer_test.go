@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -11,12 +12,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 )
-
-type predicatbleUider struct{}
-
-func (u predicatbleUider) Create() string {
-	return "1"
-}
 
 func testUUIDer() string {
 	return "123"
@@ -31,20 +26,22 @@ func testNower() time.Time {
 func TestGet(t *testing.T) {
 	// setup
 	router := mux.NewRouter()
-	patientStore := newPatientStore(predicatbleUider{})
-	sut := NewPatientService(testUUIDer, testNower, patientStore)
+	patientStore := newPatientStore(testNower)
+	sut := NewPatientService(testUUIDer, patientStore)
 	sut.RegisterEndpoint(router)
 
 	// given
-	_, err := patientStore.Put(context.TODO(), Patient{
+	p := Patient{
+		UID: "123",
 		FullName:    "Me",
 		AddressLine: "Here",
 		Allergies:   []string{"trouble"},
-	})
+	}
+	err := patientStore.Create(context.TODO(), p)
 	assert.NoError(t, err)
 
 	// when
-	req, err := http.NewRequest("GET", "/api/patient/1", nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("/api/patient/%s",p.UID), nil)
 	assert.NoError(t, err)
 	recordedResponse := httptest.NewRecorder() // records what was send back by the server
 	router.ServeHTTP(recordedResponse, req)
@@ -57,13 +54,11 @@ func TestGet(t *testing.T) {
 func TestPost(t *testing.T) {
 	// setup
 	router := mux.NewRouter()
-	patientStore := newPatientStore(predicatbleUider{})
-	sut := NewPatientService(testUUIDer, testNower, patientStore)
+	patientStore := newPatientStore(testNower)
+	sut := NewPatientService(testUUIDer, patientStore)
 	sut.RegisterEndpoint(router)
 
 	// given
-	err := patientStore.Remove(context.TODO(), "1")
-	assert.NoError(t, err)
 
 	// when
 	req, err := http.NewRequest("POST", "/api/patient", strings.NewReader(
@@ -80,21 +75,23 @@ func TestPost(t *testing.T) {
 func TestPut(t *testing.T) {
 	// setup
 	router := mux.NewRouter()
-	patientStore := newPatientStore(predicatbleUider{})
-	sut := NewPatientService(testUUIDer, testNower, patientStore)
+	patientStore := newPatientStore(testNower)
+	sut := NewPatientService(testUUIDer, patientStore)
 	sut.RegisterEndpoint(router)
 
 	// given
-	_, err := patientStore.Put(context.TODO(), Patient{
+	p := Patient{
+		UID: "123",
 		FullName:    "Me",
 		AddressLine: "Here",
 		Allergies:   []string{"trouble"},
-	})
+	}
+	err := patientStore.Create(context.TODO(), p)
 	assert.NoError(t, err)
 
 	// when
-	req, err := http.NewRequest("PUT", "/api/patient/1", strings.NewReader(
-		`{"FullName":"Marc","AddressLine":"Heemstra","Allergies":["pinda"]}`))
+	req, err := http.NewRequest("PUT", fmt.Sprintf("/api/patient/%s",p.UID), strings.NewReader(
+		`{"uid":"123", "FullName":"Marc","AddressLine":"Heemstra","Allergies":["pinda"]}`))
 	assert.NoError(t, err)
 	recordedResponse := httptest.NewRecorder()
 	router.ServeHTTP(recordedResponse, req)
@@ -107,27 +104,29 @@ func TestPut(t *testing.T) {
 func TestDelete(t *testing.T) {
 	// setup
 	router := mux.NewRouter()
-	patientStore := newPatientStore(predicatbleUider{})
-	sut := NewPatientService(testUUIDer, testNower, patientStore)
+	patientStore := newPatientStore(testNower)
+	sut := NewPatientService(testUUIDer, patientStore)
 	sut.RegisterEndpoint(router)
 
 	// given
-	_, err := patientStore.Put(context.TODO(), Patient{
+	p :=Patient{
+		UID: "123",
 		FullName:    "Me",
 		AddressLine: "Here",
 		Allergies:   []string{"trouble"},
-	})
+	}
+	err := patientStore.Create(context.TODO(), p)
 	assert.NoError(t, err)
 
 	// when
-	req, err := http.NewRequest("DELETE", "/api/patient/1", nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("/api/patient/%s",p.UID), nil)
 	assert.NoError(t, err)
 	recordedResponse := httptest.NewRecorder() // records what was send back by the server
 	router.ServeHTTP(recordedResponse, req)
 
 	// then
 	assert.Equal(t, http.StatusOK, recordedResponse.Code)
-	_, found, err := patientStore.GetOnUid(context.TODO(), "1")
+	_, found, err := patientStore.GetOnUid(context.TODO(), p.UID)
 	assert.NoError(t, err)
 	assert.False(t, found)
 }

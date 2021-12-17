@@ -14,8 +14,12 @@ type Patient struct {
 	LastModified time.Time `json:"lastModified"`
 }
 
+type withinTransactionFunc func(ctx context.Context) error
+
 type PatientStore interface {
-	Put(ctx context.Context, appointment Patient) (Patient, error)
+	RunInTransaction( ctx context.Context, run withinTransactionFunc) error
+	Create(ctx context.Context, appointment Patient) error
+	Modify(ctx context.Context, appointment Patient) error
 	GetOnUid(ctx context.Context, appointmentUID string) (Patient, bool, error)
 	Search(ctx context.Context) ([]Patient, error)
 	Remove(ctx context.Context, userUID string) error
