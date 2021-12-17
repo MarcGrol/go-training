@@ -1345,7 +1345,7 @@ Tasks:
 Mimic the real world a little better:
 
 - Processing multiple requests at the same time
-- Devide and conquer
+- Divide and conquer
 - Speedup: Concurrent fetching before merge
 - Cache eviction: Scheduled background "thread" removes old entries at regular intervals
 - Synchronzed state-machine: select loop is the heart
@@ -1396,8 +1396,8 @@ Mimic the real world a little better:
    // read until remote writer has closed channel
    for val := range resultChannel {}
 
-- Reader can close when sure all writers are done
-- Writer can close when is the only writer of that channel
+- Reader can close when it is sure all writers are done
+- Writer can close when it is the only writer of that channel
 
 #----------------------------------------------
 
@@ -1412,16 +1412,16 @@ Mimic the real world a little better:
 - Wait for events from multiple channels
 
     for {
-		select { // blocks untill msg received on one of its channels
-		case msg := <-msgChannel:
-			fmt.Printf("msg: %s\n", msg) // stay in loop
-		case <-tick:
-			fmt.Println("tick.") // stay in loop
-		case <-boom:
-			fmt.Println("BOOM!")
-			return // abort loop
-		}
-	}
+        select { // blocks untill msg received on one of its channels
+            case msg := <-msgChannel:
+                fmt.Printf("msg: %s\n", msg) // stay in loop
+            case <-tick:
+                fmt.Println("tick.") // stay in loop
+            case <-boom:
+                fmt.Println("BOOM!")
+                return // abort loop
+        }
+    }
 
 - Should NOT do any blocking actions within loop
 
@@ -1921,7 +1921,7 @@ Why:
 - Not just for communication with external parties
 - Prevent "breaking the contract". If so, use semantic versioning (major version number update) to make the breaking change explicit.
 
-Be backwards compatable:
+Be backwards compatible:
 
 - Never remove mandatory fields, can remove optionals.
 - Never change naming and ... of existing fields
