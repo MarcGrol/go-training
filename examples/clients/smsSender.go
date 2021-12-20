@@ -7,15 +7,13 @@ type SmsSender interface {
 }
 
 type dummySmsSender struct {
-
 }
-
 
 func NewDummySmsSender() SmsSender {
 	return &dummySmsSender{}
 }
 
-func (s *dummySmsSender)SendSms(sender, recipient, body string) error {
+func (s *dummySmsSender) SendSms(sender, recipient, body string) error {
 	log.Printf("Simulate sending sms to '%s' with body '%s'", recipient, body)
 	return nil
 }

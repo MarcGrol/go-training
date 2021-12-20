@@ -7,7 +7,6 @@ import (
 	"time"
 )
 
-
 type inMemoryPatientStore struct {
 	sync.Mutex
 	nower    func() time.Time
