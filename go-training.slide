@@ -14,7 +14,7 @@ https://github.com/MarcGrol/
 .image examples/images/ideal.jpg
 - Running, tennis, hockey
 
-- Telecom, Finance, Mobile, Healthcare, Transport, Startups
+- Telecom, Finance, Mobile, Healthcare, Transport, Media, Startups
 - Allround, cost-benefit, get things done
 - Running golang in production @Duxxie
 
@@ -103,7 +103,7 @@ Also works for us
 
 #----------------------------------------------
 
-* Similarities with Java
+* Similarities with Java (or Kotlin)
 
 - General purpose
 - Curly-braced
@@ -119,9 +119,9 @@ Also works for us
 
 Missing in go:
 
-- Generics (but has slice and map) (Planned for next year)
+- Generics (but has slice and map) (In next release)
 - Constructors (but uses "constructor" functions)
-- Inheritance (but has "embedding")
+- Inheritance (but has "embedding" to compose)
 - Exceptions
 - Annotations
 
@@ -129,6 +129,16 @@ Missing in java:
 
 - Rich standard library and toolchain
 - Built-in concurrency
+
+#----------------------------------------------
+
+* Sweetspot for go
+
+- Serving the web
+- Components that need to be fast and reliable
+- High throughput and concurrency
+- Serve spiky traffic (fast startup eases scaling up)
+- Large scale (people, lifetime and size)
 
 #----------------------------------------------
 
