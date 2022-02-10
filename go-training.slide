@@ -714,7 +714,7 @@ Tasks:
 
 Fixed length (not extendable in size)
 
-    numbers := [4]int{10, 20, 30, 40}
+    numbers := []int{10, 20, 30, 40}
     s := [...]string{"Voetbal", "Hockey"} // idiomatic: let compiler count
 
 Dynamic size (start small, auto extend)
@@ -723,8 +723,6 @@ Dynamic size (start small, auto extend)
     slice1 := []string{}               // empty
     slice2 := []string{"a", "b", "c"}  // initialize with data
     slice3 := make( []string, 0, 5 )   // optimization: empty with reserved capacity
-
-- Not thread safe (combine with Mutex)
 
 #----------------------------------------------
 
@@ -775,7 +773,6 @@ initialization:
     }
 
 - Random iteration order
-- Not thread safe (combine with Mutex)
 
 #----------------------------------------------
 * Maps in action <maps>
@@ -1733,10 +1730,6 @@ If needed, you can override the standard json and xml serialisation
 
 - Read command-line arguments
 .play -edit examples/flags/flags.go /START OMIT/,/END OMIT/
-
-#----------------------------------------------
-
-* Exercise: command-line flags
 
 #----------------------------------------------
 * HTTP
