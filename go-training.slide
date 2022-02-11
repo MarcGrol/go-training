@@ -868,12 +868,6 @@ Typestrong variant
         Remove(patientUid string) error
     }
 
-or "generic"-variant that stores anything
-
-.code -edit examples/interfaces/storeApi.go /START OMIT/,/END OMIT/
-
-
-
 #----------------------------------------------
 * Example usage of interface <interfaces>
 
@@ -941,7 +935,7 @@ TIP: Use a map as im memory datastore
       }
   }
 
-- Can be multiple
+- Can be multiple, however the order of execution is random. So only use once
 
 
 #----------------------------------------------
@@ -949,7 +943,7 @@ TIP: Use a map as im memory datastore
 * Defer <defer>
 
 - Guaranteed to be called when function returns
-- Can be multiple
+- Can be multiple, last defer is executed first
 - Cleanup of file-handles, mutexes, channels and connections
 - Debugging: log "enter" and "leave" of function
 - Unit-testing: "setup" and "teardown"
@@ -1114,9 +1108,9 @@ How:
 
 Create a new directory in the exercises directory
 
-    exercises/stringsplitter
+    exercises/directorysplitter
 
-Develop a package that provides a stringsplitter that converts "a/b/c" into "a", "b" and "c"
+Develop a package that provides a directorysplitter that converts "a/b/c" into "a", "b" and "c"
 
 Tasks:
 
@@ -1135,7 +1129,7 @@ Tasks:
 #----------------------------------------------
 * Java style asserts
 
-Start uisng package:
+Start using package:
 
     go get github.com/stretchr/testify/assert/...
 
@@ -1175,7 +1169,7 @@ Test service and verify if different input are validated correctly
 
 Continue with previous example
 
-    exercises/stringsplitter
+    exercises/directorysplitter
 
 Tasks:
 
