@@ -1194,7 +1194,7 @@ Tasks:
 
 #----------------------------------------------
 
-* Example 1: Send sms with pincode
+* Example 1: Send sms with pin-code
 
 Situation:
 
@@ -1202,11 +1202,11 @@ Situation:
 
 Goal:
 
-- Verify that the sms is sent and has the right phone-number and has correct content
+- Verify that the sms is sent and that it has the right phone-number and correct content
 
 Problem:
 
-- Correct sms sending in unit-test would be hard to proven and expensive
+- Correct sms sending in unit-tests would be hard to prove and expensive
 
 Solution:
 
@@ -1226,7 +1226,7 @@ Goal:
 
 Problem:
 
-- Setting a dedicated database for each unit-test of each developer is slow and expensive?
+- Setting a dedicated database for each unit-test of each developer is slow and expensive
 
 Solution:
 
@@ -1446,7 +1446,7 @@ Alternative approaches:
 #----------------------------------------------
 
 * Select example <select>
-- Waitfor events on multiple channels
+- Wait for events on multiple channels
 
 .play -edit examples/select/select.go /START OMIT/,/END OMIT/
 
@@ -1688,7 +1688,7 @@ Use the file examples/patientjson/patient.json as input
 
 Tasks:
 
-- Copy the content of the file into a raw string variable (backticks) andunserialize the json
+- Copy the content of the file into a raw string variable (backticks) and unserialize the json
 
      TIP: Use package encoding/json
 
