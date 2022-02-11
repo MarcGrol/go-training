@@ -1110,9 +1110,7 @@ Create a new directory in the exercises directory
 
     exercises/directorysplitter
 
-Develop a package that provides a directorysplitter that converts "a/b/c" into "a", "b" and "c"
-
-Tasks:
+Develop a package that provides a directorysplitter that converts "a/b/c" into "a", "b" and "c". Tasks:
 
 - Create unit tests that verifies correct behavior of splitter
 
@@ -1125,6 +1123,8 @@ Tasks:
 - Implement a string splitter (TIP: use package strings.Split)
 
 - Run unit test and observe  success
+
+  Peek: solutions/directorysplitter/directorysplitter_test.go
 
 #----------------------------------------------
 * Java style asserts
