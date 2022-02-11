@@ -14,7 +14,9 @@ type RegistrationService struct {
 // START OMIT
 func NewRegistrationService(patientStore PatientStorer, pincoder PincodeGenerator, smsSender SmsSender) *RegistrationService {
 	return &RegistrationService{
-		patientStore: patientStore, pincodeGenerator: pincoder, smsSender: smsSender,
+		patientStore:     patientStore,
+		pincodeGenerator: pincoder,
+		smsSender:        smsSender,
 	}
 }
 
@@ -37,13 +39,6 @@ func (rs *RegistrationService) RegisterPatient(patient Patient) error {
 }
 
 // END OMIT
-
-func validate(p Patient) error {
-	if p.UID == "" || p.Name == "" {
-		return fmt.Errorf("Invalid patient")
-	}
-	return nil
-}
 
 func internationalize(phoneNumber string) string {
 	if strings.HasPrefix(phoneNumber, "+") {
