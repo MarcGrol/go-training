@@ -2178,7 +2178,7 @@ The resulting golang-api (for consumers of the contract) is a good candidate for
 
 
 #----------------------------------------------
-* Extra's
+* Extras
 #----------------------------------------------
 
 * Wrapping errors
