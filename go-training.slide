@@ -2,21 +2,35 @@ Learning go
 6 June 2021
 Tags: go golang xebia
 
-Marc Grol
-Software engineer, Xebia
+Marc Grol & Patrick Akil
+Software engineers, Xebia
+
 mgrol@xebia.com
 http://www.xebia.com/
 https://github.com/MarcGrol/
 
+pakil@xebia.com
+https://github.com/PatAkil/
+
 #----------------------------------------------
 
-* About me
+* About Marc
 .image examples/images/ideal.jpg
 - Running, tennis, hockey
 
 - Telecom, Finance, Mobile, Healthcare, Transport, Media, Startups
 - Allround, cost-benefit, get things done
 - Running golang in production @Duxxie
+
+#----------------------------------------------
+
+* About Patrick
+.image examples/images/microphone.JPG  305 456
+- Fitness, Podcasting, Content creation
+
+- Ecommerce, Healthcare
+- Effectiveness: organisational, team and personal
+- Running golang in production @Duxxie and @Nextail
 
 #----------------------------------------------
 
