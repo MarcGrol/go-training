@@ -23,14 +23,34 @@ func main() {
 	fmt.Printf("%+v", peopleOnHobby)
 }
 
-func groupBy(hobbiesOfPeople map[string][]string) map[string][]string {
+func firstThatStartWith(in []string, prefix string) (foundValue string, exists bool) {
+	for _, val := range in {
+		if strings.HasPrefix(val, prefix) {
+			foundValue = val
+			exists = true
+			return
+		}
+	}
+
+	return
+}
+
+type hobby string
+type name string
+
+func groupBy(hobbiesOfPeople map[hobby][]name) map[string][]string {
 	peopleOnHobby := map[string][]string{}
 	for name, hobbies := range hobbiesOfPeople {
 		for _, hobby := range hobbies {
 
 			hobby := strings.ToLower(hobby)
 
-			persons := peopleOnHobby[hobby]
+			//persons, found := peopleOnHobby[hobby]
+			//if !found {
+			//	persons = []string{}
+			//}
+
+			persons, _ := peopleOnHobby[hobby]
 			persons = append(persons, name)
 			peopleOnHobby[hobby] = persons
 		}

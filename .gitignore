@@ -2,3 +2,4 @@
 /exercises/
 *.iml
 .DS_Store
+sendgrid.env

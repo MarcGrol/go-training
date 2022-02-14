@@ -38,7 +38,11 @@ func (ps PatientService) MarkAllergicToAntiBiotics(patientUID string) error {
 	if !exists {
 		return fmt.Errorf("Patient with uid %s does not exist", patientUID)
 	}
-	patient := opaque.(Patient)
+	patient, ok := opaque.(Patient)
+	if !ok {
+		return fmt.Errorf("Pccccccccc"
+	}
+
 	patient.Allergies = append(patient.Allergies, "antibiotics")
 	err = ps.datastore.Put(patientUID, patient)
 	if err != nil {

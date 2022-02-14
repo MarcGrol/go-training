@@ -603,7 +603,7 @@ or
     var intPointer *int = new(int)
     *intPointer = 9
 
-    var patient *Patient = &Patient{}
+    var patient *Patient = &Patient{} // consider using "constructor"-function
     patient2 := &Patient{}
     var patient *Patient    // nil (default value)
 
@@ -731,10 +731,10 @@ Tasks:
 
     append, replace, get-on-idx, get-on-range, iterate
 
-Fixed length (not extendable in size)
+//Fixed length (not extendable in size)
 
-    numbers := []int{10, 20, 30, 40}
-    s := [...]string{"Voetbal", "Hockey"} // idiomatic: let compiler count
+//    numbers := [4]int{10, 20, 30, 40}
+//    s := [...]string{"Voetbal", "Hockey"} // idiomatic: let compiler count
 
 Dynamic size (start small, auto extend)
 
@@ -742,6 +742,8 @@ Dynamic size (start small, auto extend)
     slice1 := []string{}               // empty
     slice2 := []string{"a", "b", "c"}  // initialize with data
     slice3 := make( []string, 0, 5 )   // optimization: empty with reserved capacity
+
+- Not thread safe (combine with Mutex)
 
 #----------------------------------------------
 
@@ -792,6 +794,7 @@ initialization:
     }
 
 - Random iteration order
+- Not thread safe (combine with Mutex)
 
 #----------------------------------------------
 * Maps in action <maps>
@@ -887,6 +890,12 @@ Typestrong variant
         Remove(patientUid string) error
     }
 
+or "generic"-variant that stores anything
+
+.code -edit examples/interfaces/storeApi.go /START OMIT/,/END OMIT/
+
+
+
 #----------------------------------------------
 * Example usage of interface <interfaces>
 
@@ -954,7 +963,7 @@ TIP: Use a map as im memory datastore
       }
   }
 
-- Can be multiple, however the order of execution is random. So only use once
+- Can be multiple
 
 
 #----------------------------------------------
@@ -962,7 +971,7 @@ TIP: Use a map as im memory datastore
 * Defer <defer>
 
 - Guaranteed to be called when function returns
-- Can be multiple, last defer is executed first
+- Can be multiple
 - Cleanup of file-handles, mutexes, channels and connections
 - Debugging: log "enter" and "leave" of function
 - Unit-testing: "setup" and "teardown"
@@ -1127,9 +1136,11 @@ How:
 
 Create a new directory in the exercises directory
 
-    exercises/directorysplitter
+    exercises/stringsplitter
 
-Develop a package that provides a directorysplitter that converts "a/b/c" into "a", "b" and "c". Tasks:
+Develop a package that provides a stringsplitter that converts "a/b/c" into "a", "b" and "c"
+
+Tasks:
 
 - Create unit tests that verifies correct behavior of splitter
 
@@ -1143,12 +1154,10 @@ Develop a package that provides a directorysplitter that converts "a/b/c" into "
 
 - Run unit test and observe  success
 
-  Peek: solutions/directorysplitter/directorysplitter_test.go
-
 #----------------------------------------------
 * Java style asserts
 
-Start using package:
+Start uisng package:
 
     go get github.com/stretchr/testify/assert/...
 
@@ -1188,7 +1197,7 @@ Test service and verify if different input are validated correctly
 
 Continue with previous example
 
-    exercises/directorysplitter
+    exercises/stringsplitter
 
 Tasks:
 
@@ -1213,7 +1222,7 @@ Tasks:
 
 #----------------------------------------------
 
-* Example 1: Send sms with pin-code
+* Example 1: Send sms with pincode
 
 Situation:
 
@@ -1221,11 +1230,11 @@ Situation:
 
 Goal:
 
-- Verify that the sms is sent and that it has the right phone-number and correct content
+- Verify that the sms is sent and has the right phone-number and has correct content
 
 Problem:
 
-- Correct sms sending in unit-tests would be hard to prove and expensive
+- Correct sms sending in unit-test would be hard to proven and expensive
 
 Solution:
 
@@ -1245,7 +1254,7 @@ Goal:
 
 Problem:
 
-- Setting a dedicated database for each unit-test of each developer is slow and expensive
+- Setting a dedicated database for each unit-test of each developer is slow and expensive?
 
 Solution:
 
@@ -1465,7 +1474,7 @@ Alternative approaches:
 #----------------------------------------------
 
 * Select example <select>
-- Wait for events on multiple channels
+- Waitfor events on multiple channels
 
 .play -edit examples/select/select.go /START OMIT/,/END OMIT/
 
@@ -1707,7 +1716,7 @@ Use the file examples/patientjson/patient.json as input
 
 Tasks:
 
-- Copy the content of the file into a raw string variable (backticks) and unserialize the json
+- Copy the content of the file into a raw string variable (backticks) andunserialize the json
 
      TIP: Use package encoding/json
 
@@ -1743,6 +1752,10 @@ If needed, you can override the standard json and xml serialisation
 
 - Read command-line arguments
 .play -edit examples/flags/flags.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Exercise: command-line flags
 
 #----------------------------------------------
 * HTTP
@@ -2183,7 +2196,7 @@ The resulting golang-api (for consumers of the contract) is a good candidate for
 
 
 #----------------------------------------------
-* Extras
+* Extra's
 #----------------------------------------------
 
 * Wrapping errors
