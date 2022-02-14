@@ -3,9 +3,7 @@
 This training on the go programming language describes go the from ground up using lots of examples.
 Most examples can be run and edited from within the presentation.
 
-The interactive presentation is available via the following link:
-
-http://go-talks.appspot.com/github.com/MarcGrol/go-training/go-training.slide#1
+The interactive presentation can be viewed using the "present"-tool. Find more instruction [here](https://github.com/MarcGrol/go-training/blob/master/goPresent.md).
 
 ## Preparation
 
