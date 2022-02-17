@@ -15,7 +15,7 @@ import (
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/uuider"
 )
 
-//go:generate protoc -I. --go_out=plugins=grpc:. ./registration.proto
+//go:generate protoc -I/usr/local/include -I ../.. -I . --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./registration.proto
 
 type RegistrationService struct {
 	uuidGenerator    uuider.UuidGenerator
@@ -23,6 +23,7 @@ type RegistrationService struct {
 	emailSender      emailsender.EmailSender
 	smsSender        smssender.SmsSender
 	pincodeGenerator pincoder.PincodeGenerator
+	UnimplementedRegistrationServiceServer
 }
 
 func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer.PatientStorer, pincoder pincoder.PincodeGenerator,
@@ -42,16 +43,15 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *Registe
 		return nil, status.Errorf(codes.InvalidArgument, "Error validating request: %s", err.Error())
 	}
 
+	pincode := rs.pincodeGenerator.GeneratePincode()
 	if req.Patient.Contact.PhoneNumber != "" {
-		pincode := rs.pincodeGenerator.GeneratePincode()
 		smsContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
 		err = rs.smsSender.SendSms(internationalize(req.Patient.Contact.PhoneNumber), smsContent)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, "Error sending sms: %s", err)
 		}
 	} else if req.Patient.Contact.EmailAddress != "" {
-		pincode := rs.pincodeGenerator.GeneratePincode()
-		emailSubject := "Registration pincode"
+				emailSubject := "Registration pincode"
 		emailContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
 		err = rs.emailSender.SendEmail(req.Patient.Contact.EmailAddress, emailSubject, emailContent)
 		if err != nil {
@@ -60,6 +60,7 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *Registe
 	}
 
 	patient := patientToInternal(req.Patient)
+	patient.RegistrationPin = pincode
 	patient.UID = rs.uuidGenerator.GenerateUuid()
 	patient.RegistrationStatus = datastorer.Pending
 

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package service;
 
-// generate code with:  protoc -I. --go_out=plugins=grpc:. ./registration.proto
+option go_package = "github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/service";
 
 import "google/api/annotations.proto";
 
