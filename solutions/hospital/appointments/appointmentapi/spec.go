@@ -1,8 +1,8 @@
 package appointmentapi
 
-//go:generate protoc -I/usr/local/include -I ../.. -I . --go_out=plugins=grpc:. --grpc-gateway_out=logtostderr=true:. --swagger_out=logtostderr=true:. ./appointments.proto
+//go:generate protoc -I/usr/local/include -I ../.. -I . --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./appointments.proto
 
-//go:generate mockgen -source=appointments.pb.go -destination=appointmentClientMock.go -package=appointmentapi AppointmentInternalClient,AppointmentExternalClient
+//go:generate mockgen -source=appointments_grpc.pb.go -destination=appointmentClientMock.go -package=appointmentapi AppointmentInternalClient,AppointmentExternalClient
 
 func init() {
 

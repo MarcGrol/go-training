@@ -4,17 +4,11 @@ package appointmentapi;
 
 import "google/api/annotations.proto";
 
+option go_package = "github.com/MarcGrol/go-training/solutions/hospital/appointments/appointmentapi";
+
 service AppointmentInternal {
-    rpc GetAppointmentsOnStatus (GetAppointmentsOnStatusRequest) returns (GetAppointmentsReply) {
-        option (google.api.http) = {
-            get: "/api/appointment/status/{status}"
-        };
-    }
-    rpc ModifyAppointmentStatus (ModifyAppointmentStatusRequest) returns (AppointmentReply) {
-        option (google.api.http) = {
-            put: "/api/appointment/{appointmentUid}/status",
-        };
-    }
+    rpc GetAppointmentsOnStatus (GetAppointmentsOnStatusRequest) returns (GetAppointmentsReply);
+    rpc ModifyAppointmentStatus (ModifyAppointmentStatusRequest) returns (AppointmentReply);
 }
 
 message GetAppointmentsOnStatusRequest{

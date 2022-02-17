@@ -1,8 +1,8 @@
 package patientinfoapi
 
-//go:generate protoc -I/usr/local/include -I  ../.. -I . --go_out=plugins=grpc:. --grpc-gateway_out=logtostderr=true:. --swagger_out=logtostderr=true:. ./patients.proto
+//go:generate protoc -I/usr/local/include -I  ../.. -I . --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./patients.proto
 
-//go:generate mockgen -source=patients.pb.go -destination=patientinfoClientMock.go -package=patientinfoapi PatientInfoClient
+//go:generate mockgen -source=patients_grpc.pb.go -destination=patientinfoClientMock.go -package=patientinfoapi PatientInfoClient
 
 func init() {
 

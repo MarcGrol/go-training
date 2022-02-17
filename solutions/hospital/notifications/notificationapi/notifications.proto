@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package notificationapi;
 
+option go_package = "github.com/MarcGrol/go-training/solutions/hospital/notifications/notificationapi";
+
 import "google/api/annotations.proto";
 
 service Notification {
