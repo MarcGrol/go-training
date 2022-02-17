@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
 	"net"
 
@@ -55,17 +57,13 @@ func (s *server) GRPCListenBlocking(port string) error {
 func (s *server) GetAppointmentsOnUser(c context.Context, in *pb.GetAppointmentsOnUserRequest) (*pb.GetAppointmentsReply, error) {
 	// Validate input
 	if in == nil || in.GetUserUid() == "" {
-		return &pb.GetAppointmentsReply{
-			Error: convertApplicativeError(400, "Invalid input", "userUid"),
-		}, nil
+		return nil, status.Errorf(codes.InvalidArgument, "Missing user-uid")
 	}
 
 	// Perform lookup
 	internalAppointments, err := s.appointmentStore.GetAppointmentsOnUserUid(c, in.UserUid)
 	if err != nil {
-		return &pb.GetAppointmentsReply{
-			Error: convertTechnicalError("Technical error fetching appointments on user", err),
-		}, nil
+		return nil, status.Errorf(codes.Internal, "Technical error fetching appointments on user:%s", err)
 	}
 
 	return returnAppointmentList(internalAppointments), nil
@@ -74,17 +72,13 @@ func (s *server) GetAppointmentsOnUser(c context.Context, in *pb.GetAppointments
 func (s *server) GetAppointmentsOnStatus(c context.Context, in *pb.GetAppointmentsOnStatusRequest) (*pb.GetAppointmentsReply, error) {
 	// Validate input
 	if in == nil || in.GetStatus() == pb.AppointmentStatus_UNKNOWN {
-		return &pb.GetAppointmentsReply{
-			Error: convertApplicativeError(400, "Invalid input", "status"),
-		}, nil
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid status")
 	}
 
 	// Perform lookup
 	internalAppointments, err := s.appointmentStore.GetAppointmentsOnStatus(c, appointmentstore.AppointmentStatus(in.Status))
 	if err != nil {
-		return &pb.GetAppointmentsReply{
-			Error: convertTechnicalError("Technical error fetching appointments on status", err),
-		}, nil
+		return nil, status.Errorf(codes.Internal, "Technical error fetching appointments on status:%s", err)
 	}
 
 	return returnAppointmentList(internalAppointments), nil
@@ -93,52 +87,31 @@ func (s *server) GetAppointmentsOnStatus(c context.Context, in *pb.GetAppointmen
 func (s *server) RequestAppointment(c context.Context, in *pb.RequestAppointmentRequest) (*pb.AppointmentReply, error) {
 	// Validate input
 	if in == nil || in.GetAppointment() == nil {
-		return &pb.AppointmentReply{
-			Error: convertApplicativeError(400, "Invalid input", "appointment"),
-		}, nil
-	} else {
-		if in.GetAppointment().GetUserUid() == "" {
-			return &pb.AppointmentReply{
-				Error: convertApplicativeError(400, "Invalid input", "userUid"),
-			}, nil
-		}
-		if in.GetAppointment().GetDateTime() == "" {
-			return &pb.AppointmentReply{
-				Error: convertApplicativeError(400, "Invalid input", "dateTime"),
-			}, nil
-		}
-		if in.GetAppointment().GetLocation() == "" {
-			return &pb.AppointmentReply{
-				Error: convertApplicativeError(400, "Invalid input", "location"),
-			}, nil
-		}
-		if in.GetAppointment().GetTopic() == "" {
-			return &pb.AppointmentReply{
-				Error: convertApplicativeError(400, "Invalid input", "topic"),
-			}, nil
-		}
+		return nil, status.Errorf(codes.InvalidArgument, "Missing appointment")
+	}
+	if in.GetAppointment().GetUserUid() == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Missing userUid")
+	}
+	if in.GetAppointment().GetDateTime() == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Missing dateTime")
+	}
+	if in.GetAppointment().GetLocation() == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Missing location")
+	}
+	if in.GetAppointment().GetTopic() == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Missing topic")
 	}
 
 	// Check if patient exists
-	getPatientResponse, err := s.patientInfoClient.GetPatientOnUid(c, &patientinfoapi.GetPatientOnUidRequest{PatientUid: in.Appointment.UserUid})
+	_, err := s.patientInfoClient.GetPatientOnUid(c, &patientinfoapi.GetPatientOnUidRequest{PatientUid: in.Appointment.UserUid})
 	if err != nil {
-		return &pb.AppointmentReply{
-			Error: convertTechnicalError("Technical error fetching patient on uid", err),
-		}, nil
-	}
-	if getPatientResponse.Error != nil {
-		return &pb.AppointmentReply{
-			Error: convertApplicativeError(getPatientResponse.Error.Code, "Error fetching patient on uid",
-				originalError(getPatientResponse.Error.Code, getPatientResponse.Error.Message, getPatientResponse.Error.Details)),
-		}, nil
+		return nil, status.Errorf(codes.Internal, "Technical error fetching patient on uid:%s", err)
 	}
 
 	// Adjust datastore
 	appointmentCreated, err := s.appointmentStore.PutAppointment(c, convertIntoInternal(*in.Appointment))
 	if err != nil {
-		return &pb.AppointmentReply{
-			Error: convertTechnicalError("Technical error creating appointment", err),
-		}, nil
+		return nil, status.Errorf(codes.Internal, "Technical error creating appointment:%s", err)
 	}
 	log.Printf("Persisted new appointment")
 
@@ -149,48 +122,30 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 	// Validate input
 	// Validate input
 	if in == nil {
-		return &pb.AppointmentReply{
-			Error: convertApplicativeError(400, "Invalid input", "request"),
-		}, nil
-	} else {
-		if in.GetAppointmentUid() == "" {
-			return &pb.AppointmentReply{
-				Error: convertApplicativeError(400, "Invalid input", "appointmentUid"),
-			}, nil
-		}
-		if in.GetStatus() == pb.AppointmentStatus_UNKNOWN {
-			return &pb.AppointmentReply{
-				Error: convertApplicativeError(400, "Invalid input", "status"),
-			}, nil
-		}
+		return nil, status.Errorf(codes.InvalidArgument, "Missing request")
+	}
+
+	if in.GetAppointmentUid() == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Missing appointmentUid")
+	}
+	if in.GetStatus() == pb.AppointmentStatus_UNKNOWN {
+		return nil, status.Errorf(codes.InvalidArgument, "Missing status")
 	}
 
 	// Perform lookup
 	internalAppointment, found, err := s.appointmentStore.GetAppointmentOnUid(c, in.AppointmentUid)
 	if err != nil {
-		return &pb.AppointmentReply{
-			Error: convertTechnicalError("Error fetching appointment on uid", err),
-		}, nil
+		return nil, status.Errorf(codes.Internal, "Error fetching appointment on uid:%s", err)
 	}
 	if !found {
-		return &pb.AppointmentReply{
-			Error: convertApplicativeError(404, "Appointment with uid not found", ""),
-		}, nil
+		return nil, status.Errorf(codes.NotFound, "Appointment with uid not found")
 	}
 	log.Printf("Got appointment:%+v", internalAppointment)
 
 	// Fetch patient details
 	getPatientOnUidResp, err := s.patientInfoClient.GetPatientOnUid(c, &patientinfoapi.GetPatientOnUidRequest{PatientUid: internalAppointment.UserUID})
 	if err != nil {
-		return &pb.AppointmentReply{
-			Error: convertTechnicalError("Technical error fetching patient on uid", err),
-		}, nil
-	}
-	if getPatientOnUidResp.Error != nil {
-		return &pb.AppointmentReply{
-			Error: convertApplicativeError(getPatientOnUidResp.Error.Code, "Error fetching patient on uid",
-				originalError(getPatientOnUidResp.Error.Code, getPatientOnUidResp.Error.Message, getPatientOnUidResp.Error.Details)),
-		}, nil
+		return nil, status.Errorf(codes.Internal, "Technical error fetching patient on uid:%s", err)
 	}
 
 	log.Printf("Got patient:%+v", getPatientOnUidResp.Patient)
@@ -204,15 +159,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 			},
 		})
 		if err != nil {
-			return &pb.AppointmentReply{
-				Error: convertTechnicalError("Technical error sending email", err),
-			}, nil
-		}
-		if sendEmailResponse.Error != nil {
-			return &pb.AppointmentReply{
-				Error: convertApplicativeError(sendEmailResponse.Error.Code, "Error sending email",
-					originalError(sendEmailResponse.Error.Code, sendEmailResponse.Error.Message, sendEmailResponse.Error.Details)),
-			}, nil
+			return nil, status.Errorf(codes.Internal, "Technical error sending email:%s", err)
 		}
 		log.Printf("Send email:%+v", sendEmailResponse)
 	}
@@ -226,16 +173,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 			},
 		})
 		if err != nil {
-			return &pb.AppointmentReply{
-				Error: convertTechnicalError("Technical error sending sms", err),
-			}, nil
-		}
-		if sendSmsResponse.Error != nil {
-			log.Printf("Error sending sms: %+v", sendSmsResponse.Error)
-			return &pb.AppointmentReply{
-				Error: convertApplicativeError(sendSmsResponse.Error.Code, "Error sending sms",
-					originalError(sendSmsResponse.Error.Code, sendSmsResponse.Error.Message, sendSmsResponse.Error.Details)),
-			}, nil
+			return nil, status.Errorf(codes.Internal, "Technical error sending sms:%s", err)
 		}
 		log.Printf("Send sms:%+v", sendSmsResponse)
 	}
@@ -244,9 +182,7 @@ func (s *server) ModifyAppointmentStatus(c context.Context, in *pb.ModifyAppoint
 	internalAppointment.Status = appointmentstore.AppointmentStatusConfirmed
 	appointmentAdjusted, err := s.appointmentStore.PutAppointment(c, internalAppointment)
 	if err != nil {
-		return &pb.AppointmentReply{
-			Error: convertTechnicalError("Error persisting modified appointment", err),
-		}, nil
+		return nil, status.Errorf(codes.Internal, "Error persisting modified appointment:%s", err)
 	}
 	log.Printf("Persisted adjusted appointment: %+v", appointmentAdjusted)
 
@@ -289,29 +225,4 @@ func convertIntoInternal(a pb.Appointment) appointmentstore.Appointment {
 		Topic:          a.Topic,
 		Status:         appointmentstore.AppointmentStatus(a.Status),
 	}
-}
-
-func convertTechnicalError(errorMsg string, err error) *pb.Error {
-	if err == nil {
-		return nil
-	}
-	log.Printf("Got technical error: %s", err.Error())
-	return &pb.Error{
-		Code:    500,
-		Message: errorMsg,
-		Details: err.Error(),
-	}
-}
-
-func convertApplicativeError(code int32, message, details string) *pb.Error {
-	log.Printf("Got applicative error: %d: %s (%s)", code, message, details)
-	return &pb.Error{
-		Code:    code,
-		Message: message,
-		Details: details,
-	}
-}
-
-func originalError(code int32, message, details string) string {
-	return fmt.Sprintf("%d: %s (%s)", code, message, details)
 }

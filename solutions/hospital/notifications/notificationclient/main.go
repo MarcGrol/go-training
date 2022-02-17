@@ -37,9 +37,8 @@ func main() {
 		if err != nil {
 			log.Fatalf("sending sms: %s", err)
 		}
-		if resp.Error != nil {
-			log.Fatalf("Error fetching client: %+v", resp.Error)
-		}
+		log.Printf("Sms delivery status: %s", resp.Status)
+
 	} else if mode == "email" {
 		resp, err := client.SendEmail(ctx, &notificationapi.SendEmailRequest{
 			Email: &notificationapi.EmailMessage{
@@ -51,9 +50,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("sending email: %s", err)
 		}
-		if resp.Error != nil {
-			log.Fatalf("Error fetching client: %+v", resp.Error)
-		}
+		log.Printf("Email delivery status: %s", resp.Status)
 	} else {
 		log.Fatalf("Unknown mode %s", mode)
 	}

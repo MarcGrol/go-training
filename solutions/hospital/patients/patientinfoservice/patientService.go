@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
 	"net"
 
@@ -44,32 +46,16 @@ func (s *server) GRPCListenBlocking(port string) error {
 func (s *server) GetPatientOnUid(ctx context.Context, in *pb.GetPatientOnUidRequest) (*pb.GetPatientOnUidReply, error) {
 	// Validate input
 	if in == nil || in.GetPatientUid() == "" {
-		return &pb.GetPatientOnUidReply{
-			Error: &pb.Error{
-				Code:    400,
-				Message: "Missing patient-uid",
-			},
-		}, nil
+		return nil, status.Errorf(codes.InvalidArgument, "Missing patient-uid")
 	}
 
 	// Perform lookup
 	patient, found, err := s.patientStore.GetPatientOnUid(in.PatientUid)
 	if err != nil {
-		return &pb.GetPatientOnUidReply{
-			Error: &pb.Error{
-				Code:    500,
-				Message: "Technical error",
-				Details: err.Error(),
-			},
-		}, nil
+		status.Errorf(codes.Internal, "Technical error: %s", err)
 	}
 	if !found {
-		return &pb.GetPatientOnUidReply{
-			Error: &pb.Error{
-				Code:    404,
-				Message: "Patient with uid not found",
-			},
-		}, nil
+		status.Errorf(codes.NotFound, "Patient with uid not found")
 	}
 
 	log.Printf("Patient with uid %s found: %+v", in.PatientUid, patient)

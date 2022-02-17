@@ -29,8 +29,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error fetching client: %s", err)
 	}
-	if resp.Error != nil {
-		log.Fatalf("Error fetching client: %+v", resp.Error)
-	}
+
 	log.Printf("Patient: %+v", resp.Patient)
 }

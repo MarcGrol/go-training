@@ -7,69 +7,61 @@ import "google/api/annotations.proto";
 option go_package = "github.com/MarcGrol/go-training/solutions/hospital/appointments/appointmentapi";
 
 service AppointmentInternal {
-    rpc GetAppointmentsOnStatus (GetAppointmentsOnStatusRequest) returns (GetAppointmentsReply);
-    rpc ModifyAppointmentStatus (ModifyAppointmentStatusRequest) returns (AppointmentReply);
+  rpc GetAppointmentsOnStatus (GetAppointmentsOnStatusRequest) returns (GetAppointmentsReply);
+  rpc ModifyAppointmentStatus (ModifyAppointmentStatusRequest) returns (AppointmentReply);
 }
 
 message GetAppointmentsOnStatusRequest{
-    AppointmentStatus status = 1;
+  AppointmentStatus status = 1;
 }
 
 message ModifyAppointmentStatusRequest{
-    string appointmentUid = 1;
-    AppointmentStatus status = 2;
+  string appointmentUid = 1;
+  AppointmentStatus status = 2;
 }
 
 message AppointmentReply{
-    Error error = 1;
-    Appointment appointment = 2;
+  Appointment appointment = 1;
 }
 
 service AppointmentExternal {
-    rpc GetAppointmentsOnUser (GetAppointmentsOnUserRequest) returns (GetAppointmentsReply) {
-        option (google.api.http) = {
-            get: "/api/appointment/user/{userUid}"
-        };
-    }
-    rpc RequestAppointment (RequestAppointmentRequest) returns (AppointmentReply) {
-        option (google.api.http) = {
-            post: "/api/appointment",
-            body: "appointment"
+  rpc GetAppointmentsOnUser (GetAppointmentsOnUserRequest) returns (GetAppointmentsReply) {
+    option (google.api.http) = {
+      get: "/api/appointment/user/{userUid}"
+    };
+  }
+  rpc RequestAppointment (RequestAppointmentRequest) returns (AppointmentReply) {
+    option (google.api.http) = {
+      post: "/api/appointment",
+      body: "appointment"
 
-        };
-    }
+    };
+  }
 }
 
 message RequestAppointmentRequest{
-    Appointment appointment = 1;
+  Appointment appointment = 1;
 }
 
 message GetAppointmentsOnUserRequest{
-    string userUid = 1;
+  string userUid = 1;
 }
 
 message GetAppointmentsReply{
-    Error error = 1;
-    repeated Appointment appointments  = 2;
+  repeated Appointment appointments = 1;
 }
 
 message Appointment {
-    string appointmentUid = 1;
-    string userUid = 2;
-    string dateTime  = 3;
-    string location = 4;
-    string topic = 5;
-    AppointmentStatus status = 6;
+  string appointmentUid = 1;
+  string userUid = 2;
+  string dateTime = 3;
+  string location = 4;
+  string topic = 5;
+  AppointmentStatus status = 6;
 }
 
 enum AppointmentStatus {
-    UNKNOWN = 0;
-    REQUESTED = 1;
-    CONFIRMED = 2;
-}
-
-message Error {
-    int32 code = 1;
-    string message = 2;
-    string details = 3;
+  UNKNOWN = 0;
+  REQUESTED = 1;
+  CONFIRMED = 2;
 }

@@ -1,4 +1,4 @@
-	package notificationapi
+package notificationapi
 
 import (
 	"fmt"

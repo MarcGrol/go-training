@@ -7,32 +7,25 @@ option go_package = "github.com/MarcGrol/go-training/solutions/hospital/patients
 import "google/api/annotations.proto";
 
 service PatientInfo {
-    rpc GetPatientOnUid (GetPatientOnUidRequest) returns (GetPatientOnUidReply) {
-        option (google.api.http) = {
-            post: "/api/patient/{patientUid}",
-        };
-    }
+  rpc GetPatientOnUid (GetPatientOnUidRequest) returns (GetPatientOnUidReply) {
+    option (google.api.http) = {
+      post: "/api/patient/{patientUid}",
+    };
+  }
 }
 
 message GetPatientOnUidRequest {
-    string patientUid = 1;
+  string patientUid = 1;
 }
 
 message GetPatientOnUidReply {
-    Error error = 1;
-    Patient patient = 2;
+  Patient patient = 1;
 }
 
 message Patient {
-    string uid = 1;
-    string fullName = 2;
-    string addressLine = 3;
-    string phoneNumber = 4;
-    string emailAddress = 5;
-}
-
-message Error {
-    int32 code = 1;
-    string message = 2;
-    string details = 3;
+  string uid = 1;
+  string fullName = 2;
+  string addressLine = 3;
+  string phoneNumber = 4;
+  string emailAddress = 5;
 }

@@ -32,9 +32,7 @@ func main() {
 			if err != nil {
 				log.Fatalf("getting appointments on user: %s", err)
 			}
-			if resp.Error != nil {
-				log.Fatalf("Error getting appointments on user: %+v", resp.Error)
-			}
+
 			log.Printf("appointments for user:%+v", resp.Appointments)
 		}
 
@@ -49,9 +47,6 @@ func main() {
 			})
 			if err != nil {
 				log.Fatalf("request appointment: %s", err)
-			}
-			if resp.Error != nil {
-				log.Fatalf("Error requesting appointment: %+v", resp.Error)
 			}
 			log.Printf("requested appointment:%+v", resp.Appointment)
 		}
@@ -69,9 +64,6 @@ func main() {
 			if err != nil {
 				log.Fatalf("getting appointments on user: %s", err)
 			}
-			if resp.Error != nil {
-				log.Fatalf("Error getting appointments: %+v", resp.Error)
-			}
 			log.Printf("appointments with status: %+v", resp.Appointments)
 		}
 
@@ -82,9 +74,6 @@ func main() {
 			})
 			if err != nil {
 				log.Fatalf("confirm appointment: %s", err)
-			}
-			if resp.Error != nil {
-				log.Fatalf("Error confirming appointment: %+v", resp.Error)
 			}
 			log.Printf("confirmed appointment:%+v", resp.Appointment)
 		}

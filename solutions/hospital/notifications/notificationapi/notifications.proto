@@ -7,53 +7,46 @@ option go_package = "github.com/MarcGrol/go-training/solutions/hospital/notifica
 import "google/api/annotations.proto";
 
 service Notification {
-    rpc SendEmail (SendEmailRequest) returns (SendReply) {
-        option (google.api.http) = {
-            post: "/api/notification/email",
-            body: "email"
-        };
-    }
-    rpc SendSms (SendSmsRequest) returns (SendReply) {
-        option (google.api.http) = {
-            post: "/api/notification/sms",
-            body: "sms"
-        };
-    }
+  rpc SendEmail (SendEmailRequest) returns (SendReply) {
+    option (google.api.http) = {
+      post: "/api/notification/email",
+      body: "email"
+    };
+  }
+  rpc SendSms (SendSmsRequest) returns (SendReply) {
+    option (google.api.http) = {
+      post: "/api/notification/sms",
+      body: "sms"
+    };
+  }
 }
 
 message SendEmailRequest {
-    EmailMessage email = 1;
+  EmailMessage email = 1;
 }
 
 message EmailMessage {
-    string recipientEmailAddress = 1;
-    string subject = 2;
-    string body = 3;
+  string recipientEmailAddress = 1;
+  string subject = 2;
+  string body = 3;
 }
 
 message SendSmsRequest {
-    SmsMessage sms = 1;
+  SmsMessage sms = 1;
 }
 
 message SendReply {
-    DeliveryStatus status = 1;
-    Error error = 2;
+  DeliveryStatus status = 1;
 }
 
 message SmsMessage {
-    string recipientPhoneNumber = 1;
-    string body = 3;
+  string recipientPhoneNumber = 1;
+  string body = 3;
 }
 
 enum DeliveryStatus {
-    UNKNOWN = 0;
-    DELIVERED = 1;
-    PENDING = 2;
-    FAILED = 3;
-}
-
-message Error {
-    int32 code = 1;
-    string message = 2;
-    string details = 3;
+  UNKNOWN = 0;
+  DELIVERED = 1;
+  PENDING = 2;
+  FAILED = 3;
 }

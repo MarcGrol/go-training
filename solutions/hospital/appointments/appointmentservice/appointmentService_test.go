@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"strings"
 	"testing"
 
 	"github.com/go-test/deep"
@@ -22,17 +25,13 @@ func TestGetAppointmentsOnUser(t *testing.T) {
 		constructAppointmentStore func(ctlr *gomock.Controller) appointmentstore.AppointmentStore
 		request                   *appointmentapi.GetAppointmentsOnUserRequest
 		expectedResponse          *appointmentapi.GetAppointmentsReply
+		err                       string
 	}{
 		{
-			description: "Invalid input: missing userUid",
-			request:     &appointmentapi.GetAppointmentsOnUserRequest{},
-			expectedResponse: &appointmentapi.GetAppointmentsReply{
-				Error: &appointmentapi.Error{
-					Code:    400,
-					Message: "Invalid input",
-					Details: "userUid",
-				},
-			},
+			description:      "Missing userUid",
+			request:          &appointmentapi.GetAppointmentsOnUserRequest{},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Missing user-uid"),
 		},
 		{
 			description: "Error fetching appointments on user",
@@ -42,14 +41,9 @@ func TestGetAppointmentsOnUser(t *testing.T) {
 					Return([]appointmentstore.Appointment{}, fmt.Errorf("Error fetching appointments on user"))
 				return mock
 			},
-			request: &appointmentapi.GetAppointmentsOnUserRequest{UserUid: "myUserUid"},
-			expectedResponse: &appointmentapi.GetAppointmentsReply{
-				Error: &appointmentapi.Error{
-					Code:    500,
-					Message: "Technical error fetching appointments on user",
-					Details: "Error fetching appointments on user",
-				},
-			},
+			request:          &appointmentapi.GetAppointmentsOnUserRequest{UserUid: "myUserUid"},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Technical error fetching appointments on user"),
 		},
 		{
 			description: "Success fetching appointments on user",
@@ -88,10 +82,17 @@ func TestGetAppointmentsOnUser(t *testing.T) {
 			appointmentStore := appointmentStoreOrNil(ctrl, tc.constructAppointmentStore)
 
 			service := newServer(appointmentStore, nil, nil)
-			response, _ := service.GetAppointmentsOnUser(c, tc.request)
-			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
-			if diff := deep.Equal(*tc.expectedResponse, *response); diff != nil {
-				t.Error(diff)
+			response, err := service.GetAppointmentsOnUser(c, tc.request)
+			if tc.err != "" {
+				t.Logf("%s: want: %+v, got:%+v", tcName, tc.err, err.Error())
+				if !strings.Contains(err.Error(), tc.err) {
+					//t.Error("Unexpected error")
+				}
+			} else {
+				t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
+				if diff := deep.Equal(*tc.expectedResponse, *response); diff != nil {
+					t.Error(diff)
+				}
 			}
 		})
 	}
@@ -104,32 +105,23 @@ func TestRequestAppointment(t *testing.T) {
 		constructPatientServiceClient func(ctlr *gomock.Controller) patientinfoapi.PatientInfoClient
 		request                       *appointmentapi.RequestAppointmentRequest
 		expectedResponse              *appointmentapi.AppointmentReply
+		err                           string
 	}{
 		{
 			description: "Invalid input: Missing appointment",
 			request: &appointmentapi.RequestAppointmentRequest{
 				Appointment: nil,
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    400,
-					Message: "Invalid input",
-					Details: "appointment",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Missing appointment"),
 		},
 		{
 			description: "Invalid input: Missing userUid",
 			request: &appointmentapi.RequestAppointmentRequest{
 				Appointment: &appointmentapi.Appointment{ /* empty request */ },
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    400,
-					Message: "Invalid input",
-					Details: "userUid",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Missing userUid"),
 		},
 		{
 			description: "Invalid input: Missing dateTime",
@@ -141,13 +133,8 @@ func TestRequestAppointment(t *testing.T) {
 					Topic:    exampleAppointment.Topic,
 				},
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    400,
-					Message: "Invalid input",
-					Details: "dateTime",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Missing dateTime"),
 		},
 		{
 			description: "Invalid input: Missing location",
@@ -159,13 +146,8 @@ func TestRequestAppointment(t *testing.T) {
 					Topic:    exampleAppointment.Topic,
 				},
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    400,
-					Message: "Invalid input",
-					Details: "location",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Missing location"),
 		},
 		{
 			description: "Invalid input: Missing topic",
@@ -177,22 +159,15 @@ func TestRequestAppointment(t *testing.T) {
 					Topic:    "", // should not be empty
 				},
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    400,
-					Message: "Invalid input",
-					Details: "topic",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Missing topic"),
 		},
 		{
 			description: "Error fetching patient",
 			constructPatientServiceClient: func(ctlr *gomock.Controller) patientinfoapi.PatientInfoClient {
 				mock := patientinfoapi.NewMockPatientInfoClient(ctlr)
 				mock.EXPECT().GetPatientOnUid(gomock.Any(), gomock.Any()).
-					Return(&patientinfoapi.GetPatientOnUidReply{
-						Error: &patientinfoapi.Error{Code: 500, Message: "xxx", Details: "a"},
-					}, nil)
+					Return(nil, status.Errorf(codes.Internal, "xxx"))
 				return mock
 			},
 			request: &appointmentapi.RequestAppointmentRequest{
@@ -203,13 +178,8 @@ func TestRequestAppointment(t *testing.T) {
 					Topic:    exampleAppointment.Topic,
 				},
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    500,
-					Message: "Error fetching patient on uid",
-					Details: "500: xxx (a)",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Technical error fetching patient on uid"),
 		},
 		{
 			description: "Error creating appointment",
@@ -235,13 +205,8 @@ func TestRequestAppointment(t *testing.T) {
 					Topic:    exampleAppointment.Topic,
 				},
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    500,
-					Message: "Technical error creating appointment",
-					Details: "yyy",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Technical error creating appointment"),
 		},
 		{
 			description: "Success creating appointment",
@@ -305,10 +270,17 @@ func TestRequestAppointment(t *testing.T) {
 			patientServiceClient := patientInfoClientOrNil(ctrl, tc.constructPatientServiceClient)
 
 			service := newServer(appointmentStore, patientServiceClient, nil)
-			response, _ := service.RequestAppointment(c, tc.request)
-			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
-			if diff := deep.Equal(*tc.expectedResponse, *response); diff != nil {
-				t.Error(diff)
+			response, err := service.RequestAppointment(c, tc.request)
+			if tc.err != "" {
+				t.Logf("%s: want: %+v, got:%+v", tcName, tc.err, err)
+				if !strings.Contains(err.Error(), tc.err) {
+					t.Errorf("Unexpected error")
+				}
+			} else {
+				t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
+				if diff := deep.Equal(*tc.expectedResponse, *response); diff != nil {
+					t.Error(diff)
+				}
 			}
 		})
 	}
@@ -320,34 +292,25 @@ func TestGetAppointmentsOnStatus(t *testing.T) {
 		constructAppointmentStore func(ctlr *gomock.Controller) appointmentstore.AppointmentStore
 		request                   *appointmentapi.GetAppointmentsOnStatusRequest
 		expectedResponse          *appointmentapi.GetAppointmentsReply
+		err                       string
 	}{
 		{
-			description: "Invalid input: invalid status",
-			request:     &appointmentapi.GetAppointmentsOnStatusRequest{Status: appointmentapi.AppointmentStatus_UNKNOWN},
-			expectedResponse: &appointmentapi.GetAppointmentsReply{
-				Error: &appointmentapi.Error{
-					Code:    400,
-					Message: "Invalid input",
-					Details: "status",
-				},
-			},
+			description:      "Invalid input: invalid status",
+			request:          &appointmentapi.GetAppointmentsOnStatusRequest{Status: appointmentapi.AppointmentStatus_UNKNOWN},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Invalid status"),
 		},
 		{
 			description: "Error fetching appointments on status",
 			constructAppointmentStore: func(ctlr *gomock.Controller) appointmentstore.AppointmentStore {
 				mock := appointmentstore.NewMockAppointmentStore(ctlr)
 				mock.EXPECT().GetAppointmentsOnStatus(gomock.Any(), gomock.Any()).
-					Return([]appointmentstore.Appointment{}, fmt.Errorf("Error fetching appointments on status"))
+					Return([]appointmentstore.Appointment{}, fmt.Errorf("Technical error fetching appointments on status"))
 				return mock
 			},
-			request: &appointmentapi.GetAppointmentsOnStatusRequest{Status: appointmentapi.AppointmentStatus_REQUESTED},
-			expectedResponse: &appointmentapi.GetAppointmentsReply{
-				Error: &appointmentapi.Error{
-					Code:    500,
-					Message: "Technical error fetching appointments on status",
-					Details: "Error fetching appointments on status",
-				},
-			},
+			request:          &appointmentapi.GetAppointmentsOnStatusRequest{Status: appointmentapi.AppointmentStatus_REQUESTED},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Technical error fetching appointments on status"),
 		},
 		{
 			description: "Success fetching appointments on status",
@@ -383,10 +346,17 @@ func TestGetAppointmentsOnStatus(t *testing.T) {
 			appointmentStore := appointmentStoreOrNil(ctrl, tc.constructAppointmentStore)
 
 			service := newServer(appointmentStore, nil, nil)
-			response, _ := service.GetAppointmentsOnStatus(c, tc.request)
-			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
-			if diff := deep.Equal(*tc.expectedResponse, *response); diff != nil {
-				t.Error(diff)
+			response, err := service.GetAppointmentsOnStatus(c, tc.request)
+			if tc.err != "" {
+				t.Logf("%s: want: %+v, got:%+v", tcName, tc.err, err)
+				if !strings.Contains(err.Error(), tc.err) {
+					t.Errorf("Unexpected error")
+				}
+			} else {
+				t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
+				if diff := deep.Equal(*tc.expectedResponse, *response); diff != nil {
+					t.Error(diff)
+				}
 			}
 		})
 	}
@@ -400,6 +370,7 @@ func TestConfirmAppointment(t *testing.T) {
 		constructNotificationServiceClient func(ctlr *gomock.Controller) notificationapi.NotificationClient
 		request                            *appointmentapi.ModifyAppointmentStatusRequest
 		expectedResponse                   *appointmentapi.AppointmentReply
+		err                                string
 	}{
 		{
 			description: "Invalid input: appointmentUid",
@@ -407,13 +378,8 @@ func TestConfirmAppointment(t *testing.T) {
 				AppointmentUid: "", // should not be empty
 				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    400,
-					Message: "Invalid input",
-					Details: "appointmentUid",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Missing appointmentUid"),
 		},
 		{
 			description: "Invalid input: status",
@@ -421,13 +387,8 @@ func TestConfirmAppointment(t *testing.T) {
 				AppointmentUid: "myAppointmentUid",
 				Status:         appointmentapi.AppointmentStatus_UNKNOWN, // should not be unknown
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    400,
-					Message: "Invalid input",
-					Details: "status",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Missing status"),
 		},
 		{
 			description: "Error fetching appointment",
@@ -441,13 +402,8 @@ func TestConfirmAppointment(t *testing.T) {
 				AppointmentUid: "myAppointmentUid",
 				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    500,
-					Message: "Error fetching appointment on uid",
-					Details: "qqq",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Error fetching appointment on uid"),
 		},
 		{
 			description: "Appointment not found",
@@ -461,12 +417,8 @@ func TestConfirmAppointment(t *testing.T) {
 				AppointmentUid: "myAppointmentUid",
 				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    404,
-					Message: "Appointment with uid not found",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Appointment with uid not found"),
 		},
 		{
 			description: "Error fetching patient",
@@ -479,22 +431,16 @@ func TestConfirmAppointment(t *testing.T) {
 			constructPatientServiceClient: func(ctlr *gomock.Controller) patientinfoapi.PatientInfoClient {
 				mock := patientinfoapi.NewMockPatientInfoClient(ctlr)
 				mock.EXPECT().GetPatientOnUid(gomock.Any(), gomock.Any()).
-					Return(&patientinfoapi.GetPatientOnUidReply{
-						Error: &patientinfoapi.Error{Code: 500, Message: "yyy", Details: "d"},
-					}, nil)
+					Return(nil, status.Errorf(codes.Internal, "yyy"))
 				return mock
 			},
 			request: &appointmentapi.ModifyAppointmentStatusRequest{
 				AppointmentUid: "myAppointmentUid",
 				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    500,
-					Message: "Error fetching patient on uid",
-					Details: "500: yyy (d)",
-				},
-			}},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Technical error fetching patient on uid"),
+		},
 		{
 			description: "Patient not found",
 			constructAppointmentStore: func(ctlr *gomock.Controller) appointmentstore.AppointmentStore {
@@ -506,22 +452,16 @@ func TestConfirmAppointment(t *testing.T) {
 			constructPatientServiceClient: func(ctlr *gomock.Controller) patientinfoapi.PatientInfoClient {
 				mock := patientinfoapi.NewMockPatientInfoClient(ctlr)
 				mock.EXPECT().GetPatientOnUid(gomock.Any(), gomock.Any()).
-					Return(&patientinfoapi.GetPatientOnUidReply{
-						Error: &patientinfoapi.Error{Code: 404, Message: "xxx", Details: "a"},
-					}, nil)
+					Return(nil, status.Errorf(codes.NotFound, "yyy"))
+
 				return mock
 			},
 			request: &appointmentapi.ModifyAppointmentStatusRequest{
 				AppointmentUid: "myAppointmentUid",
 				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    404,
-					Message: "Error fetching patient on uid",
-					Details: "404: xxx (a)",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Technical error fetching patient on uid"),
 		},
 		{
 			description: "Error notifying via email",
@@ -542,24 +482,15 @@ func TestConfirmAppointment(t *testing.T) {
 			constructNotificationServiceClient: func(ctlr *gomock.Controller) notificationapi.NotificationClient {
 				mock := notificationapi.NewMockNotificationClient(ctlr)
 				mock.EXPECT().SendEmail(gomock.Any(), gomock.Any()).
-					Return(&notificationapi.SendReply{
-						Error: &notificationapi.Error{
-							Code: 500, Message: "xxx", Details: "yyy",
-						},
-					}, nil)
+					Return(nil, status.Errorf(codes.NotFound, "zzz"))
 				return mock
 			},
 			request: &appointmentapi.ModifyAppointmentStatusRequest{
 				AppointmentUid: "myAppointmentUid",
 				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    500,
-					Message: "Error sending email",
-					Details: "500: xxx (yyy)",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Technical error sending email"),
 		},
 		{
 			description: "Error notifying via sms",
@@ -583,11 +514,7 @@ func TestConfirmAppointment(t *testing.T) {
 					Return(&notificationapi.SendReply{
 						Status: notificationapi.DeliveryStatus_DELIVERED}, nil)
 				mock.EXPECT().SendSms(gomock.Any(), gomock.Any()).
-					Return(&notificationapi.SendReply{
-						Error: &notificationapi.Error{
-							Code: 500, Message: "aaa", Details: "bbb",
-						},
-					}, nil)
+					Return(nil, status.Errorf(codes.NotFound, "qqq"))
 
 				return mock
 			},
@@ -595,13 +522,8 @@ func TestConfirmAppointment(t *testing.T) {
 				AppointmentUid: "myAppointmentUid",
 				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    500,
-					Message: "Error sending sms",
-					Details: "500: aaa (bbb)",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Technical error sending sms"),
 		},
 		{
 			description: "Error storing confirmed appointment",
@@ -636,13 +558,8 @@ func TestConfirmAppointment(t *testing.T) {
 				AppointmentUid: "myAppointmentUid",
 				Status:         appointmentapi.AppointmentStatus_CONFIRMED,
 			},
-			expectedResponse: &appointmentapi.AppointmentReply{
-				Error: &appointmentapi.Error{
-					Code:    500,
-					Message: "Error persisting modified appointment",
-					Details: "abc",
-				},
-			},
+			expectedResponse: nil,
+			err:              fmt.Sprintf("Error persisting modified appointment"),
 		},
 		{
 			description: "Success confirming appointment",
@@ -725,10 +642,17 @@ func TestConfirmAppointment(t *testing.T) {
 			notificationServiceClient := notificationClientOrNil(ctrl, tc.constructNotificationServiceClient)
 
 			service := newServer(appointmentStore, patientServiceClient, notificationServiceClient)
-			response, _ := service.ModifyAppointmentStatus(c, tc.request)
-			t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
-			if diff := deep.Equal(*tc.expectedResponse, *response); diff != nil {
-				t.Error(diff)
+			response, err := service.ModifyAppointmentStatus(c, tc.request)
+			if tc.err != "" {
+				t.Logf("%s: want: %+v, got:%+v", tcName, tc.err, err)
+				if !strings.Contains(err.Error(), tc.err) {
+					t.Errorf("Unexpected error")
+				}
+			} else {
+				t.Logf("%s: want: %+v, got:%+v", tcName, *tc.expectedResponse, *response)
+				if diff := deep.Equal(*tc.expectedResponse, *response); diff != nil {
+					t.Error(diff)
+				}
 			}
 		})
 	}

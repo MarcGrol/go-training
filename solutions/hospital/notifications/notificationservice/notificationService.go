@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
 	"net"
 
@@ -54,25 +56,12 @@ func (s *server) GRPCListenBlocking(port string) error {
 
 func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.SendReply, error) {
 	if in == nil || in.GetEmail() == nil || in.GetEmail().GetRecipientEmailAddress() == "" || in.GetEmail().GetSubject() == "" {
-		return &pb.SendReply{
-			Status: pb.DeliveryStatus_FAILED,
-			Error: &pb.Error{
-				Code:    400,
-				Message: "Missing recipient-email-address or subject",
-			},
-		}, nil
+		return nil, status.Errorf(codes.InvalidArgument, "Missing recipient-email-address or subject")
 	}
 
 	err := s.emailSender.Send(in.GetEmail().GetRecipientEmailAddress(), in.GetEmail().GetSubject(), in.GetEmail().GetBody())
 	if err != nil {
-		return &pb.SendReply{
-			Status: pb.DeliveryStatus_FAILED,
-			Error: &pb.Error{
-				Code:    500,
-				Message: "Error sending out email",
-				Details: err.Error(),
-			},
-		}, nil
+		return nil, status.Errorf(codes.Internal, "Error sending out email:%s", err)
 	}
 	log.Printf("Sent email to '%s' with subject '%s'", in.GetEmail().GetRecipientEmailAddress(), in.GetEmail().GetSubject())
 
@@ -81,25 +70,12 @@ func (s *server) SendEmail(ctx context.Context, in *pb.SendEmailRequest) (*pb.Se
 
 func (s *server) SendSms(ctx context.Context, in *pb.SendSmsRequest) (*pb.SendReply, error) {
 	if in == nil || in.GetSms() == nil || in.GetSms().GetRecipientPhoneNumber() == "" || in.GetSms().GetBody() == "" {
-		return &pb.SendReply{
-			Status: pb.DeliveryStatus_FAILED,
-			Error: &pb.Error{
-				Code:    400,
-				Message: "Missing recipient-phone-number or body",
-			},
-		}, nil
+		return nil, status.Errorf(codes.InvalidArgument, "Missing recipient-phone-number or body")
 	}
 
 	err := s.smsSender.Send(in.GetSms().GetRecipientPhoneNumber(), in.GetSms().GetBody())
 	if err != nil {
-		return &pb.SendReply{
-			Status: pb.DeliveryStatus_FAILED,
-			Error: &pb.Error{
-				Code:    500,
-				Message: "Error sending out sms",
-				Details: err.Error(),
-			},
-		}, nil
+		return nil, status.Errorf(codes.Internal, "Error sending out sms:%s", err)
 	}
 	log.Printf("Sent sms to '%s' with body '%s'", in.GetSms().GetRecipientPhoneNumber(), in.GetSms().GetBody())
 
