@@ -29,6 +29,6 @@ func main() {
 		fmt.Printf("nu-iteration (>=1000) = %d\n", iterCount)
 	}
 
-	iterCount := calclib.SumUntillMax(1000)
+	iterCount := calclib.SumUntilMax(1000)
 	fmt.Printf("num iterations [0..100] = %d\n", iterCount)
 }
