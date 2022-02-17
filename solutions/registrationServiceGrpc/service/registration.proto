@@ -4,21 +4,9 @@ package service;
 
 option go_package = "github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/service";
 
-import "google/api/annotations.proto";
-
 service RegistrationService {
-    rpc RegisterPatient (RegisterPatientRequest) returns (RegisterPatientResponse) {
-        option (google.api.http) = {
-            post: "/api/patient"
-            body: "patient"
-        };
-    }
-    rpc CompletePatientRegistration (CompletePatientRegistrationRequest) returns (CompletePatientRegistrationResponse) {
-        option (google.api.http) = {
-            put: "/api/patient/{patientUid}/challenge",
-            body: "credentials"
-        };
-    }
+    rpc RegisterPatient (RegisterPatientRequest) returns (RegisterPatientResponse) {}
+    rpc CompletePatientRegistration (CompletePatientRegistrationRequest) returns (CompletePatientRegistrationResponse) {}
 }
 
 message RegisterPatientRequest {
