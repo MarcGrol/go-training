@@ -13,17 +13,18 @@ import (
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/pincoder"
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/smssender"
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/uuider"
+	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/regprotobuf"
 )
 
 func TestRegistrationWithPhoneNumber(t *testing.T) {
 	ctrl, uuidGenerator, mockStorer, mockPincoder, emailsender, mockSmsSender := setupDependencies(t)
 	defer ctrl.Finish()
 
-	req := &RegisterPatientRequest{
-		Patient: &Patient{
+	req := &regprotobuf.RegisterPatientRequest{
+		Patient: &regprotobuf.Patient{
 			BSN:      "123",
 			FullName: "Marc",
-			Contact: &Contact{
+			Contact: &regprotobuf.Contact{
 				PhoneNumber: "31648928857",
 			},
 		},
@@ -46,11 +47,11 @@ func TestRegistrationWithEmail(t *testing.T) {
 	ctrl, uuidGenerator, mockStorer, mockPincoder, emailsender, mockSmsSender := setupDependencies(t)
 	defer ctrl.Finish()
 
-	req := &RegisterPatientRequest{
-		Patient: &Patient{
+	req := &regprotobuf.RegisterPatientRequest{
+		Patient: &regprotobuf.Patient{
 			BSN:      "123",
 			FullName: "Marc",
-			Contact: &Contact{
+			Contact: &regprotobuf.Contact{
 				EmailAddress: "me@home.nl",
 			},
 		},
@@ -74,8 +75,8 @@ func TestRegistrationInvalidInput(t *testing.T) {
 	ctrl, uuidGenerator, mockStorer, mockPincoder, emailsender, mockSmsSender := setupDependencies(t)
 	defer ctrl.Finish()
 
-	req := &RegisterPatientRequest{
-		Patient: &Patient{
+	req := &regprotobuf.RegisterPatientRequest{
+		Patient: &regprotobuf.Patient{
 			BSN: "123",
 		},
 	}
@@ -90,11 +91,11 @@ func TestRegistrationDatastoreError(t *testing.T) {
 	ctrl, uuidGenerator, mockStorer, mockPincoder, emailsender, mockSmsSender := setupDependencies(t)
 	defer ctrl.Finish()
 
-	req := &RegisterPatientRequest{
-		Patient: &Patient{
+	req := &regprotobuf.RegisterPatientRequest{
+		Patient: &regprotobuf.Patient{
 			BSN:      "123",
 			FullName: "Marc",
-			Contact: &Contact{
+			Contact: &regprotobuf.Contact{
 				EmailAddress: "me@home.nl",
 			},
 		},
@@ -118,11 +119,11 @@ func TestRegistrationDatastoreSmsSenderError(t *testing.T) {
 	ctrl, uuidGenerator, mockStorer, mockPincoder, emailsender, mockSmsSender := setupDependencies(t)
 	defer ctrl.Finish()
 
-	req := &RegisterPatientRequest{
-		Patient: &Patient{
+	req := &regprotobuf.RegisterPatientRequest{
+		Patient: &regprotobuf.Patient{
 			BSN:      "123",
 			FullName: "Marc",
-			Contact: &Contact{
+			Contact: &regprotobuf.Contact{
 				PhoneNumber: "31648928857",
 			},
 		},

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package service;
 
-option go_package = "github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/service";
+option go_package = "github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/regprotobuf";
 
 service RegistrationService {
     rpc RegisterPatient (RegisterPatientRequest) returns (RegisterPatientResponse) {}
