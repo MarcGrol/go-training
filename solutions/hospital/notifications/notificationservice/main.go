@@ -9,7 +9,7 @@ import (
 type fakeEmailSender struct{}
 
 func (es fakeEmailSender) Send(recipientEmail, subject, emailBody string) error {
-	log.Printf("Fake send email to %s: %s", recipientEmail, subject)
+	log.Printf("Fake send email to %s: subject: %s, body: %s", recipientEmail, subject, emailBody)
 	return nil
 }
 

@@ -52,10 +52,10 @@ func (s *server) GetPatientOnUid(ctx context.Context, in *pb.GetPatientOnUidRequ
 	// Perform lookup
 	patient, found, err := s.patientStore.GetPatientOnUid(in.PatientUid)
 	if err != nil {
-		status.Errorf(codes.Internal, "Technical error: %s", err)
+		return nil, status.Errorf(codes.Internal, "Technical error: %s", err)
 	}
 	if !found {
-		status.Errorf(codes.NotFound, "Patient with uid not found")
+		return nil, status.Errorf(codes.NotFound, "Patient with uid not found")
 	}
 
 	log.Printf("Patient with uid %s found: %+v", in.PatientUid, patient)

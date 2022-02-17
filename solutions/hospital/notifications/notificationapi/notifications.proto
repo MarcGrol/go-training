@@ -4,21 +4,9 @@ package notificationapi;
 
 option go_package = "github.com/MarcGrol/go-training/solutions/hospital/notifications/notificationapi";
 
-import "google/api/annotations.proto";
-
 service Notification {
-  rpc SendEmail (SendEmailRequest) returns (SendReply) {
-    option (google.api.http) = {
-      post: "/api/notification/email",
-      body: "email"
-    };
-  }
-  rpc SendSms (SendSmsRequest) returns (SendReply) {
-    option (google.api.http) = {
-      post: "/api/notification/sms",
-      body: "sms"
-    };
-  }
+  rpc SendEmail (SendEmailRequest) returns (SendReply) {}
+  rpc SendSms (SendSmsRequest) returns (SendReply) {}
 }
 
 message SendEmailRequest {
