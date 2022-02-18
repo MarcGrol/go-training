@@ -9,11 +9,13 @@ import (
 )
 
 func main() {
-	if len(os.Args) != 3 {
-		log.Fatalf("Usage: %s bsn name", os.Args[0])
+	if len(os.Args) != 5 {
+		log.Fatalf("Usage: %s bsn name email phone", os.Args[0])
 	}
 	bsn := os.Args[1]
 	name := os.Args[2]
+	email := os.Args[3]
+	phone := os.Args[4]
 
 	client, cleanup, err := regprotobuf.NewGrpcClient(regprotobuf.DefaultPort)
 	if err != nil {
@@ -36,8 +38,8 @@ func main() {
 					HouseNumber: 79,
 				},
 				Contact: &regprotobuf.Contact{
-					EmailAddress: "mgrol@xebias.com",
-					PhoneNumber:  "+31648928856",
+					EmailAddress: email,
+					PhoneNumber:  phone,
 				},
 			},
 		})
@@ -51,7 +53,7 @@ func main() {
 		resp, err := client.CompletePatientRegistration(ctx, &regprotobuf.CompletePatientRegistrationRequest{
 			PatientUid: patientUid,
 			Credentials: &regprotobuf.RegistrationCredentials{
-				Pincode: 1234,
+				Pincode: 1234, // predictable pin for now
 			},
 		})
 		if err != nil {

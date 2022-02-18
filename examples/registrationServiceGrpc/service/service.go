@@ -3,29 +3,30 @@ package main
 import (
 	"context"
 	"fmt"
-	datastorer2 "github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/datastorer"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/emailsender"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/pincoder"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/smssender"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/uuider"
+	"log"
 	"strings"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/datastorer"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/emailsender"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/pincoder"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/smssender"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/uuider"
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
 )
 
 type RegistrationService struct {
 	uuidGenerator    uuider.UuidGenerator
-	patientStore     datastorer2.PatientStorer
+	patientStore     datastorer.PatientStorer
 	emailSender      emailsender.EmailSender
 	smsSender        smssender.SmsSender
 	pincodeGenerator pincoder.PincodeGenerator
 	regprotobuf.UnimplementedRegistrationServiceServer
 }
 
-func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer2.PatientStorer, pincoder pincoder.PincodeGenerator,
+func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer.PatientStorer, pincoder pincoder.PincodeGenerator,
 	emailSender emailsender.EmailSender, smsSender smssender.SmsSender) *RegistrationService {
 	return &RegistrationService{
 		uuidGenerator:    uuidGenerator,
@@ -61,7 +62,9 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *regprot
 	patient := patientToInternal(req.Patient)
 	patient.RegistrationPin = pincode
 	patient.UID = rs.uuidGenerator.GenerateUuid()
-	patient.RegistrationStatus = datastorer2.Pending
+	patient.RegistrationStatus = datastorer.Pending
+
+	log.Printf("Started registration of user %+v", patient)
 
 	err = rs.patientStore.PutPatientOnUid(patient)
 	if err != nil {
@@ -91,11 +94,14 @@ func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, 
 		return nil, status.Errorf(codes.InvalidArgument, "Invalid pin")
 	}
 
-	patient.RegistrationStatus = datastorer2.Registered
+	patient.RegistrationStatus = datastorer.Registered
+	patient.RegistrationPin = -1
 	err = rs.patientStore.PutPatientOnUid(patient)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Error storing patien: %s", err)
 	}
+
+	log.Printf("Completed registration of user %+v", patient)
 
 	return &regprotobuf.CompletePatientRegistrationResponse{
 		Status: regprotobuf.RegistrationStatus_REGISTRATION_CONFIRMED,
@@ -126,11 +132,11 @@ func internationalize(phoneNumber string) string {
 	return "+" + phoneNumber
 }
 
-func patientToInternal(p *regprotobuf.Patient) datastorer2.Patient {
-	return datastorer2.Patient{
+func patientToInternal(p *regprotobuf.Patient) datastorer.Patient {
+	return datastorer.Patient{
 		BSN:      p.BSN,
 		FullName: p.FullName,
-		Address: datastorer2.StreetAddress{
+		Address: datastorer.StreetAddress{
 			PostalCode: func() string {
 				if p.Address != nil {
 					return p.Address.PostalCode
@@ -144,7 +150,7 @@ func patientToInternal(p *regprotobuf.Patient) datastorer2.Patient {
 				return 0
 			}(),
 		},
-		Contact: datastorer2.Contact{
+		Contact: datastorer.Contact{
 			PhoneNumber: func() string {
 				if p.Contact != nil {
 					return p.Contact.PhoneNumber
