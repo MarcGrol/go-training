@@ -17,13 +17,16 @@ import (
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
 )
 
+const (
+	maxAttempts = 5
+)
+
 type RegistrationService struct {
 	uuidGenerator    uuider.UuidGenerator
 	patientStore     datastorer.PatientStorer
 	emailSender      emailsender.EmailSender
 	smsSender        smssender.SmsSender
 	pincodeGenerator pincoder.PincodeGenerator
-	regprotobuf.UnimplementedRegistrationServiceServer
 }
 
 func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer.PatientStorer, pincoder pincoder.PincodeGenerator,
@@ -99,7 +102,7 @@ func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, 
 	if int(req.Credentials.Pincode) != patient.RegistrationPin {
 		patient.FailedPinCount++
 
-		if patient.FailedPinCount > 3 {
+		if patient.FailedPinCount >= maxAttempts {
 			patient.RegistrationStatus = datastorer.Blocked
 		}
 
