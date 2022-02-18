@@ -26,4 +26,5 @@ const (
 	Unregistered RegistrationStatus = iota
 	Pending
 	Registered
+	Blocked
 )

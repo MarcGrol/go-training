@@ -32,7 +32,7 @@ func NewRegistrationServiceClient(cc grpc.ClientConnInterface) RegistrationServi
 
 func (c *registrationServiceClient) RegisterPatient(ctx context.Context, in *RegisterPatientRequest, opts ...grpc.CallOption) (*RegisterPatientResponse, error) {
 	out := new(RegisterPatientResponse)
-	err := c.cc.Invoke(ctx, "/service.RegistrationService/RegisterPatient", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/regprotobuf.RegistrationService/RegisterPatient", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (c *registrationServiceClient) RegisterPatient(ctx context.Context, in *Reg
 
 func (c *registrationServiceClient) CompletePatientRegistration(ctx context.Context, in *CompletePatientRegistrationRequest, opts ...grpc.CallOption) (*CompletePatientRegistrationResponse, error) {
 	out := new(CompletePatientRegistrationResponse)
-	err := c.cc.Invoke(ctx, "/service.RegistrationService/CompletePatientRegistration", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/regprotobuf.RegistrationService/CompletePatientRegistration", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func _RegistrationService_RegisterPatient_Handler(srv interface{}, ctx context.C
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/service.RegistrationService/RegisterPatient",
+		FullMethod: "/regprotobuf.RegistrationService/RegisterPatient",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RegistrationServiceServer).RegisterPatient(ctx, req.(*RegisterPatientRequest))
@@ -108,7 +108,7 @@ func _RegistrationService_CompletePatientRegistration_Handler(srv interface{}, c
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/service.RegistrationService/CompletePatientRegistration",
+		FullMethod: "/regprotobuf.RegistrationService/CompletePatientRegistration",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RegistrationServiceServer).CompletePatientRegistration(ctx, req.(*CompletePatientRegistrationRequest))
@@ -120,7 +120,7 @@ func _RegistrationService_CompletePatientRegistration_Handler(srv interface{}, c
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var RegistrationService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.RegistrationService",
+	ServiceName: "regprotobuf.RegistrationService",
 	HandlerType: (*RegistrationServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
