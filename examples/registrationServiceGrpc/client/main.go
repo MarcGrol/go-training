@@ -59,8 +59,9 @@ func main() {
 		})
 		if err != nil {
 			log.Printf("Error completing patient registration: %s", err)
+		} else {
+			log.Printf("Patient completely registered: %+v", resp)
 		}
-		log.Printf("Patient completely registered: %+v", resp)
 	}
 
 }
