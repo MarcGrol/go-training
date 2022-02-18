@@ -6,7 +6,6 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
-
 )
 
 func StartGrpcServer(port string, service RegistrationServiceServer) error {
