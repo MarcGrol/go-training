@@ -1,4 +1,4 @@
-package service
+package main
 
 import (
 	"context"
@@ -16,7 +16,6 @@ import (
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/regprotobuf"
 )
 
-
 type RegistrationService struct {
 	uuidGenerator    uuider.UuidGenerator
 	patientStore     datastorer.PatientStorer
@@ -27,7 +26,7 @@ type RegistrationService struct {
 }
 
 func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer.PatientStorer, pincoder pincoder.PincodeGenerator,
-	emailSender emailsender.EmailSender, smsSender smssender.SmsSender) regprotobuf.RegistrationServiceServer {
+	emailSender emailsender.EmailSender, smsSender smssender.SmsSender) *RegistrationService {
 	return &RegistrationService{
 		uuidGenerator:    uuidGenerator,
 		patientStore:     patientStore,
@@ -51,7 +50,7 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *regprot
 			return nil, status.Errorf(codes.Internal, "Error sending sms: %s", err)
 		}
 	} else if req.Patient.Contact.EmailAddress != "" {
-				emailSubject := "Registration pincode"
+		emailSubject := "Registration pincode"
 		emailContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
 		err = rs.emailSender.SendEmail(req.Patient.Contact.EmailAddress, emailSubject, emailContent)
 		if err != nil {

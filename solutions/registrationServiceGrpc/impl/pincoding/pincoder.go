@@ -1,22 +1,15 @@
 package pincoding
 
 import (
-	"math/rand"
-	"time"
-
 	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/pincoder"
 )
 
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
-
-type randomPincodeGenerator struct{}
+type predictablePincodeGenerator struct{}
 
 func New() pincoder.PincodeGenerator {
-	return &randomPincodeGenerator{}
+	return &predictablePincodeGenerator{}
 }
 
-func (pc randomPincodeGenerator) GeneratePincode() int {
-	return rand.Intn(1000)
+func (pc predictablePincodeGenerator) GeneratePincode() int {
+	return 1234
 }
