@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/impl/datastoring"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/impl/emailsending"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/impl/pincoding"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/impl/smssending"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/impl/uuiding"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/impl/datastoring"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/impl/emailsending"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/impl/pincoding"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/impl/smssending"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/impl/uuiding"
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
 	"log"
 )

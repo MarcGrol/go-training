@@ -1,7 +1,7 @@
 package smssending
 
 import (
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/smssender"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/smssender"
 )
 
 type noopSmsSender struct{}

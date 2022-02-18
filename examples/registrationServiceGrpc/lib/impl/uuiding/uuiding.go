@@ -1,7 +1,7 @@
 package uuiding
 
 import (
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/uuider"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/uuider"
 	"github.com/google/uuid"
 )
 

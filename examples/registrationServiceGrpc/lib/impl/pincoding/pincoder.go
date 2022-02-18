@@ -1,7 +1,7 @@
 package pincoding
 
 import (
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/pincoder"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/pincoder"
 )
 
 type predictablePincodeGenerator struct{}

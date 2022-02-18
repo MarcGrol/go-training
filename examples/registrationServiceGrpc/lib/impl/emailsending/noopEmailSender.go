@@ -1,7 +1,7 @@
 package emailsending
 
 import (
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/emailsender"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/emailsender"
 )
 
 type noopEmailSender struct{}

@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/datastorer"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/emailsender"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/pincoder"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/smssender"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/uuider"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/datastorer"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/emailsender"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/pincoder"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/smssender"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/uuider"
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
 	"testing"
 
