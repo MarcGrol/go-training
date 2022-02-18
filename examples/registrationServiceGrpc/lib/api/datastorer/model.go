@@ -7,6 +7,7 @@ type Patient struct {
 	Address            StreetAddress
 	Contact            Contact
 	RegistrationPin    int
+	FailedPinCount     int
 	RegistrationStatus RegistrationStatus
 }
 

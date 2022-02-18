@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package service;
+package regprotobuf;
 
 option go_package = "github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf";
 

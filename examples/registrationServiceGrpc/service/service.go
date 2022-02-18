@@ -90,7 +90,16 @@ func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, 
 		return nil, status.Errorf(codes.NotFound, "Patient with uid not found")
 	}
 
+	if patient.FailedPinCount > 3 {
+		return nil, status.Errorf(codes.InvalidArgument, "Too many challenge attempts")
+	}
+
 	if int(req.Credentials.Pincode) != patient.RegistrationPin {
+		patient.FailedPinCount++
+		err = rs.patientStore.PutPatientOnUid(patient)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "Error storing patient: %s", err)
+		}
 		return nil, status.Errorf(codes.InvalidArgument, "Invalid pin")
 	}
 

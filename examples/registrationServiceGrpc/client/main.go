@@ -22,7 +22,7 @@ func main() {
 		log.Fatalf("*** Error creating motification-client: %v", err)
 	}
 	defer cleanup()
-	log.Printf("Created motification-client")
+	log.Printf("Created registration-client")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -44,20 +44,21 @@ func main() {
 			},
 		})
 		if err != nil {
-			log.Fatalf("sending sms: %s", err)
+			log.Fatalf("Error registering client: %s", err)
 		}
 		log.Printf("Patient registered: %+v", resp)
 		patientUid = resp.PatientUid
 	}
-	{
+	for i := 1; i <= 10; i++ {
+		log.Printf("Start patient compltion with pin %d", i)
 		resp, err := client.CompletePatientRegistration(ctx, &regprotobuf.CompletePatientRegistrationRequest{
 			PatientUid: patientUid,
 			Credentials: &regprotobuf.RegistrationCredentials{
-				Pincode: 1234, // predictable pin for now
+				Pincode: int32(i),
 			},
 		})
 		if err != nil {
-			log.Fatalf("Completing patient registration failed: %s", err)
+			log.Printf("Error completing patient registration: %s", err)
 		}
 		log.Printf("Patient completely registered: %+v", resp)
 	}

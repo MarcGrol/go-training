@@ -21,6 +21,6 @@ func main() {
 		emailSender, smsSender)
 	err := regprotobuf.StartGrpcServer(regprotobuf.DefaultPort, service)
 	if err != nil {
-		log.Fatalf("Error starting rest-notification server: %s", err)
+		log.Fatalf("Error starting registration server: %s", err)
 	}
 }
