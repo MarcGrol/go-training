@@ -12,7 +12,6 @@ import (
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/datastorer"
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/emailsender"
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/pincoder"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/smssender"
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/lib/api/uuider"
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
 )
@@ -20,23 +19,22 @@ import (
 const (
 	maxAttempts = 5
 )
+
 type RegistrationService struct {
 	uuidGenerator    uuider.UuidGenerator
 	patientStore     datastorer.PatientStorer
 	emailSender      emailsender.EmailSender
-	smsSender        smssender.SmsSender
 	pincodeGenerator pincoder.PincodeGenerator
 	regprotobuf.UnimplementedRegistrationServiceServer
 }
 
 func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer.PatientStorer, pincoder pincoder.PincodeGenerator,
-	emailSender emailsender.EmailSender, smsSender smssender.SmsSender) *RegistrationService {
+	emailSender emailsender.EmailSender) *RegistrationService {
 	return &RegistrationService{
 		uuidGenerator:    uuidGenerator,
 		patientStore:     patientStore,
 		pincodeGenerator: pincoder,
 		emailSender:      emailSender,
-		smsSender:        smsSender,
 	}
 }
 
@@ -47,19 +45,11 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *regprot
 	}
 
 	pincode := rs.pincodeGenerator.GeneratePincode()
-	if req.Patient.Contact.PhoneNumber != "" {
-		smsContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
-		err = rs.smsSender.SendSms(internationalize(req.Patient.Contact.PhoneNumber), smsContent)
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "Error sending sms: %s", err)
-		}
-	} else if req.Patient.Contact.EmailAddress != "" {
-		emailSubject := "Registration pincode"
-		emailContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
-		err = rs.emailSender.SendEmail(req.Patient.Contact.EmailAddress, emailSubject, emailContent)
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "Error sending email: %s", err)
-		}
+	emailSubject := "Registration pincode"
+	emailContent := fmt.Sprintf("Finalize registration with pincode %d", pincode)
+	err = rs.emailSender.SendEmail(req.Patient.Contact.EmailAddress, emailSubject, emailContent)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "Error sending email: %s", err)
 	}
 
 	patient := patientToInternal(req.Patient)
@@ -117,7 +107,7 @@ func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, 
 	patient.RegistrationPin = -1
 	err = rs.patientStore.PutPatientOnUid(patient)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "Error storing patien: %s", err)
+		return nil, status.Errorf(codes.Internal, "Error storing patient: %s", err)
 	}
 
 	log.Printf("Completed registration of user %+v", patient)
@@ -131,14 +121,14 @@ func validateRegisterPatientRequest(req *regprotobuf.RegisterPatientRequest) err
 	if req == nil || req.Patient == nil || req.Patient.BSN == "" || req.Patient.FullName == "" || req.Patient.Contact == nil {
 		return fmt.Errorf("Missing base fields")
 	}
-	if req.Patient.Contact.PhoneNumber == "" && req.Patient.Contact.EmailAddress == "" {
-		return fmt.Errorf("Missing contacts")
+	if req.Patient.Contact.EmailAddress == "" {
+		return fmt.Errorf("Missing email")
 	}
 	return nil
 }
 
 func validatePatientRegistrationRequest(req *regprotobuf.CompletePatientRegistrationRequest) error {
-	if req == nil || req.PatientUid == "" || req.Credentials == nil || req.Credentials.Pincode == 0 {
+	if req == nil || req.PatientUid == "" || req.Credentials == nil || req.Credentials.Pincode <= 0 {
 		return fmt.Errorf("Missing credentials")
 	}
 	return nil
@@ -170,12 +160,6 @@ func patientToInternal(p *regprotobuf.Patient) datastorer.Patient {
 			}(),
 		},
 		Contact: datastorer.Contact{
-			PhoneNumber: func() string {
-				if p.Contact != nil {
-					return p.Contact.PhoneNumber
-				}
-				return ""
-			}(),
 			EmailAddress: func() string {
 				if p.Contact != nil {
 					return p.Contact.EmailAddress

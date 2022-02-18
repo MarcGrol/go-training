@@ -29,7 +29,7 @@ func (s *patientWebService) createPatient(c context.Context, patient Patient) (P
 	patient.UID = s.uuider()
 
 	return patient, s.patientStore.RunInTransaction(c, func(ctx context.Context) error {
-		return  s.patientStore.Create(c, patient)
+		return s.patientStore.Create(c, patient)
 	})
 }
 

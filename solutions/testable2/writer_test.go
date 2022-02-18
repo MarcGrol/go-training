@@ -17,7 +17,6 @@ const (
 	expectedFilename = "ABC123.txt"
 )
 
-
 func fakeGenerate() string {
 	return uid
 }

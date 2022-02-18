@@ -32,7 +32,7 @@ func TestGet(t *testing.T) {
 
 	// given
 	p := Patient{
-		UID: "123",
+		UID:         "123",
 		FullName:    "Me",
 		AddressLine: "Here",
 		Allergies:   []string{"trouble"},
@@ -41,7 +41,7 @@ func TestGet(t *testing.T) {
 	assert.NoError(t, err)
 
 	// when
-	req, err := http.NewRequest("GET", fmt.Sprintf("/api/patient/%s",p.UID), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("/api/patient/%s", p.UID), nil)
 	assert.NoError(t, err)
 	recordedResponse := httptest.NewRecorder() // records what was send back by the server
 	router.ServeHTTP(recordedResponse, req)
@@ -81,7 +81,7 @@ func TestPut(t *testing.T) {
 
 	// given
 	p := Patient{
-		UID: "123",
+		UID:         "123",
 		FullName:    "Me",
 		AddressLine: "Here",
 		Allergies:   []string{"trouble"},
@@ -90,7 +90,7 @@ func TestPut(t *testing.T) {
 	assert.NoError(t, err)
 
 	// when
-	req, err := http.NewRequest("PUT", fmt.Sprintf("/api/patient/%s",p.UID), strings.NewReader(
+	req, err := http.NewRequest("PUT", fmt.Sprintf("/api/patient/%s", p.UID), strings.NewReader(
 		`{"uid":"123", "FullName":"Marc","AddressLine":"Heemstra","Allergies":["pinda"]}`))
 	assert.NoError(t, err)
 	recordedResponse := httptest.NewRecorder()
@@ -109,8 +109,8 @@ func TestDelete(t *testing.T) {
 	sut.RegisterEndpoint(router)
 
 	// given
-	p :=Patient{
-		UID: "123",
+	p := Patient{
+		UID:         "123",
 		FullName:    "Me",
 		AddressLine: "Here",
 		Allergies:   []string{"trouble"},
@@ -119,7 +119,7 @@ func TestDelete(t *testing.T) {
 	assert.NoError(t, err)
 
 	// when
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("/api/patient/%s",p.UID), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("/api/patient/%s", p.UID), nil)
 	assert.NoError(t, err)
 	recordedResponse := httptest.NewRecorder() // records what was send back by the server
 	router.ServeHTTP(recordedResponse, req)

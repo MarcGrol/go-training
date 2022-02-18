@@ -25,4 +25,3 @@ func (s *Stack) Pop() string {
 func (s *Stack) Size() int {
 	return len(s.data)
 }
-

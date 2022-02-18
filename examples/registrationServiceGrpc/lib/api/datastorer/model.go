@@ -17,7 +17,6 @@ type StreetAddress struct {
 }
 
 type Contact struct {
-	PhoneNumber  string
 	EmailAddress string
 }
 type RegistrationStatus int

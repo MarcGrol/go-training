@@ -9,25 +9,25 @@ import (
 
 type inMemoryPatientStore struct {
 	sync.Mutex
-	nower func() time.Time
+	nower    func() time.Time
 	patients map[string]Patient
 }
 
 func newPatientStore(nower func() time.Time) PatientStore {
 	return &inMemoryPatientStore{
-		nower: nower,
+		nower:    nower,
 		patients: map[string]Patient{},
 	}
 }
 
-func (as *inMemoryPatientStore)RunInTransaction( ctx context.Context, run withinTransactionFunc) error {
+func (as *inMemoryPatientStore) RunInTransaction(ctx context.Context, run withinTransactionFunc) error {
 	as.Lock()
 	defer as.Unlock()
 
 	return run(ctx)
 }
 
-func (as *inMemoryPatientStore) Create(ctx context.Context, patient Patient) (error) {
+func (as *inMemoryPatientStore) Create(ctx context.Context, patient Patient) error {
 	if patient.UID == "" {
 		return fmt.Errorf("Invalid patient: missing uid")
 	}
@@ -36,7 +36,7 @@ func (as *inMemoryPatientStore) Create(ctx context.Context, patient Patient) (er
 	return nil
 }
 
-func (as *inMemoryPatientStore) Modify(ctx context.Context, patient Patient) (error) {
+func (as *inMemoryPatientStore) Modify(ctx context.Context, patient Patient) error {
 	if patient.UID == "" {
 		return fmt.Errorf("Invalid patient: missing uid")
 	}

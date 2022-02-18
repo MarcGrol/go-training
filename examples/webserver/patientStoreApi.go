@@ -17,7 +17,7 @@ type Patient struct {
 type withinTransactionFunc func(ctx context.Context) error
 
 type PatientStore interface {
-	RunInTransaction( ctx context.Context, run withinTransactionFunc) error
+	RunInTransaction(ctx context.Context, run withinTransactionFunc) error
 	Create(ctx context.Context, appointment Patient) error
 	Modify(ctx context.Context, appointment Patient) error
 	GetOnUid(ctx context.Context, appointmentUID string) (Patient, bool, error)

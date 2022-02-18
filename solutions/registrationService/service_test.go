@@ -24,7 +24,7 @@ func TestRegistrationSucces(t *testing.T) {
 	}
 
 	mockStorer.EXPECT().PutPatientOnUid(gomock.Any()).Return(nil)           // HL
-	mockPincoder.EXPECT().GeneratePincode().Return(1234)                  // HL
+	mockPincoder.EXPECT().GeneratePincode().Return(1234)                    // HL
 	mockSmsSender.EXPECT().SendSms(fmt.Sprintf("+%s", patient.PhoneNumber), // HL
 		"Finalize registration with pincode 1234").Return(nil) // HL
 
@@ -93,7 +93,7 @@ func TestRegistrationDatastoreSmsSenderError(t *testing.T) {
 	}
 
 	mockStorer.EXPECT().PutPatientOnUid(patient).Return(nil)                // HL
-	mockPincoder.EXPECT().GeneratePincode().Return(1234)                  // HL
+	mockPincoder.EXPECT().GeneratePincode().Return(1234)                    // HL
 	mockSmsSender.EXPECT().SendSms(fmt.Sprintf("+%s", patient.PhoneNumber), // HL
 		"Finalize registration with pincode 1234").Return(fmt.Errorf("error contact remote service")) // HL
 

@@ -11,6 +11,8 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/justinas/alice v1.2.0
+	github.com/sendgrid/rest v2.6.8+incompatible // indirect
+	github.com/sendgrid/sendgrid-go v3.11.0+incompatible
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect
 	golang.org/x/sys v0.0.0-20210616094352-59db8d763f22 // indirect
