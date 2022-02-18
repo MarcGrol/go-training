@@ -19,7 +19,7 @@ func main() {
 
 	service := NewRegistrationService(uuidGenerator, patientStore, pincoder,
 		emailSender, smsSender)
-	err := StartGrpcServer(regprotobuf.DefaultPort, service)
+	err := regprotobuf.StartGrpcServer(regprotobuf.DefaultPort, service)
 	if err != nil {
 		log.Fatalf("Error starting rest-notification server: %s", err)
 	}

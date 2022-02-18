@@ -3,28 +3,30 @@ package main
 import (
 	"context"
 	"fmt"
-	datastorer2 "github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/datastorer"
+	"strings"
+
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/datastorer"
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/emailsender"
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/pincoder"
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/smssender"
 	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/uuider"
-	regprotobuf2 "github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
-	"strings"
-
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
 )
 
 type RegistrationService struct {
 	uuidGenerator    uuider.UuidGenerator
-	patientStore     datastorer2.PatientStorer
+	patientStore     datastorer.PatientStorer
 	emailSender      emailsender.EmailSender
 	smsSender        smssender.SmsSender
 	pincodeGenerator pincoder.PincodeGenerator
-	regprotobuf2.UnimplementedRegistrationServiceServer
+	regprotobuf.UnimplementedRegistrationServiceServer
 }
 
-func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer2.PatientStorer, pincoder pincoder.PincodeGenerator,
+func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer.PatientStorer, pincoder pincoder.PincodeGenerator,
 	emailSender emailsender.EmailSender, smsSender smssender.SmsSender) *RegistrationService {
 	return &RegistrationService{
 		uuidGenerator:    uuidGenerator,
@@ -35,7 +37,7 @@ func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore dat
 	}
 }
 
-func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *regprotobuf2.RegisterPatientRequest) (*regprotobuf2.RegisterPatientResponse, error) {
+func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *regprotobuf.RegisterPatientRequest) (*regprotobuf.RegisterPatientResponse, error) {
 	err := validateRegisterPatientRequest(req)
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "Error validating request: %s", err.Error())
@@ -60,19 +62,19 @@ func (rs *RegistrationService) RegisterPatient(ctx context.Context, req *regprot
 	patient := patientToInternal(req.Patient)
 	patient.RegistrationPin = pincode
 	patient.UID = rs.uuidGenerator.GenerateUuid()
-	patient.RegistrationStatus = datastorer2.Pending
+	patient.RegistrationStatus = datastorer.Pending
 
 	err = rs.patientStore.PutPatientOnUid(patient)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Error storring patient: %s", err)
 	}
 
-	return &regprotobuf2.RegisterPatientResponse{
+	return &regprotobuf.RegisterPatientResponse{
 		PatientUid: patient.UID,
 	}, nil
 }
 
-func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, req *regprotobuf2.CompletePatientRegistrationRequest) (*regprotobuf2.CompletePatientRegistrationResponse, error) {
+func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, req *regprotobuf.CompletePatientRegistrationRequest) (*regprotobuf.CompletePatientRegistrationResponse, error) {
 	err := validatePatientRegistrationRequest(req)
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "Error validating input: %s", err)
@@ -90,18 +92,18 @@ func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, 
 		return nil, status.Errorf(codes.InvalidArgument, "Invalid pin")
 	}
 
-	patient.RegistrationStatus = datastorer2.Registered
+	patient.RegistrationStatus = datastorer.Registered
 	err = rs.patientStore.PutPatientOnUid(patient)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Error storing patien: %s", err)
 	}
 
-	return &regprotobuf2.CompletePatientRegistrationResponse{
-		Status: regprotobuf2.RegistrationStatus_REGISTRATION_CONFIRMED,
+	return &regprotobuf.CompletePatientRegistrationResponse{
+		Status: regprotobuf.RegistrationStatus_REGISTRATION_CONFIRMED,
 	}, nil
 }
 
-func validateRegisterPatientRequest(req *regprotobuf2.RegisterPatientRequest) error {
+func validateRegisterPatientRequest(req *regprotobuf.RegisterPatientRequest) error {
 	if req == nil || req.Patient == nil || req.Patient.BSN == "" || req.Patient.FullName == "" || req.Patient.Contact == nil {
 		return fmt.Errorf("Missing base fields")
 	}
@@ -111,7 +113,7 @@ func validateRegisterPatientRequest(req *regprotobuf2.RegisterPatientRequest) er
 	return nil
 }
 
-func validatePatientRegistrationRequest(req *regprotobuf2.CompletePatientRegistrationRequest) error {
+func validatePatientRegistrationRequest(req *regprotobuf.CompletePatientRegistrationRequest) error {
 	if req == nil || req.PatientUid == "" || req.Credentials == nil || req.Credentials.Pincode == 0 {
 		return fmt.Errorf("Missing credentials")
 	}
@@ -125,11 +127,11 @@ func internationalize(phoneNumber string) string {
 	return "+" + phoneNumber
 }
 
-func patientToInternal(p *regprotobuf2.Patient) datastorer2.Patient {
-	return datastorer2.Patient{
+func patientToInternal(p *regprotobuf.Patient) datastorer.Patient {
+	return datastorer.Patient{
 		BSN:      p.BSN,
 		FullName: p.FullName,
-		Address: datastorer2.StreetAddress{
+		Address: datastorer.StreetAddress{
 			PostalCode: func() string {
 				if p.Address != nil {
 					return p.Address.PostalCode
@@ -143,7 +145,7 @@ func patientToInternal(p *regprotobuf2.Patient) datastorer2.Patient {
 				return 0
 			}(),
 		},
-		Contact: datastorer2.Contact{
+		Contact: datastorer.Contact{
 			PhoneNumber: func() string {
 				if p.Contact != nil {
 					return p.Contact.PhoneNumber

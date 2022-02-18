@@ -1,13 +1,11 @@
-package main
+package regprotobuf
 
 import (
 	"fmt"
-	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
-
 	"google.golang.org/grpc"
 )
 
-func NewGrpcClient(addressPort string) (regprotobuf.RegistrationServiceClient, func(), error) {
+func NewGrpcClient(addressPort string) (RegistrationServiceClient, func(), error) {
 	// Prepare connection to the server.
 	conn, err := grpc.Dial(addressPort, grpc.WithInsecure()) //, grpc.WithBlock())
 	if err != nil {
@@ -18,5 +16,5 @@ func NewGrpcClient(addressPort string) (regprotobuf.RegistrationServiceClient, f
 			conn.Close()
 		}
 	}
-	return regprotobuf.NewRegistrationServiceClient(conn), cleanup, nil
+	return NewRegistrationServiceClient(conn), cleanup, nil
 }

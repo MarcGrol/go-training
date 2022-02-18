@@ -15,7 +15,7 @@ func main() {
 	bsn := os.Args[1]
 	name := os.Args[2]
 
-	client, cleanup, err := NewGrpcClient(regprotobuf2.DefaultPort)
+	client, cleanup, err := regprotobuf2.NewGrpcClient(regprotobuf2.DefaultPort)
 	if err != nil {
 		log.Fatalf("*** Error creating motification-client: %v", err)
 	}
