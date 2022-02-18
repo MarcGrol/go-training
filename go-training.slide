@@ -2037,6 +2037,10 @@ Create mocks, so consumers can easily unit test their own software without acces
 
 The resulting golang-api (for consumers of the contract) is a good candidate for "semantic versioning" using go modules
 
+#----------------------------------------------
+* HTTP -> GRPC gateway
+
+.image examples/images/grpc_gateway.png  400 1000
 
 #----------------------------------------------
 
@@ -2057,11 +2061,11 @@ The resulting golang-api (for consumers of the contract) is a good candidate for
 .play -edit examples/sync/sync.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
-* Group assigment
+* Final assigment
 
-- Contract first
+- Registration service <registrationServiceGrpc>
 
-.image examples/images/groupassignment.jpg 500 800
+.image examples/images/registration_exercise.png  500 600
 
 #----------------------------------------------
 
