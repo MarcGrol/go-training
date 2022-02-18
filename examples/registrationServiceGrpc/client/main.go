@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	regprotobuf2 "github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
 	"log"
 	"os"
 	"time"
@@ -15,7 +15,7 @@ func main() {
 	bsn := os.Args[1]
 	name := os.Args[2]
 
-	client, cleanup, err := regprotobuf2.NewGrpcClient(regprotobuf2.DefaultPort)
+	client, cleanup, err := regprotobuf.NewGrpcClient(regprotobuf.DefaultPort)
 	if err != nil {
 		log.Fatalf("*** Error creating motification-client: %v", err)
 	}
@@ -27,15 +27,15 @@ func main() {
 
 	var patientUid string
 	{
-		resp, err := client.RegisterPatient(ctx, &regprotobuf2.RegisterPatientRequest{
-			Patient: &regprotobuf2.Patient{
+		resp, err := client.RegisterPatient(ctx, &regprotobuf.RegisterPatientRequest{
+			Patient: &regprotobuf.Patient{
 				BSN:      bsn,
 				FullName: name,
-				Address: &regprotobuf2.Address{
+				Address: &regprotobuf.Address{
 					PostalCode:  "3731TB",
 					HouseNumber: 79,
 				},
-				Contact: &regprotobuf2.Contact{
+				Contact: &regprotobuf.Contact{
 					EmailAddress: "mgrol@xebias.com",
 					PhoneNumber:  "+31648928856",
 				},
@@ -48,9 +48,9 @@ func main() {
 		patientUid = resp.PatientUid
 	}
 	{
-		resp, err := client.CompletePatientRegistration(ctx, &regprotobuf2.CompletePatientRegistrationRequest{
+		resp, err := client.CompletePatientRegistration(ctx, &regprotobuf.CompletePatientRegistrationRequest{
 			PatientUid: patientUid,
-			Credentials: &regprotobuf2.RegistrationCredentials{
+			Credentials: &regprotobuf.RegistrationCredentials{
 				Pincode: 1234,
 			},
 		})
