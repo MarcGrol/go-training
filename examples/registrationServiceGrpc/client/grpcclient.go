@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
 
 	"google.golang.org/grpc"
-
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/regprotobuf"
 )
 
 func NewGrpcClient(addressPort string) (regprotobuf.RegistrationServiceClient, func(), error) {

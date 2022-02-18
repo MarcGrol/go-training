@@ -3,17 +3,16 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/datastorer"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/emailsender"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/pincoder"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/smssender"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/api/uuider"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
 	"testing"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/datastorer"
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/emailsender"
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/pincoder"
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/smssender"
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/api/uuider"
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/regprotobuf"
 )
 
 func TestRegistrationWithPhoneNumber(t *testing.T) {

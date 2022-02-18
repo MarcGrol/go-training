@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/MarcGrol/go-training/examples/registrationServiceGrpc/regprotobuf"
 	"log"
 	"net"
 
 	"google.golang.org/grpc"
-
-	"github.com/MarcGrol/go-training/solutions/registrationServiceGrpc/regprotobuf"
 )
 
 func StartGrpcServer(port string, service *RegistrationService) error {
