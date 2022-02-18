@@ -20,13 +20,13 @@ import (
 const (
 	maxAttempts = 5
 )
-
 type RegistrationService struct {
 	uuidGenerator    uuider.UuidGenerator
 	patientStore     datastorer.PatientStorer
 	emailSender      emailsender.EmailSender
 	smsSender        smssender.SmsSender
 	pincodeGenerator pincoder.PincodeGenerator
+	regprotobuf.UnimplementedRegistrationServiceServer
 }
 
 func NewRegistrationService(uuidGenerator uuider.UuidGenerator, patientStore datastorer.PatientStorer, pincoder pincoder.PincodeGenerator,
