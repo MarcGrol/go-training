@@ -82,6 +82,8 @@ func (rs *RegistrationService) CompletePatientRegistration(ctx context.Context, 
 		return nil, status.Errorf(codes.InvalidArgument, "Error validating input: %s", err)
 	}
 
+	// TODO the store.Get and store.Put should run within a transaction
+
 	patient, found, err := rs.patientStore.GetPatientOnUid(req.PatientUid)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Error getting patient in uid: %s", err)
