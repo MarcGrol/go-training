@@ -136,7 +136,6 @@ Also works for us
 
 Missing in go:
 
-- Generics (but has slice and map) (In next release)
 - Constructors (but uses "constructor" functions)
 - Inheritance (but has "embedding" to compose)
 - Exceptions
@@ -689,7 +688,7 @@ or
 
 * Slices (more on it later)
 
-- Build in (Generics!)
+- Built-in (Generics!)
 - Equivalent of an array/list
 
 .play -edit solutions/model/model.go /START OMIT/,/END OMIT/
@@ -2157,7 +2156,7 @@ The resulting golang-api (for consumers of the contract) is a good candidate for
 * The not so good
 - No immutability by default
 - Missing generics? -> Use code generation
-- Go 2.0 will have generics
+- Go 1.18 has generics
 
 #----------------------------------------------
 
