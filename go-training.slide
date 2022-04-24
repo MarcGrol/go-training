@@ -1498,6 +1498,43 @@ Tasks:
 
 
 #----------------------------------------------
+* Generics
+#----------------------------------------------
+* Upgrade to Go 1.18
+  The Golang team at Google released Go 1.18 version on 15-03-2022.
+
+-  Get the latest go version through:
+.link https://go.dev/dl
+
+-  If you already have Go and want to run multiple versions:
+
+    >go install golang.org/dl/go1.18@latest
+    >go1.18 download
+
+-   Or use Go Version Manager (GVM):
+.link https://github.com/moovweb/gvm
+
+#----------------------------------------------
+* Why generics
+
+-   Functions, methods and data structures in a generic form, with types factored out
+-   How: custom types, and custom type parameters, often labeled "T"
+Caution: reduces code, but might add complexity
+
+#----------------------------------------------
+* Custom types
+.play -edit examples/generics/genericType/main.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+* Bigger value of a certain type
+
+.play -edit examples/generics/genericBigger/main.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* custom types in combination with generics
+
+#----------------------------------------------
 * Dependency management
 #----------------------------------------------
 * In other ecosystems
