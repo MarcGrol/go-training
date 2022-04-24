@@ -1522,17 +1522,38 @@ Tasks:
 Caution: reduces code, but might add complexity
 
 #----------------------------------------------
+* Function signature
+
+    func genericFunction[T int | string](value T) T {
+       ...
+    }
+
+Let's break it down:
+
+    [T int | string]
+
+"T" is the custom type parameter of type int, or of type string
+
+    (value T)
+
+T is then used as the type for the "value" parameter
+T is also used as return type
+
+    func genericFunction[T any](value T) T {
+
+The "any" type is a catch-all with regards to types
+
+#----------------------------------------------
 * Custom types
 .play -edit examples/generics/genericType/main.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 * Bigger value of a certain type
-
 .play -edit examples/generics/genericBigger/main.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
-* custom types in combination with generics
+* Exercise: Create a generic function that returns the keys of any map
 
 #----------------------------------------------
 * Dependency management
