@@ -19,6 +19,10 @@ func doit(numTasks int) int {
 	}
 	wg.Wait()
 
+	return calculateSum(allResults)
+}
+
+func calculateSum(allResults []int) int {
 	sum := 0
 	for _, v := range allResults {
 		sum += v
@@ -27,7 +31,7 @@ func doit(numTasks int) int {
 }
 
 func main() {
-	const taskCount = 10
+	const taskCount = 10000
 
 	sum := doit(taskCount)
 

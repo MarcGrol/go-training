@@ -11,16 +11,16 @@ func generator(numTasks int) <-chan int {
 	responseChannel := make(chan int)
 
 	for i := 0; i < numTasks; i++ {
-		go func() {
-			responseChannel <- slowapi.Sum(i, i)
-		}()
+		go func(idx int) {
+			responseChannel <- slowapi.Sum(idx, idx)
+		}(i)
 	}
 	return responseChannel
 }
 
 func waitforCompletion(responseChannel <-chan int, taskCount int) (int, int) {
 	// only half of the tasks should be completed in 1 sec
-	terminationChannel := time.After(1 * time.Second)
+	terminationChannel := time.After(10 * time.Second)
 
 	responseCount := 0
 	sum := 0
@@ -39,7 +39,7 @@ func waitforCompletion(responseChannel <-chan int, taskCount int) (int, int) {
 }
 
 func main() {
-	const taskCount = 10000000
+	const taskCount = 10000
 	responseChannel := generator(taskCount)
 	sum, responseCount := waitforCompletion(responseChannel, taskCount)
 	fmt.Printf("Got sum %d based on %d responses\n", sum, responseCount)
