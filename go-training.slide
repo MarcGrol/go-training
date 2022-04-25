@@ -1501,25 +1501,35 @@ Tasks:
 * Generics
 #----------------------------------------------
 * Upgrade to Go 1.18
-  The Golang team at Google released Go 1.18 version on 15-03-2022.
+The Golang team at Google released Go 1.18 version on 15-03-2022
 
--  Get the latest go version through:
+Get the latest go version through:
 .link https://go.dev/dl
 
--  If you already have Go and want to run multiple versions:
+If you already have Go and want to run multiple versions:
 
     >go install golang.org/dl/go1.18@latest
     >go1.18 download
 
--   Or use Go Version Manager (GVM):
+Or use Go Version Manager (GVM):
 .link https://github.com/moovweb/gvm
 
 #----------------------------------------------
 * Why generics
 
--   Functions, methods and data structures in a generic form, with types factored out
--   How: custom types, and custom type parameters, often labeled "T"
-Caution: reduces code, but might add complexity
+Functions, methods and data structures in a generic form, with standard types factored out
+
+How:
+
+-   Custom types, and custom type parameters, often labeled "T"
+
+When to use:
+
+-   When you notice yourself writing the same code, however the only difference is the type
+
+Caution:
+
+-   Reduces code, but might add complexity
 
 #----------------------------------------------
 * Function signature
@@ -1542,14 +1552,15 @@ T is also used as return type
     func genericFunction[T any](value T) T {
 
 The "any" type is a catch-all with regards to types
+"any" is the same as an "interface{}" type
 
 #----------------------------------------------
 * Custom types
 .play -edit examples/generics/genericType/main.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
-* Bigger value of a certain type
-.play -edit examples/generics/genericBigger/main.go /START OMIT/,/END OMIT/
+* Max value of a certain type
+.play -edit examples/generics/genericMax/main.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 
