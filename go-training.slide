@@ -1564,7 +1564,14 @@ The "any" type is a catch-all with regards to types
 
 #----------------------------------------------
 
-* Exercise: Create a generic function that returns the keys of any map
+* Exercise: Create a generic function
+    Use examples/generics/genericFunction/main.go
+
+Tasks:
+- Create a generic function that returns the keys of any map
+- Compare your generic function to the existing functions, make sure the output is the same
+
+    Peek: solutions/generics/main.go
 
 #----------------------------------------------
 * Dependency management
