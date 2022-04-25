@@ -136,7 +136,6 @@ Also works for us
 
 Missing in go:
 
-- Generics (but has slice and map) (In next release)
 - Constructors (but uses "constructor" functions)
 - Inheritance (but has "embedding" to compose)
 - Exceptions
@@ -689,7 +688,7 @@ or
 
 * Slices (more on it later)
 
-- Build in (Generics!)
+- Built-in (Generics!)
 - Equivalent of an array/list
 
 .play -edit solutions/model/model.go /START OMIT/,/END OMIT/
@@ -1499,6 +1498,64 @@ Tasks:
 
 
 #----------------------------------------------
+* Generics
+#----------------------------------------------
+* Upgrade to Go 1.18
+  The Golang team at Google released Go 1.18 version on 15-03-2022.
+
+-  Get the latest go version through:
+.link https://go.dev/dl
+
+-  If you already have Go and want to run multiple versions:
+
+    >go install golang.org/dl/go1.18@latest
+    >go1.18 download
+
+-   Or use Go Version Manager (GVM):
+.link https://github.com/moovweb/gvm
+
+#----------------------------------------------
+* Why generics
+
+-   Functions, methods and data structures in a generic form, with types factored out
+-   How: custom types, and custom type parameters, often labeled "T"
+Caution: reduces code, but might add complexity
+
+#----------------------------------------------
+* Function signature
+
+    func genericFunction[T int | string](value T) T {
+       ...
+    }
+
+Let's break it down:
+
+    [T int | string]
+
+"T" is the custom type parameter of type int, or of type string
+
+    (value T)
+
+T is then used as the type for the "value" parameter
+T is also used as return type
+
+    func genericFunction[T any](value T) T {
+
+The "any" type is a catch-all with regards to types
+
+#----------------------------------------------
+* Custom types
+.play -edit examples/generics/genericType/main.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+* Bigger value of a certain type
+.play -edit examples/generics/genericBigger/main.go /START OMIT/,/END OMIT/
+
+#----------------------------------------------
+
+* Exercise: Create a generic function that returns the keys of any map
+
+#----------------------------------------------
 * Dependency management
 #----------------------------------------------
 * In other ecosystems
@@ -2157,7 +2214,7 @@ The resulting golang-api (for consumers of the contract) is a good candidate for
 * The not so good
 - No immutability by default
 - Missing generics? -> Use code generation
-- Go 2.0 will have generics
+- Go 1.18 has generics
 
 #----------------------------------------------
 
