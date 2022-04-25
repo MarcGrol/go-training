@@ -1556,7 +1556,7 @@ The "any" type is a catch-all with regards to types
 
 #----------------------------------------------
 * Custom types
-.play -edit examples/generics/genericType/main.go /START OMIT/,/END OMIT/
+.play -edit examples/generics/genericPrint/main.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
 * Max value of a certain type
