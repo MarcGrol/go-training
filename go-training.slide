@@ -2136,6 +2136,46 @@ The resulting golang-api (for consumers of the contract) is a good candidate for
 .play -edit examples/sync/sync.go /START OMIT/,/END OMIT/
 
 #----------------------------------------------
+
+* Code review findings
+
+
+#----------------------------------------------
+
+* Dealing with slices of pointers
+
+.play -edit examples/codereviewfindings/slice_pointers/main.go /START OMIT/,/END OMIT/
+
+
+    Peek: codereviewfindings/slice_pointers
+
+#----------------------------------------------
+
+* Populating a slice from go routine
+
+.play -edit examples/codereviewfindings/populate_slice_in_parallel/main.go /START OMIT/,/END OMIT/
+
+
+    Peek: codereviewfindings/populate_slice_in_parallel
+
+#----------------------------------------------
+
+* Populating a map from go routine
+
+.play -edit examples/codereviewfindings/populate_map_in_parallel/main.go /START OMIT/,/END OMIT/
+
+    Peek: codereviewfindings/populate_map_in_parallel
+
+#----------------------------------------------
+
+* Inline go routines
+
+.play -edit examples/codereviewfindings/inline_goroutine/main.go /START OMIT/,/END OMIT/
+
+    Peek: codereviewfindings/inline_goroutine
+
+#----------------------------------------------
+
 * Final assigment
 
 - Registration service <registrationServiceGrpc>
