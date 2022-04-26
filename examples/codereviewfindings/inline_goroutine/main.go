@@ -7,19 +7,11 @@ import (
 )
 
 // START OMIT
-func wrong(input []int) {
+func inline_goroutine(input []int) {
 	for _, val := range input {
 		go func() {
 			doSomething(val)
 		}()
-	}
-}
-
-func correct(input []int) {
-	for _, val := range input {
-		go func(in int) {
-			doSomething(in)
-		}(val)
 	}
 }
 
@@ -28,14 +20,8 @@ func correct(input []int) {
 func main() {
 	input := []int{1, 2, 3, 4, 5}
 
-	log.Printf("Wrong\n")
-	wrong(input)
+	inline_goroutine(input)
 	time.Sleep(1 * time.Second)
-
-	log.Printf("Success:\n")
-	correct(input)
-	time.Sleep(1 * time.Second)
-
 }
 
 func doSomething(in int) string {

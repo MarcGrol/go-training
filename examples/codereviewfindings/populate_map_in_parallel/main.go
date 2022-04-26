@@ -13,7 +13,7 @@ func main() {
 
 	for _, val := range input {
 		go func(val int) {
-			output[val] = fmt.Sprintf("%d", val)
+			output[val] = doSomething(val)
 		}(val)
 	}
 
@@ -31,3 +31,7 @@ func main() {
 //for _, val := range input {
 //  output[val] = ""
 //}
+
+func doSomething(in int) string {
+	return fmt.Sprintf("%d", in)
+}

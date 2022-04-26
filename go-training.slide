@@ -2142,7 +2142,7 @@ The resulting golang-api (for consumers of the contract) is a good candidate for
 
 #----------------------------------------------
 
-* Dealing with slices of pointers
+* Populating a slices of pointers
 
 .play -edit examples/codereviewfindings/slice_pointers/main.go /START OMIT/,/END OMIT/
 

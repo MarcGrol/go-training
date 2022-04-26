@@ -13,7 +13,7 @@ func main() {
 
 	for _, val := range input {
 		go func(val int) {
-			output = append(output, fmt.Sprintf("%d", val))
+			output = append(output, doSomething(val))
 		}(val)
 	}
 
@@ -26,3 +26,7 @@ func main() {
 }
 
 // END OMIT
+
+func doSomething(in int) string {
+	return fmt.Sprintf("%d", in)
+}
