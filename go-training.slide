@@ -1,5 +1,5 @@
 Learning go
-14 February 2022
+24 October 2022
 Tags: go golang xebia
 
 Marc Grol & Patrick Akil
@@ -17,16 +17,6 @@ https://www.linkedin.com/in/patrick-akil-721b07105/
 
 #----------------------------------------------
 
-* About Marc
-.image examples/images/ideal.jpg
-- Running, tennis, hockey
-
-- Telecom, Finance, Mobile, Healthcare, Transport, Media, Startups
-- Allround, cost-benefit, get things done
-- Running golang in production @Duxxie
-
-#----------------------------------------------
-
 * About Patrick
 .image examples/images/microphone.JPG  305 456
 - Fitness, Podcasting, Content creation
@@ -37,59 +27,21 @@ https://www.linkedin.com/in/patrick-akil-721b07105/
 
 #----------------------------------------------
 
-* Who is who?
+* About Marc
+.image examples/images/ideal.jpg
+- Running, tennis, hockey
+
+- Telecom, Finance, Mobile, Healthcare, Transport, Media, Startups
+- Allround, cost-benefit, get things done
+- Running golang in production @Duxxie
 
 #----------------------------------------------
 
-* Expectations and goals
+* About you
+- Who is who?
+- What is your experience?
+- What are your expectations and goals?
 
-#----------------------------------------------
-
-* Householding
-
-#----------------------------------------------
-
-* Agenda
-
-Day 1 (morning 1 + 2):
-
-- Startup
-- Basis
-
-Day 2 (morning 3 + 4):
-
-- Advanced
-
-Day 3 (morning 5):
-
-- Exercise in groups
-- Evaluation
-
-#----------------------------------------------
-
-* Daily schedule
-
-- 9:00 - 9:50: Part 1
-
-- 10:00 - 10:50: Part 2
-
-- 11:00 - 11:45: Part 3
-
-- 12:00 - 12:45: Part 4
-
-- 12:45 - 13:00: Evaluation
-
-#----------------------------------------------
-
-* Approach
-
-- Learn by example
-- See code, run code
-- Associate with something you already know
-- Please interrupt for questions
-
-#----------------------------------------------
-* Language
 #----------------------------------------------
 
 * Your experience?
@@ -107,6 +59,40 @@ Day 3 (morning 5):
 
 #----------------------------------------------
 
+* Householding
+
+#----------------------------------------------
+
+* Overall agenda
+
+Day 1
+
+- Startup
+- Basics
+
+Day 2
+
+- Advanced
+
+Day 3
+
+- Exercise in groups
+- Overall evaluation
+
+#----------------------------------------------
+
+* Approach
+
+- Learn by example
+- See code, run code
+- Associate with something you already know
+- Questions
+- Feedback
+
+#----------------------------------------------
+* Language
+#----------------------------------------------
+
 * Why go was created?
 
 - Help Google solve problems: handle web requests
@@ -117,6 +103,8 @@ Day 3 (morning 5):
 - Optimum between C++ and Python
 
 Also works for us
+
+.link https://bradfitz.com/2020/01/30/joining-tailscale
 
 #----------------------------------------------
 
@@ -156,9 +144,11 @@ Missing in java:
 - Serve spiky traffic (fast startup eases scaling up)
 - Large scale (people, lifetime and size)
 
+Guaranteed backwards compatability 🙌
+
 #----------------------------------------------
 
-* Summary of language (fits on one sheet!!!!)
+* Summary of the language
 
 - Keywords:
 
@@ -186,15 +176,15 @@ Missing in java:
 
 * Useful sources of information
 
-.link https://golang.org/doc/effective_go.html
+.link https://go.dev
+
+.link https://go.dev/doc/effective_go
 
 .link https://golangweekly.com/ golangweekly.com/ (newsletter to keep up)
 
 .link https://github.com/avelino/awesome-go
 
-.link https://dave.cheney.net/
-
-.link https://tour.golang.org/
+.link https://go.dev/tour
 
 
 #----------------------------------------------
@@ -238,6 +228,10 @@ Verify git:
 Verify go:
 
     $ go version
+
+At least version go1.18
+
+No output means something's missing!
 
 #----------------------------------------------
 
@@ -293,6 +287,20 @@ PRO TIP:
 # Use "filewatcher"-plugin with "goimports"
 
 #    $ go get -u golang.org/x/tools/cmd/goimports
+
+
+#----------------------------------------------
+
+* Run the interactive presentation locally
+
+As described in the `goPresent.md`
+
+    $ go get golang.org/x/tools/cmd/present
+    $ go run golang.org/x/tools/cmd/present -http=:3999 -use_playground=true
+
+The presentation should be available in your browser at:
+
+.link http://127.0.0.1:3999
 
 
 #----------------------------------------------
@@ -1500,21 +1508,6 @@ Tasks:
 #----------------------------------------------
 * Generics
 #----------------------------------------------
-* Upgrade to Go 1.18
-The Golang team at Google released Go 1.18 version on 15-03-2022
-
-Get the latest go version through:
-.link https://go.dev/dl
-
-If you already have Go and want to run multiple versions:
-
-    >go install golang.org/dl/go1.18@latest
-    >go1.18 download
-
-Or use Go Version Manager (GVM):
-.link https://github.com/moovweb/gvm
-
-#----------------------------------------------
 * Why generics
 
 Functions, methods and data structures in a generic form, with standard types factored out
@@ -1568,6 +1561,7 @@ The "any" type is a catch-all with regards to types
     Use examples/generics/genericFunction/main.go
 
 Tasks:
+
 - Create a generic function that returns the keys of any map
 - Compare your generic function to the existing functions, make sure the output is the same
 
@@ -1609,7 +1603,7 @@ Tasks:
 
     module github.com/MarcGrol/my-example
 
-    go 1.16
+    go 1.18
 
     require (
     	github.com/google/uuid v1.2.0
@@ -2271,8 +2265,6 @@ The resulting golang-api (for consumers of the contract) is a good candidate for
 
 * The not so good
 - No immutability by default
-- Missing generics? -> Use code generation
-- Go 1.18 has generics
 
 #----------------------------------------------
 
