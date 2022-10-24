@@ -295,7 +295,7 @@ PRO TIP:
 
 As described in the `goPresent.md`
 
-    $ go install golang.org/x/tools/cmd/present
+    $ go get golang.org/x/tools/cmd/present
     $ go run golang.org/x/tools/cmd/present -http=:3999 -use_playground=true
 
 The presentation should be available in your browser at:
