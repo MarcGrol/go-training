@@ -1569,6 +1569,31 @@ Tasks:
     Peek: solutions/generics/main.go
 
 #----------------------------------------------
+
+* Extra Generics:
+
+Use dedicated directory for this exercise:
+
+    $ exercises/extraGenerics
+
+Take the following list of integers:
+
+    []int{1, 2, 2, 1, 2, 3, 1, 2, 4, 6, 7, 8, 9, 5, 2, 1234}
+
+Tasks:
+
+    Write 2 functions:
+    1 to check if the number 9 is in the array // expected output: true
+    2 to return the list of integers that occur multiple times in the original list
+    // expected output []int{1, 2}
+
+- Install the package:
+
+    github.com/samber/lo
+
+- And simplify your solutions with the Contains and FindDuplicates functions from the library
+
+#----------------------------------------------
 * Dependency management
 #----------------------------------------------
 * In other ecosystems
