@@ -464,7 +464,7 @@ Enforce rules:
 
 #----------------------------------------------
 
-* Exercise 2: Play around with controll flow
+* Exercise 2: Play around with control flow
 
 Use dedicated directory for this exercise:
 
@@ -550,7 +550,7 @@ Tasks:
 
 - Read a file
 - Capitalize the content of the file
-- Write this capitalized content to a new other name
+- Write this capitalized content to a different new file
 - Use Proper error-handling
 - Advanced: Read as json and write as xml
 
@@ -882,7 +882,7 @@ io.Writer-interface:
 * Interface <interfaces>
 - Naming convention: ends with "er"
 - Keep them small. Why?
-- Composeable
+- Composable
 
 Typestrong variant
 
