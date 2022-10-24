@@ -295,7 +295,7 @@ PRO TIP:
 
 As described in the `goPresent.md`
 
-    $ go get golang.org/x/tools/cmd/present
+    $ go install golang.org/x/tools/cmd/present
     $ go run golang.org/x/tools/cmd/present -http=:3999 -use_playground=true
 
 The presentation should be available in your browser at:
@@ -355,6 +355,7 @@ Tasks:
 
     ${HOME}/go           # on unix
     %HOMEPATH%/go        # on windows
+    $env:GOPATH          # on powershell
 
 - Contains all go stuff
 
