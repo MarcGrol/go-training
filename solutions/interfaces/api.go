@@ -11,4 +11,6 @@ type Datastorer interface {
 	Remove(key string) error
 }
 
-var New func() Datastorer = nil
+func New() Datastorer {
+	return newInMemoryPatientDatastore()
+}

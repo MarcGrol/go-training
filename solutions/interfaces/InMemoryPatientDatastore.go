@@ -1,13 +1,5 @@
 package interfaces
 
-var (
-	_ Datastorer = &inMemoryPatientDatastore{}
-)
-
-func init() {
-	New = newInMemoryPatientDatastore
-}
-
 type inMemoryPatientDatastore struct {
 	data map[string]Patient
 }
