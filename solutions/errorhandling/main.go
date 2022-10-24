@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	const filename = "./solutions/errorhandling/service.go"
+	const filename = "./solutions/errorhandling/main.go"
 	const filenameInCaps = filename + ".txt"
 	err := capitalizeFileContent(filename, filenameInCaps)
 	if err != nil {
