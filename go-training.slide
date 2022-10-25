@@ -2201,9 +2201,39 @@ The resulting golang-api (for consumers of the contract) is a good candidate for
 
 * Final assigment
 
-- Registration service <registrationServiceGrpc>
+We are building a new platform for patients to gain insights in their medical history.
+To do so, we have to allow patients to register with our platform.
 
-.image examples/images/registration_exercise.png  500 600
+When registering, we will validate that the email address provided belongs to the patient in question.
+
+We will do so by sending the patient a randomly generated pincode which they'll have to enter to verify their email.
+
+
+Tasks:
+
+- Split up into three groups.
+- Create a plan of approach within the group.
+- Draw the architecture
+
+We'll reconvene in 15 minutes
+
+#----------------------------------------------
+* Final assigment
+
+Implement the plan!
+
+We've prepared a separate repository here:
+.link https://github.com/MarcGrol/patientregistration
+
+Checkout the project on your laptop
+
+    $ git clone https://github.com/MarcGrol/patientregistration.git
+    $ cd patientregistration
+    $ go install ./...
+
+Don't forget to read the readme 👀
+Some building blocks come out of the box 🙌
+
 
 #----------------------------------------------
 
