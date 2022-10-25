@@ -128,6 +128,7 @@ Missing in go:
 - Inheritance (but has "embedding" to compose)
 - Exceptions
 - Annotations
+- Mutability
 
 Missing in java:
 
@@ -178,14 +179,13 @@ Guaranteed backwards compatability 🙌
 
 .link https://go.dev
 
+.link https://go.dev/tour
+
 .link https://go.dev/doc/effective_go
 
 .link https://golangweekly.com/ golangweekly.com/ (newsletter to keep up)
 
 .link https://github.com/avelino/awesome-go
-
-.link https://go.dev/tour
-
 
 #----------------------------------------------
 
@@ -838,7 +838,7 @@ TIP: Copy and paste and use editor in column-mode
 
 * Embedding
 
-- InHeritance or composition?
+- Inheritance or composition?
 
 .play -edit examples/sync/sync.go /START OMIT/,/END OMIT/
 
@@ -902,7 +902,11 @@ Typestrong variant
 .code -edit examples/interfaces/main.go  /START OMIT/,/END OMIT/
 
 #----------------------------------------------
-* Empty interface
+* Any type
+
+    any (since 1.18)
+
+Empty interface in the past:
 
     interface{}
 
@@ -932,7 +936,7 @@ Tasks:
     	Remove(key string) error
     }
 
-TIP: Use a map as im memory datastore
+TIP: Use a map as in-memory datastore
 
     Peek: examples/interfaces
 
@@ -1061,7 +1065,7 @@ Combine with go routines to execute work in background
     }
 
     func doit() error {
-        client, cleanup, err := NewGrpcClient("qqq")
+        client, cleanup, err := NewGrpcClient(":16123")
         if err != nil {
             return err
         }

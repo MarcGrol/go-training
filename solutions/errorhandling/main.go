@@ -12,7 +12,7 @@ func main() {
 	const filenameInCaps = filename + ".txt"
 	err := capitalizeFileContent(filename, filenameInCaps)
 	if err != nil {
-		log.Fatalf("Error reading file %s: %s", filename, err)
+		log.Fatalf("Error capatilizing file %s: %s", filename, err)
 	}
 }
 

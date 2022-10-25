@@ -14,6 +14,7 @@ func sum(nums ...int) { // HL
 
 func main() {
 
+	sum()    // HL
 	sum(1, 2)    // HL
 	sum(1, 2, 3) // HL
 

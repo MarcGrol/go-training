@@ -10,12 +10,12 @@ func newInMemoryPatientDatastore() Datastorer {
 	}
 }
 
-func (ds *inMemoryPatientDatastore) Put(key string, patient Patient) error {
-	ds.data[key] = patient
+func (ds *inMemoryPatientDatastore) Put(key string, patient any) error {
+	ds.data[key] = patient.(Patient)
 	return nil
 }
 
-func (ds *inMemoryPatientDatastore) Get(key string) (Patient, bool, error) {
+func (ds *inMemoryPatientDatastore) Get(key string) (any, bool, error) {
 	patient, found := ds.data[key]
 	return patient, found, nil
 }

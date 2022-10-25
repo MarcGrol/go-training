@@ -6,8 +6,8 @@ type Patient struct {
 }
 
 type Datastorer interface {
-	Put(key string, patient Patient) error
-	Get(key string) (Patient, bool, error)
+	Put(key string, patient any) error
+	Get(key string) (any, bool, error)
 	Remove(key string) error
 }
 

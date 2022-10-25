@@ -23,6 +23,7 @@ func main() {
 	fmt.Printf("%+v", peopleOnHobby)
 }
 
+
 func groupBy(hobbiesOfPeople map[string][]string) map[string][]string {
 	peopleOnHobby := map[string][]string{}
 	for name, hobbies := range hobbiesOfPeople {
